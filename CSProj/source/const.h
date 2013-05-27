@@ -63,6 +63,7 @@ public:
 	static const uint INTELLIGENCE();
 	static const uint UPDATECAMERA();
 	static const uint EXPLOSION();
+	static const uint FIRE();
 	static const uint PAUSE();
 	static const uint MOVE();
 	static const uint DRAW();

@@ -43,7 +43,7 @@ CShell::CShell(
 	_TaskListCheckAlive(NULL),
 	_TaskListExplosion(NULL),
 	_nMaxLife(src._nMaxLife),
-	_nLife(-1)
+	_nLife(30)
 {
 	D3DXMatrixIdentity(&_matW);
 	enableTask();

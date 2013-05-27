@@ -73,6 +73,7 @@ const uint TASKID::CHECKALIVE(){return TID_CHECKALIVE;}
 const uint TASKID::INTELLIGENCE(){return TID_INTELLIGENCE;}
 const uint TASKID::UPDATECAMERA(){return TID_FOLLOW;}
 const uint TASKID::EXPLOSION(){return TID_EXPLOSION;}
+const uint TASKID::FIRE(){return TID_FIRE;}
 const uint TASKID::PAUSE(){return TID_PAUSE;}
 const uint TASKID::MOVE(){return TID_MOVE;}
 const uint TASKID::DRAW(){return TID_DRAW;}

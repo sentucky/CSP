@@ -98,6 +98,7 @@ void CSceneGame::update()
 		if(run->getInst()->getDeleteFlg() == TRUE)
 		{
 			next = run->next();
+			delete run->getInst();
 			OBJMNG->erase(run);
 			run = next;
 			continue;
