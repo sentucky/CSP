@@ -63,7 +63,7 @@ void CTankTop::fire()
 		return;
 
 	CShell* pShell = NULL;
-	OBJMNG->push(OBJKEY::SHELL01(),pShell = new CShell(*_pProtoShell));
+	OBJMNG->push(OBJKEY::SHELL01(),pShell = new CShell(*_pProtoShell),NULL);
 	pShell->setMoveVector(&_TopDir);
 	pShell->setPos(&_WMat);
 }

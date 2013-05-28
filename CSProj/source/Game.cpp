@@ -96,6 +96,7 @@ void gameInit()
 		0.05f);
 
 	CStage* pStage = new CStage(MESHFACTORY->create(MESHKEY::STAGE01()));
+
 	
 	OBJFACTORY->reserve(OBJKEY::SUM());
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANK01(),pObj);

@@ -78,6 +78,8 @@ private:
 
 	CTankIntInter*	_pIntelligence;		///<	思考
 
+
+	float			_fRadius;			///<	半径
 	uint			_unIntType;			///<	思考タイプ
 };
 #endif

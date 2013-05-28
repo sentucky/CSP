@@ -33,8 +33,9 @@ class CObjBase;
  *	@class	CObjMng
  *	@brift	オブジェクト管理リスト
 /***********************************************************************/
-class CObjMng:public CListGroup<CObjBase*>
+class CObjMng:public CListGroup<CObjBase*>,public CSingleton<CObjMng>
 {
+	friend class CSingleton<CObjMng>;
 public:
 	void checkDelete();		///<	削除チェック
 };

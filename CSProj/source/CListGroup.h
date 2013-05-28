@@ -9,26 +9,40 @@
 template<class T>
 class CListItem;
 
+
+/*!
+ *	@class CListGroup
+ *	@brift リストグループ
+ *
+ */
 template<class T>
-class CListGroup:public CSingleton<CListGroup<T>>
+class CListGroup
 {
-	friend class CSingleton<CListGroup<T>>;
 public:
+	//	削除
 	void erase(
 		const uint unID,
 		CListItem<T>** deletedItem
-		);	//	削除
+		);						
 
-
+	//	追加
 	void push(
 		const uint unID,
-		T* pInst,
+		T pInst,
 		CListItem<T>** pListItem
-		);	//	追加
+		);						
 
-	void release();				//	開放
+	//	開放処理
+	void release();	
 
-	void resize(const uint);	//	容量確保
+	//	容量確保
+	void resize(const uint);				
+
+	//	リスト取得
+	CListMng<T>* getList(const uint unID);
+
+	//	サイズ取得
+	const uint size();						
 protected:
 	std::vector<CListMng<T>> _ListGroup;	//	グループの追加
 };
@@ -60,11 +74,16 @@ void CListGroup<T>::erase(
 template<class T>
 void CListGroup<T>::push(
 	const uint unID,
-	T* pInst,
+	T pInst,
 	CListItem<T>** pListItem
 	)
 {
-	*pLIstItem = static_cast<CListItem<T>*>(_ListGroup[unID].push(pInst));
+	CListItem<T>* pItem = NULL;
+	pItem = static_cast<CListItem<T>*>(_ListGroup[unID].push_back(pInst));
+	if(pListItem != NULL)
+	{
+		*pListItem = pItem;
+	}
 }
 
 
@@ -76,7 +95,7 @@ void CListGroup<T>::release()
 
 	for(uint unVCnt = 0; unVCnt < unVectorSize; ++unVCnt)
 	{
-		_ListGroup[unVCnt].clear();
+		_ListGroup[unVCnt].release();
 	}
 	_ListGroup.clear();
 }
@@ -89,5 +108,22 @@ void CListGroup<T>::resize(const uint unSize)
 	_ListGroup.resize(unSize);
 	_ListGroup.reserve(unSize);
 }
+
+
+//	リスト取得
+template<class T>
+CListMng<T>* CListGroup<T>::getList(const uint unID)
+{
+	return &(_ListGroup[unID]);
+}
+
+
+//	サイズ取得
+template<class T>
+const uint CListGroup<T>::size()
+{
+	return _ListGroup.size();
+}
+
 
 #endif

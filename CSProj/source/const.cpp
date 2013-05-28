@@ -9,11 +9,17 @@
 #include"const.h"
 
 const char* MESHPATH::SHELL01(){		return "data/model/pin.x";		}
+const char* MESHPATH::SHELL02(){		return "data/model/pin.x";		}
+const char* MESHPATH::SHELL03(){		return "data/model/pin.x";		}
 const char* MESHPATH::PIN(){			return "data/model/pin.x";		}
 const char* MESHPATH::YUKA(){			return "data/model/nanase_pose.x";		}
 const char* MESHPATH::STAGE01(){		return "data/model/stage01.x";			}
 const char* MESHPATH::TANK01_TOP(){		return "data/model/tank01_top.x";		}
+const char* MESHPATH::TANK02_TOP(){		return "data/model/tank01_top.x";		}
+const char* MESHPATH::TANK03_TOP(){		return "data/model/tank01_top.x";		}
 const char* MESHPATH::TANK01_BOTTOM(){	return "data/model/tank01_bottom.x";	}
+const char* MESHPATH::TANK02_BOTTOM(){	return "data/model/tank01_bottom.x";	}
+const char* MESHPATH::TANK03_BOTTOM(){	return "data/model/tank01_bottom.x";	}
 
 
 
@@ -32,10 +38,16 @@ enum eMESHKEY
 {
 	MESH_PIN,			//
 	MESH_SHELL01,		//
+	MESH_SHELL02,		//
+	MESH_SHELL03,		//
 	MESH_YUKA,			//
 	MESH_STAGE01,		//
 	MESH_TANK01_TOP,	//
+	MESH_TANK02_TOP,	//
+	MESH_TANK03_TOP,	//
 	MESH_TANK01_BOTTOM,	//
+	MESH_TANK02_BOTTOM,	//
+	MESH_TANK03_BOTTOM,	//
 	MESH_SUM,			//
 };
 
@@ -83,16 +95,24 @@ const uint TASKID::SUM(){return TID_SUM;}
 enum eOBJID
 {
 	OID_SHELL01,	//
+	OID_SHELL02,	//
+	OID_SHELL03,	//
 	OID_PIN,		//
 	OID_STAGE01,	//
 	OID_TANK01,		//
+	OID_TANK02,		//
+	OID_TANK03,		//
 	OID_FOLLOW,		//
 	OID_SUM,		//
 };
 
 const uint OBJKEY::SHELL01(){return OID_SHELL01;}	///<	
+const uint OBJKEY::SHELL02(){return OID_SHELL02;}	///<	
+const uint OBJKEY::SHELL03(){return OID_SHELL03;}	///<	
 const uint OBJKEY::PIN()	{return OID_PIN;	}	///<	
 const uint OBJKEY::TANK01()	{return OID_TANK01;	}	///<	@brift	タンク01オブジェキー
+const uint OBJKEY::TANK02()	{return OID_TANK02;	}	///<	@brift	タンク01オブジェキー
+const uint OBJKEY::TANK03()	{return OID_TANK03;	}	///<	@brift	タンク01オブジェキー
 const uint OBJKEY::STAGE01(){return OID_STAGE01;}	///<	@brift	ステージオブジェキー
 const uint OBJKEY::FOLLOW()	{return OID_FOLLOW;	}	///<	@brift	追尾カメラオブジェキー
 const uint OBJKEY::SUM()	{return OID_SUM;	}	///<	@brift	オブジェキー最大数

@@ -57,6 +57,7 @@ CTank::CTank(
 	_pTankTop		( NULL			),
 	_pTankBottom	( NULL			),
 	_pIntelligence	( NULL			),
+	_fRadius		( 5.0f			),
 	_unIntType		( unIntType		)
 {
 	_pTankTop = new CTankTop(pMeshTop,NULL,pShellProto);
@@ -90,6 +91,7 @@ CTank::CTank(const CTank& src)
 	_pTankTop			( new CTankTop(*src._pTankTop)			),
 	_pTankBottom		( new CTankBottom(*src._pTankBottom)	),
 	_pIntelligence		( NULL							),
+	_fRadius			( 5.0f							),
 	_unIntType			( src._unIntType				)
 {
 

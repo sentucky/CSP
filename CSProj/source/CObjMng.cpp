@@ -21,20 +21,22 @@
 /***********************************************************************/
 void CObjMng::checkDelete()
 {
+	
 	const uint size = _ListGroup.size();
 	for(uint Cnt = 0; Cnt < size; Cnt++)
 	{
-		CListItem<CObjBase*>* pRun = _ListGroup[Cnt].begin()->next();
+		CListItem<CObjBase*>* pRun = _ListGroup[Cnt].begin();
 		CListItem<CObjBase*>* pEnd = _ListGroup[Cnt].end();
 		CObjBase* pInst;
 
-		for(;pRun != pEnd; pRun = pRun->next())
+		while(pRun != pEnd)
 		{
 			pInst = pRun->getInst();
 			if(pInst->getDeleteFlg() == TRUE)
 			{
 				CListItem<CObjBase*>* pNext = pRun->next();
-				erase(Cnt,&pRun);
+				delete pRun->getInst();
+				_ListGroup[Cnt].erase(pRun);
 				pRun = pNext;
 			}
 			else

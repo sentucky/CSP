@@ -61,21 +61,34 @@ CSceneGame::~CSceneGame()
 /***********************************************************************/
 void CSceneGame::init()
 {
+	//	解放処理
 	release();
+
+	//	カメラ作成
 	_pCamera = new CCamera;
 	_pCamera->setEyeY(50);
 	_pCamera->update();
 	
-	CTank* pTank = NULL;
-	CFollowCamera* pFCam;
-	CObjBase* ObjPtr;
+	//	リストサイズ設定
+	OBJMNG->resize(OBJKEY::SUM());
 
-	OBJMNG->push_back(OBJFACTORY->create(OBJKEY::STAGE01()));
-	for(int n = 0; n < 100; n++)
-		OBJMNG->push_back(pTank = static_cast<CTank*>(OBJFACTORY->create(OBJKEY::TANK01())));
-	OBJMNG->push_back(pFCam = static_cast<CFollowCamera*>(OBJFACTORY->create(OBJKEY::FOLLOW())));
-	OBJMNG->push_back(ObjPtr = OBJFACTORY->create(OBJKEY::PIN()));
+	//	オブジェクト作成
+	//...ステージ
+	OBJMNG->push(OBJKEY::STAGE01(),OBJFACTORY->create(OBJKEY::STAGE01()),NULL);
+
+	//...戦車
+	CTank*			pTank = NULL;
+	OBJMNG->push(OBJKEY::TANK01(),pTank = static_cast<CTank*>(OBJFACTORY->create(OBJKEY::TANK01())),NULL);
+
+	//...追跡カメラ
+	CFollowCamera*	pFCam = NULL;
+	OBJMNG->push(OBJKEY::FOLLOW(),pFCam = static_cast<CFollowCamera*>(OBJFACTORY->create(OBJKEY::FOLLOW())),NULL);
 	pFCam->setTank(pTank);
+
+	//...ピン
+	OBJMNG->push(OBJKEY::PIN(),OBJFACTORY->create(OBJKEY::PIN()),NULL);
+
+	//	追跡カメラの追跡対象設定
 }
 
 /***********************************************************************/
@@ -90,23 +103,12 @@ void CSceneGame::update()
 
 	
 	CTaskMng::run();
+
+	//	オブジェクトの更新
 	_pCamera->update();
 
-	CListItem<CObjBase*>* run = OBJMNG->begin();
-	CListItem<CObjBase*>* next = NULL;
-	CListItem<CObjBase*>* end = OBJMNG->end();
-	while(run != end)
-	{
-		if(run->getInst()->getDeleteFlg() == TRUE)
-		{
-			next = run->next();
-			delete run->getInst();
-			OBJMNG->erase(run);
-			run = next;
-			continue;
-		}
-		run = run->next();
-	}
+	//	不要オブジェクトの削除
+	OBJMNG->checkDelete();
 }
 
 /***********************************************************************/

@@ -230,6 +230,7 @@ void CListMng<T>::connect_back(CListItem<T>* pPrev, CListItem<T>* pList)
 
 	//	ŽŸ‚Ì—v‘f‚Æ˜AŒ‹
 	pNext->setPrev(pList);
+//	pNext->setNext(pList->next());
 	pList->setNext(pNext);
 }
 
