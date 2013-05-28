@@ -12,6 +12,7 @@
 
 
 #include"CInputCommon.h"
+#include"const.h"
 
 
 CTankTop::CTankTop(
@@ -62,7 +63,7 @@ void CTankTop::fire()
 		return;
 
 	CShell* pShell = NULL;
-	OBJMNG->push_back(pShell = new CShell(*_pProtoShell));
+	OBJMNG->push(OBJKEY::SHELL01(),pShell = new CShell(*_pProtoShell));
 	pShell->setMoveVector(&_TopDir);
 	pShell->setPos(&_WMat);
 }

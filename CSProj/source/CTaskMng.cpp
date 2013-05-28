@@ -117,7 +117,10 @@ void CTaskMng::resize(uint unSize)
 void CTaskMng::erase(CTaskList** deletedList)
 {
 	if( *deletedList == NULL)
+	{
 		return;
+	}
+
 
 	const uint unTaskID = (*deletedList)->getInst()->getTaskID();
 

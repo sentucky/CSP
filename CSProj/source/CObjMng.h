@@ -12,7 +12,7 @@
 /***********************************************************************/
 //	インクルード
 /***********************************************************************/
-#include"CListMng.h"
+#include"CListGroup.h"
 #include"CSingleton.h"
 
 
@@ -33,10 +33,8 @@ class CObjBase;
  *	@class	CObjMng
  *	@brift	オブジェクト管理リスト
 /***********************************************************************/
-class CObjMng:public CListMng<CObjBase*>,public CSingleton<CObjMng>
+class CObjMng:public CListGroup<CObjBase*>
 {
-	//	フレンド登録
-	friend class CSingleton<CObjMng>;
 public:
 	void checkDelete();		///<	削除チェック
 };

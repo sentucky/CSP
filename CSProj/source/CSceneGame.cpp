@@ -31,6 +31,7 @@
 #include"CInputCommon.h"
 #include"CFont.h"
 #include"CScreen.h"
+#include"CListGroup.h"
 #endif
 
 /***********************************************************************/
@@ -70,7 +71,8 @@ void CSceneGame::init()
 	CObjBase* ObjPtr;
 
 	OBJMNG->push_back(OBJFACTORY->create(OBJKEY::STAGE01()));
-	OBJMNG->push_back(pTank = static_cast<CTank*>(OBJFACTORY->create(OBJKEY::TANK01())));
+	for(int n = 0; n < 100; n++)
+		OBJMNG->push_back(pTank = static_cast<CTank*>(OBJFACTORY->create(OBJKEY::TANK01())));
 	OBJMNG->push_back(pFCam = static_cast<CFollowCamera*>(OBJFACTORY->create(OBJKEY::FOLLOW())));
 	OBJMNG->push_back(ObjPtr = OBJFACTORY->create(OBJKEY::PIN()));
 	pFCam->setTank(pTank);
