@@ -28,11 +28,11 @@ class CObjBase;
 class CTankIntPlayer:public CTankIntInter
 {
 public:
-	CTankIntPlayer(CTank* pPlayerTank);	//	コンストラクタ
-	~CTankIntPlayer();	//	デストラクタ
+	CTankIntPlayer(CTank* pPlayerTank);	///<	コンストラクタ
+	~CTankIntPlayer();	///<	デストラクタ
 private:
-	void update();	//	フラグの更新
-	void moveSight();	//	照準移動
+	void update();	///<	フラグの更新
+	void moveSight();	///<	照準移動
 	
 	CListItem<CObjBase*>*  _pList;
 	

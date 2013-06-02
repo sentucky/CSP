@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CPin.cpp
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #include"CPin.h"
 
 #include"CInputCommon.h"
@@ -10,6 +18,13 @@
 #include"CFont.h"
 #endif
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pMesh 
+ *  @retval  
+ */
+/***********************************************************************/
 CPin::CPin(CMesh* pMesh)
 	:_pTaskDraw(NULL),
 	_pTaskUpdate(NULL),
@@ -17,6 +32,12 @@ CPin::CPin(CMesh* pMesh)
 {
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 CPin::~CPin()
 {
 	SAFE_DELETE(_pMesh);
@@ -24,6 +45,13 @@ CPin::~CPin()
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] src 
+ *  @retval  
+ */
+/***********************************************************************/
 CPin::CPin(const CPin& src)
 	:_pTaskDraw(NULL),
 	_pTaskUpdate(NULL),
@@ -34,13 +62,25 @@ CPin::CPin(const CPin& src)
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CPin::enableTask()
 {
-	CTaskMng::push<CPin>(TASKID::DRAW(), this, &CPin::draw,&_pTaskDraw);
-	CTaskMng::push<CPin>(TASKID::MOVE(), this, &CPin::move,&_pTaskUpdate);
+	CTaskMng::push<CPin>(TASKKEY::DRAW(), this, &CPin::draw,&_pTaskDraw);
+	CTaskMng::push<CPin>(TASKKEY::MOVE(), this, &CPin::move,&_pTaskUpdate);
 
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CPin::disableTask()
 {
 	CTaskMng::erase(&_pTaskDraw);
@@ -49,16 +89,25 @@ void CPin::disableTask()
 
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CPin::draw()
 {
 	_pMesh->draw(&_matW);
 #ifdef _DEBUG
-	FONT->DrawFloat("",_matW._41,RECTEX(0,0,0,0));
-	FONT->DrawFloat("",_matW._42,RECTEX(0,16,0,0));
-	FONT->DrawFloat("",_matW._43,RECTEX(0,32,0,0));
 #endif
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CPin::move()
 {
 	D3DXVECTOR3 Target;

@@ -19,8 +19,10 @@
  */
 /***********************************************************************/
 CStage::CStage(
+	const char* StageFilePath,
 	CMesh* pMesh
 	):_pTaskDraw(NULL),
+	_StageFilePath(StageFilePath),
 	_Mesh(pMesh)
 {
 	D3DXMatrixIdentity(&_matW);
@@ -45,9 +47,11 @@ CStage::~CStage()
 /***********************************************************************/
 CStage::CStage(const CStage& src)
 	:_pTaskDraw(NULL),
+	_StageFilePath(src._StageFilePath),
 	_Mesh(new CMesh(*src._Mesh))
 {
 	D3DXMatrixIdentity(&_matW);
+
 	enableTask();
 }
 
@@ -70,7 +74,7 @@ void CStage::release()
 /***********************************************************************/
 void CStage::enableTask()
 {
-	CTaskMng::push<CStage>(	TASKID::DRAW(),	this,&CStage::draw, &_pTaskDraw);
+	CTaskMng::push<CStage>(	TASKKEY::DRAW(),	this,&CStage::draw, &_pTaskDraw);
 }
 
 /***********************************************************************/

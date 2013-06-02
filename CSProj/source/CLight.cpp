@@ -44,6 +44,7 @@ CLight::CLight()
 			_bRegistorState[nCnt] = true;
 			_nId = nCnt;
 			_nSumId++;
+			activeLight();
 			lightON();
 			return;
 		}
@@ -105,7 +106,7 @@ void CLight::init()
 	mtrlInitializer.Ambient.b = mtrlInitializer.Diffuse.b = 1.0f;
 	D3DDEVICE->SetMaterial( &mtrlInitializer );
 	setLightType(D3DLIGHT_DIRECTIONAL);
-	activeLight();
+
 }
 
 
@@ -450,5 +451,15 @@ void CLight::setSpotLight(
 	_Light.Theta = D3DXToRadian(fInsideCorn);
 	_Light.Phi = D3DXToRadian(fOutsideCorn);
 	_Light.Falloff = fCornFallout;
+}
+
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
+void CLight::update()
+{
 }
 //EOF

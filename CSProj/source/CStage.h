@@ -31,6 +31,7 @@ class CStage:public CObjBase
 {
 public:
 	CStage(
+		const char* StageDataPath,
 		CMesh* pMesh
 		);
 	~CStage();
@@ -40,6 +41,8 @@ public:
 	void disableTask();
 	void draw();
 private:
+	const char*		_StageFilePath;
+
 	CTaskList*		_pTaskDraw;	///<	描画関数
 	CMesh*			_Mesh;		///<	メッシュ
 	D3DXMATRIXA16	_matW;		///<	マトリクス

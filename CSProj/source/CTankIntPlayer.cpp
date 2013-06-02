@@ -79,6 +79,12 @@ void CTankIntPlayer::update()
 	MOUSE.mousePoint3D(&_TargetPoint,50);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTankIntPlayer::moveSight()
 {
 

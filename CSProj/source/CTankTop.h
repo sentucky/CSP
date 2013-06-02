@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CTankTop.h
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #ifndef ___CTANKTOP___
 #define ___CTANKTOP___
 
@@ -21,10 +29,10 @@ public:
 	);
 
 
-	void fire();					//	”­–C
-	void turn();					//	‰ñ“]
-	void draw();					//	•`‰æ
-	void cooldown();				//	•ú”M(—Dæ“x’á
+	void fire();					///<	”­–C
+	void turn();					///<	‰ñ“]
+	void draw();					///<	•`‰æ
+	void cooldown();				///<	•ú”M(—Dæ“x’á
 
 	void setPos(const float x, const float y,const float z);
 	void setIntelligence(CTankIntInter* pIntelligence);

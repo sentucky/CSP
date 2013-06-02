@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CPin.h
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #ifndef ___PIN___
 #define ___PIN___
 #include"CObjBase.h"
@@ -17,12 +25,12 @@ public:
 	~CPin();
 	CPin(const CPin& src);
 
-	void enableTask();	//	タスク有効化
-	void disableTask();	//	タスク無効化
+	void enableTask();	///<	タスク有効化
+	void disableTask();	///<	タスク無効化
 
 	//	リスト登録タスク
-	void draw();		//	描画
-	void move();		//	更新
+	void draw();		///<	描画
+	void move();		///<	更新
 
 private:
 	CTaskList* _pTaskDraw;

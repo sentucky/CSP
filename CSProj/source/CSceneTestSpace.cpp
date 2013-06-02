@@ -71,6 +71,8 @@ void CSceneTestSpace::init()
 	pCamera->setEyeZ(-30);
 	pCamera->update();
 
+
+	CLight* pLight;
 	pLight  = new CLight;
 	pLight->setDirectionalLight(
 		COLORVALUE(1.0f,1.0f,1.0f,1.0f),

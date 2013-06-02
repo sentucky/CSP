@@ -29,6 +29,7 @@
 #include"CFollowCamera.h"
 #include"CPin.h"
 #include"CShell.h"
+#include"CHItTestTAndT.h"
 /***********************************************************************/
 //	グローバル変数宣言
 /***********************************************************************/
@@ -78,13 +79,19 @@ void gameInit()
 	//	メッシュ初期化
 	MESHFACTORY->reserve(MESHKEY::SUM());
 	MESHFACTORY->registMesh(MESHKEY::TANK01_BOTTOM(),	MESHPATH::TANK01_BOTTOM()	);
+	MESHFACTORY->registMesh(MESHKEY::TANK02_BOTTOM(),	MESHPATH::TANK02_BOTTOM()	);
+	MESHFACTORY->registMesh(MESHKEY::TANK03_BOTTOM(),	MESHPATH::TANK03_BOTTOM()	);
+	MESHFACTORY->registMesh(MESHKEY::TANK04_BOTTOM(),	MESHPATH::TANK04_BOTTOM()	);
 	MESHFACTORY->registMesh(MESHKEY::TANK01_TOP(),		MESHPATH::TANK01_TOP()		);
+	MESHFACTORY->registMesh(MESHKEY::TANK02_TOP(),		MESHPATH::TANK02_TOP()		);
+	MESHFACTORY->registMesh(MESHKEY::TANK03_TOP(),		MESHPATH::TANK03_TOP()		);
+	MESHFACTORY->registMesh(MESHKEY::TANK04_TOP(),		MESHPATH::TANK04_TOP()		);
 	MESHFACTORY->registMesh(MESHKEY::STAGE01(),			MESHPATH::STAGE01()			);
 	MESHFACTORY->registMesh(MESHKEY::PIN(),				MESHPATH::PIN()				);
 
 
 	
-	TASKMNG::resize(TASKID::SUM());
+	TASKMNG::resize(TASKKEY::SUM());
 
 	//	オブジェクト登録
 	CTank* pObj = new CTank(
@@ -94,15 +101,30 @@ void gameInit()
 		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::PIN())),
 		0.05f,
 		0.05f);
+	CStage* pStage = new CStage(STAGEPATH::NO_01(),MESHFACTORY->create(MESHKEY::STAGE01()));
 
-	CStage* pStage = new CStage(MESHFACTORY->create(MESHKEY::STAGE01()));
+#ifdef _DEBUG
+	CTank* pObj2 = new CTank(
+		MESHFACTORY->create(MESHKEY::TANK04_TOP()),
+		MESHFACTORY->create(MESHKEY::TANK04_BOTTOM()),
+		-1,
+		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::PIN())),
+		0.05f,
+		0.05f);
+#endif
 
-	
 	OBJFACTORY->reserve(OBJKEY::SUM());
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANK01(),pObj);
+#ifdef _DEBUG
+	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANKDUMMY(),pObj2);
+#endif
 	OBJFACTORY->registPrototype<CStage>(OBJKEY::STAGE01(),pStage);
 	OBJFACTORY->registPrototype<CFollowCamera>(OBJKEY::FOLLOW(),new CFollowCamera);
 	OBJFACTORY->registPrototype<CPin>(OBJKEY::PIN(),new CPin(MESHFACTORY->create(MESHKEY::PIN())));
+
+	CHitTestTAndT* pHTTAT;
+	pHTTAT = new CHitTestTAndT;
+	OBJFACTORY->registPrototype(OBJKEY::HITTEST(),pHTTAT);
 
 }
 

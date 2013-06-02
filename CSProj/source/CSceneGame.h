@@ -28,14 +28,14 @@ class CCamera;
 class CSceneGame:public CSceneBase
 {
 public:
-	CSceneGame();				//	コンストラクタ
-	~CSceneGame();				//	デストラクタ
+	CSceneGame();				///<	コンストラクタ
+	~CSceneGame();				///<	デストラクタ
 private:
-	void init();				//	初期化処理
-	void update();				//	更新処理
-	void draw();				//	描画処理
-	void release();				//	解放処理
-	CSceneBase* nextScene();	//	シーン切り替え
+	void init();				///<	初期化処理
+	void update();				///<	更新処理
+	void draw();				///<	描画処理
+	void release();				///<	解放処理
+	CSceneBase* nextScene();	///<	シーン切り替え
 private:
 	CCamera* _pCamera;	///<	カメラクラスポインタ
 };

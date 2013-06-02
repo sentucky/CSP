@@ -63,6 +63,12 @@ void CTaskMng::run()
 		 *  @retval run = run-> 
 		 */
 		/***********************************************************************/
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @retval run = run-> 
+		 */
+		/***********************************************************************/
 		for(; run != end; run = run->next())
 		{
 			run->getInst()->run();
@@ -80,6 +86,12 @@ void CTaskMng::draw()
 {
 	CListItem<CTaskBase*>* run = _DrawTaskList.begin();
 	CListItem<CTaskBase*>* end = _DrawTaskList.end();
+	/***********************************************************************/
+	/*! @brief 
+	 * 
+	 *  @retval run = run-> 
+	 */
+	/***********************************************************************/
 	/***********************************************************************/
 	/*! @brief 
 	 * 
@@ -124,7 +136,7 @@ void CTaskMng::erase(CTaskList** deletedList)
 
 	const uint unTaskID = (*deletedList)->getInst()->getTaskID();
 
-	if(unTaskID == TASKID::DRAW())
+	if(unTaskID == TASKKEY::DRAW())
 	{
 		delete ((*deletedList)->getInst());
 		_DrawTaskList.erase(*deletedList);

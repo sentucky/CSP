@@ -1,9 +1,26 @@
+/***********************************************************************/
+/*! @file  CShell.cpp
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #include"CShell.h"
 
 #include"CTaskList.h"
 #include"CMesh.h"
 #include"CTaskMng.h"
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] nMaxLife 
+ *  @param[in,out] MoveSpeed 
+ *  @param[in,out] pMesh 
+ *  @retval  
+ */
+/***********************************************************************/
 CShell::CShell(
 	const	int		nMaxLife,
 			float	MoveSpeed,
@@ -24,12 +41,25 @@ CShell::CShell(
 	D3DXMatrixIdentity(&_matW);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 CShell::~CShell()
 {
 	SAFE_DELETE(_pMesh);
 	disableTask();
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] src 
+ *  @retval  
+ */
+/***********************************************************************/
 CShell::CShell(
 	const CShell& src
 	)
@@ -49,14 +79,26 @@ CShell::CShell(
 	enableTask();
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShell::enableTask()
 {
-	CTaskMng::push(TASKID::DRAW(),this,&CShell::draw,&_TaskListDraw);
-	CTaskMng::push(TASKID::MOVE(),this,&CShell::move,&_TaskListMove);
-	CTaskMng::push(TASKID::CHECKALIVE(),this,&CShell::checkAlive,&_TaskListCheckAlive);
-	CTaskMng::push(TASKID::EXPLOSION(),this,&CShell::explosion,&_TaskListExplosion);
+	CTaskMng::push(TASKKEY::DRAW(),this,&CShell::draw,&_TaskListDraw);
+	CTaskMng::push(TASKKEY::MOVE(),this,&CShell::move,&_TaskListMove);
+	CTaskMng::push(TASKKEY::CHECKALIVE(),this,&CShell::checkAlive,&_TaskListCheckAlive);
+	CTaskMng::push(TASKKEY::EXPLOSION(),this,&CShell::explosion,&_TaskListExplosion);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShell::disableTask()
 {
 	CTaskMng::erase(&_TaskListDraw);
@@ -65,11 +107,23 @@ void CShell::disableTask()
 	CTaskMng::erase(&_TaskListExplosion);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShell::draw()
 {
 	_pMesh->draw(&_matW);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShell::move()
 {
 	_OldPos.x = _matW._41;
@@ -80,6 +134,12 @@ void CShell::move()
 	_matW._43 += _MoveVector.z;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShell::checkAlive()
 {
 	_nLife -= 1;
@@ -89,15 +149,34 @@ void CShell::checkAlive()
 	}
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShell::explosion()
 {
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval D3DXVECTOR3& 
+ */
+/***********************************************************************/
 D3DXVECTOR3& CShell::getTrajectory()
 {
 	return _Trajectory;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] MoveVec 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShell::setMoveVector(const D3DXVECTOR3* MoveVec)
 {
 	_MoveVector = *MoveVec;
@@ -105,6 +184,13 @@ void CShell::setMoveVector(const D3DXVECTOR3* MoveVec)
 	_MoveVector *= _MoveSpeed;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pos 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShell::setPos(const D3DXMATRIXA16*	pos)
 {
 	_matW._41 = pos->_41;
@@ -112,6 +198,13 @@ void CShell::setPos(const D3DXMATRIXA16*	pos)
 	_matW._43 = pos->_43;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pos 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShell::setPos(const D3DXVECTOR3*		pos)
 {
 	_matW._41 = pos->x;

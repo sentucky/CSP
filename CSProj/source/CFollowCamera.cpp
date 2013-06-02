@@ -1,9 +1,24 @@
+/***********************************************************************/
+/*! @file  CFollowCamera.cpp
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #include"CFollowCamera.h"
 #include"CCamera.h"
 #include"CTaskList.h"
 #include"CTank.h"
 #include"CTaskMng.h"
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out]  
+ *  @retval  
+ */
+/***********************************************************************/
 CFollowCamera::CFollowCamera(
 	):_fDistance(	50.0f),	
 	  _NAtToEye	(	D3DXVECTOR3(0,1.0f,0)),
@@ -13,12 +28,25 @@ CFollowCamera::CFollowCamera(
 	D3DXVec3Normalize(&_NAtToEye,&_NAtToEye);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 CFollowCamera::~CFollowCamera()
 {
 	disableTask();
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] src 
+ *  @retval  
+ */
+/***********************************************************************/
 CFollowCamera::CFollowCamera(
 	const CFollowCamera& src
 	):_fDistance(	50.0f					),	
@@ -31,18 +59,36 @@ CFollowCamera::CFollowCamera(
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CFollowCamera::enableTask()
 {
-	CTaskMng::push<CFollowCamera>(TASKID::UPDATECAMERA(),this,&CFollowCamera::update,&_pUpdate);
+	CTaskMng::push<CFollowCamera>(TASKKEY::UPDATECAMERA(),this,&CFollowCamera::update,&_pUpdate);
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CFollowCamera::disableTask()
 {
 	CTaskMng::erase(&_pUpdate);
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CFollowCamera::update()
 {
 	const float x = _pTank->getMatBottom()->_41;
@@ -63,6 +109,13 @@ void CFollowCamera::update()
 	_DeleteFlg = _pTank->getDeleteFlg();
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pTank 
+ *  @retval void
+ */
+/***********************************************************************/
 void CFollowCamera::setTank(CTank* pTank)
 {
 	_pTank = pTank;

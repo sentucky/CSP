@@ -177,19 +177,11 @@ BOOL bindBall(D3DXVECTOR3& vec3PosA,float fARadius,D3DXVECTOR3& vec3PosB,float f
 BOOL bindBall(D3DXMATRIXA16& matPosA,float fARadius,D3DXMATRIXA16& matPosB,float fBRadius)
 {
 	////////////////////////////
-	//	変数宣言
-	float fX;
-	float fY;
-	float fZ;
-	float fDistance;
-
-
-	////////////////////////////
 	//	二つのオブジェクトの距離を計算
-	fX = (matPosA._41 - matPosB._41) * (matPosA._41 - matPosB._41);
-	fY = (matPosA._42 - matPosB._42) * (matPosA._42 - matPosB._42);
-	fZ = (matPosA._43 - matPosB._43) * (matPosA._43 - matPosB._43);
-	fDistance = (fARadius + fBRadius) * (fARadius + fBRadius);
+	const float fX = (matPosA._41 - matPosB._41) * (matPosA._41 - matPosB._41);
+	const float fY = (matPosA._42 - matPosB._42) * (matPosA._42 - matPosB._42);
+	const float fZ = (matPosA._43 - matPosB._43) * (matPosA._43 - matPosB._43);
+	const float fDistance = (fARadius + fBRadius) * (fARadius + fBRadius);
 	//球とプレイヤーのあたり判定
 	if(	fX + fY + fZ <=  fDistance)
 	{
@@ -211,18 +203,15 @@ BOOL bindBall(D3DXMATRIXA16& matPosA,float fARadius,D3DXMATRIXA16& matPosB,float
 /***********************************************************************/
 BOOL bindCircle(D3DXVECTOR2* vec2PosA,float fARadius,D3DXVECTOR2* vec2PosB,float fBRadius)
 {
-	float fX;
-	float fY;
-	float fDistance;
-	fX = (vec2PosA->x - vec2PosB->x) * (vec2PosA->x - vec2PosB->x);
-	fY = (vec2PosA->y - vec2PosB->y) * (vec2PosA->y - vec2PosB->y);
-	fDistance = (fARadius + fBRadius) * (fARadius + fBRadius);
+
+	//	２点の距離計算
+	const float fA = (vec2PosA->x - vec2PosB->x) * (vec2PosA->x - vec2PosB->x);
+	const float fB = (vec2PosA->y - vec2PosB->y) * (vec2PosA->y - vec2PosB->y);
+	const float fC = fA + fB;
+	const float fSumRad = (fARadius + fBRadius) * (fARadius + fBRadius);
+
 	//球とプレイヤーのあたり判定
-	if(	
-		fX
-		+	fY
-		<=  fDistance
-		)
+	if(	fC <=  fSumRad)
 	{
 		return TRUE;
 	}
@@ -257,16 +246,24 @@ BOOL bindRect(D3DXVECTOR2* pvec2PosA, RECT*  pRectSizeA,D3DXVECTOR2* pvec2PosB)
 /*! @brief 衝突後の運動計算
  * 
  *  @param[out] pv1Out オブジェクト１の衝突後の移動量
- *  @param[in] v1	   オブジェクト２の衝突後の移動量
- *  @param[in] v2	   オブジェクト１の移動量
- *  @param[in] m1	   オブジェクト２の上と同軸の移動量
- *  @param[in] m2	   オブジェクト１の質量
- *  @param[in] e1	   オブジェクト２の質量
- *  @param[in] e2	   オブジェクト１が持つ反発係数
- *  @retval void	   オブジェクト２が持つ反発係数
+ *  @param[in] v1	   オブジェクト１の移動量
+ *  @param[in] v2	   オブジェクト２の移動量
+ *  @param[in] m1	   オブジェクト１の質量
+ *  @param[in] m2	   オブジェクト２の質量
+ *  @param[in] e1	   オブジェクト１が持つ反発係数
+ *  @param[in] e2	   オブジェクト２が持つ反発係数
+ *  @retval void
  */
 /***********************************************************************/
-void commonfunc::repulsion(float* pv1Out,float v1, float v2,float m1,float m2, float e1, float e2)
+void commonfunc::repulsion(
+	float* pv1Out,
+	float v1,
+	float v2,
+	float m1,
+	float m2,
+	float e1,
+	float e2
+	)
 {
 #ifdef _DEBUG
 	if(e1 > 1 || 0 > e1)

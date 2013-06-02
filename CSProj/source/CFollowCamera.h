@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CFollowCamera.h
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #ifndef ___CFOLLOWCAMERA___
 #define ___CFOLLOWCAMERA___
 
@@ -20,7 +28,7 @@ public:
 	void enableTask();
 	void disableTask();
 
-	void update();	//	視点、注視点の更新
+	void update();	///<	視点、注視点の更新
 
 	void setTank(CTank* pTank);
 

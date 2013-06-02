@@ -36,9 +36,9 @@ public:
 
 
 private:
-	T _Inst;			//	要素が持つオブジェクト
-	CListItem<T>* _pNext;	//	次の要素
-	CListItem<T>* _pPrev;	//	前の要素
+	T _Inst;			///<	要素が持つオブジェクト
+	CListItem<T>* _pNext;	///<	次の要素
+	CListItem<T>* _pPrev;	///<	前の要素
 };
 
 

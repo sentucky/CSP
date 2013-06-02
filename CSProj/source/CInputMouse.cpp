@@ -179,6 +179,12 @@ void CInputMouse::release()
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CInputMouse::calcMouseRay()
 {
 	D3DXVECTOR3 p0(_MousePosWindow.x,_MousePosWindow.y, 0);
@@ -201,6 +207,14 @@ void CInputMouse::calcMouseRay()
 
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pOut 
+ *  @param[in,out] fY 
+ *  @retval void
+ */
+/***********************************************************************/
 void CInputMouse::mousePoint3D(D3DXVECTOR3* pOut,const float fY)
 {
   if( _Ray.y <= 0 ) {
@@ -517,6 +531,12 @@ BOOL CInputMouse::getDragFlg()
 //{
 //	return _DoubleClickFlg;
 //}
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval D3DXVECTOR3& 
+ */
+/***********************************************************************/
 D3DXVECTOR3& CInputMouse::getRay()
 {
 	return _Ray;

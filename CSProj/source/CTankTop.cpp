@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CTankTop.cpp
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #include"CTankTop.h"
 
 
@@ -15,6 +23,15 @@
 #include"const.h"
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pMesh 
+ *  @param[in,out] pTankIntInter 
+ *  @param[in,out] pProtoShell 
+ *  @retval  
+ */
+/***********************************************************************/
 CTankTop::CTankTop(
 	CMesh*			pMesh,
 	CTankIntInter*	pTankIntInter,
@@ -28,6 +45,12 @@ CTankTop::CTankTop(
 	D3DXMatrixIdentity(&_WMat);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 CTankTop::~CTankTop()
 {
 	SAFE_DELETE(_pMesh);
@@ -35,6 +58,13 @@ CTankTop::~CTankTop()
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] src 
+ *  @retval  
+ */
+/***********************************************************************/
 CTankTop::CTankTop(
 	const CTankTop& src
 	)
@@ -50,6 +80,12 @@ CTankTop::CTankTop(
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTankTop::fire()
 {
 	/*
@@ -63,7 +99,7 @@ void CTankTop::fire()
 		return;
 
 	CShell* pShell = NULL;
-	OBJMNG->push(OBJKEY::SHELL01(),pShell = new CShell(*_pProtoShell),NULL);
+	OBJMNG->push(OBJGROUPKEY::SHELL(),pShell = new CShell(*_pProtoShell),NULL);
 	pShell->setMoveVector(&_TopDir);
 	pShell->setPos(&_WMat);
 }
@@ -76,12 +112,11 @@ void CTankTop::fire()
 /***********************************************************************/
 void CTankTop::turn()
 {
-	D3DXVECTOR3 p1;
+	const D3DXVECTOR3* 	p1 = _pTankIntelligence->getTargetPoint();
 	D3DXVECTOR2 cr;
-	MOUSE.mousePoint3D(&p1,0);
-
-	_TopDir.x = cr.x = p1.x - _WMat._41;
-	_TopDir.z = cr.y = p1.z - _WMat._43;
+//	MOUSE.mousePoint3D(&p1,0);
+	_TopDir.x = cr.x = p1->x - _WMat._41;
+	_TopDir.z = cr.y = p1->z - _WMat._43;
 
 	D3DXVec2Normalize(&cr,&cr);
 	float x,y,z;
@@ -94,16 +129,37 @@ void CTankTop::turn()
 	_WMat._43 = z;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTankTop::draw()
 {
 	_pMesh->draw(&_WMat);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTankTop::cooldown()
 {
 	_CntCool = _CntCool > 0 ? _CntCool - 1 : 0;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] x 
+ *  @param[in,out] y 
+ *  @param[in,out] z 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTankTop::setPos(const float x, const float y,const float z)
 {
 	_WMat._41 = x;
@@ -112,6 +168,13 @@ void CTankTop::setPos(const float x, const float y,const float z)
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pIntelligence 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTankTop::setIntelligence(CTankIntInter* pIntelligence)
 {
 	_pTankIntelligence = pIntelligence;

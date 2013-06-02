@@ -46,19 +46,19 @@ enum eTANK_MOVE
 class CTankIntInter
 {
 public:
-	CTankIntInter(CTank*);			//	コンストラクタ
-	virtual ~CTankIntInter();		//	デストラクタ
+	CTankIntInter(CTank*);			///<	コンストラクタ
+	virtual ~CTankIntInter();		///<	デストラクタ
 	
-	virtual void update() = 0;	//	更新関数
-	const BOOL getFireFlg();		//	発砲フラグの取得
-	const uint getMoveFlg();		//	移動方向フラグの取得
-	const D3DXVECTOR3* getTargetPoint();	//	砲塔を向ける先を取得
+	virtual void update() = 0;	///<	更新関数
+	const BOOL getFireFlg();		///<	発砲フラグの取得
+	const uint getMoveFlg();		///<	移動方向フラグの取得
+	const D3DXVECTOR3* getTargetPoint();	///<	砲塔を向ける先を取得
 protected:
 	BOOL	_FireFlg;	///<	発砲フラグ
 	uint	_MoveDir;	///<	移動方向フラグ
 	CTank*	_pMyTank;	///<	思考が反映される戦車
-	D3DXVECTOR3	_TargetPoint;	///<	ターゲットの座標
-	static CTank* _pPlayerTank;	//	プレイヤータンクのポインタ
+	D3DXVECTOR3		_TargetPoint;	///<	ターゲットの座標
+	static CTank*	_pPlayerTank;	///<	プレイヤータンクのポインタ
 };
 
 

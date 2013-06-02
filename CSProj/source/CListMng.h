@@ -34,8 +34,8 @@ public:
 	void erase(CListItem<T>* pList);
 	void clear();
 	void release();
-	void connect_back(CListItem<T>* pPrev,CListItem<T>* pList);	//	後ろにつなぐ
-	const uint size();									//	サイズ取得
+	void connect_back(CListItem<T>* pPrev,CListItem<T>* pList);	///<	後ろにつなぐ
+	const uint size();									///<	サイズ取得
 protected:
 	CListItem<T> _Begin;	///<	先頭タスク
 	CListItem<T> _End;		///<	終端タスク

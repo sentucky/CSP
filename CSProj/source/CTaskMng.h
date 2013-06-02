@@ -86,7 +86,7 @@ void CTaskMng::push(
 		)
 {
 	CTask<T>* pTask = new CTask<T>(unTaskID, pInst, func);
-	if(TASKID::DRAW() == unTaskID)
+	if(TASKKEY::DRAW() == unTaskID)
 	{
 		*pRef = static_cast<CTaskList*>(_DrawTaskList.push_back(pTask));
 	}
