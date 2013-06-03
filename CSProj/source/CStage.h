@@ -20,7 +20,7 @@
 /***********************************************************************/
 class CMesh;
 class CTaskList;
-
+class CStageData;
 /***********************************************************************/
 /*!
  *	@class	CStage
@@ -41,11 +41,11 @@ public:
 	void disableTask();
 	void draw();
 private:
-	const char*		_StageFilePath;
-
-	CTaskList*		_pTaskDraw;	///<	描画関数
-	CMesh*			_Mesh;		///<	メッシュ
-	D3DXMATRIXA16	_matW;		///<	マトリクス
+	const char*		_StageDataPath;		///<	ステージデータパス
+	CStageData*		_StageData;			///<	ステージデータ
+	CTaskList*		_pTaskDraw;			///<	描画関数
+	CMesh*			_Mesh;				///<	メッシュ
+	D3DXMATRIXA16	_matW;				///<	マトリクス
 };
 
 #endif

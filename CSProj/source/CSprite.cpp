@@ -13,6 +13,7 @@
 #include"CScreen.h"
 #include"common.h"
 
+
 /***********************************************************************/
 //	マクロ定義
 /***********************************************************************/
@@ -32,7 +33,7 @@ CSprite::CSprite(CTexture* pTexture)
 	 _pD3DSprite(NULL),	
 	 _vecCenter(D3DXVECTOR3(0,0,0)),		
 	 _UV(RECTEX(0,0,0,0)),			
-	 _colorRevision(D3DXCOLOR(0,0,0,1.0f)),
+	 _colorRevision(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f)),
 	 _bDrawFlg(TRUE)
 {
 	_pTexture = pTexture;	//テクスチャの登録
@@ -233,13 +234,13 @@ void CSprite::draw(DWORD SpriteType,const D3DXMATRIXA16* pmatWorld, const D3DXMA
 		D3DDEVICE->SetTransform(D3DTS_VIEW, pmatView);					//カメラ座標変換
 	}
 	D3DDEVICE->SetTransform(D3DTS_WORLD, pmatWorld);					//ワールド座標変換
-//		calcCenter();
+	//	calcCenter();
 
 	////////////////////////////
 	//	描画処理
 	D3DDEVICE->SetFVF(FVF_VERTEX_2D);
 	D3DDEVICE->SetRenderState(D3DRS_ZWRITEENABLE,TRUE);			//	レンダリング
-	_pD3DSprite->SetTransform(pmatWorld);						//
+//	_pD3DSprite->SetTransform(pmatWorld);						//
 	_pD3DSprite->Begin(SpriteType | D3DXSPRITE_OBJECTSPACE);	//	描画開始
 	_pD3DSprite->Draw(_pTexture->getTexture(), &_UV, &_vecCenter,NULL, _colorRevision);
 	_pD3DSprite->End();	//描画終了

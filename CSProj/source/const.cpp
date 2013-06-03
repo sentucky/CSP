@@ -27,13 +27,31 @@ const char* MESHPATH::TANK04_BOTTOM(){	return "data/model/tank04_bottom.x";	}
 
 
 
-const char* TEXPATH::FADEMASK(){		return "data/texture/fademask.jpg";			}
+const char* TEXPATH::FADEMASK(){return "data/texture/fademask.jpg";			}
+const char* TEXPATH::TILE01(){return "data/Stage/001.jpg";}
+const char* TEXPATH::TILE02(){return "data/Stage/004.jpg";}
+const char* TEXPATH::TILE03(){return "data/Stage/005.jpg";}
+const char* TEXPATH::TILE04(){return "data/Stage/006.jpg";}
+const char* TEXPATH::TILE05(){return "data/Stage/002.jpg";}
+const char* TEXPATH::TILE06(){return "data/Stage/003.jpg";}
 
 enum eTEXKEY{
 	TEX_FADEMASK,	//
+	TEX_TILE01,
+	TEX_TILE02,
+	TEX_TILE03,
+	TEX_TILE04,
+	TEX_TILE05,
+	TEX_TILE06,
 	TEX_SUM,		//
 };
-const uint TEXKEY::FADEMASK()	{	return TEX_FADEMASK;	}
+const uint TEXKEY::FADEMASK()	{	return TEX_FADEMASK;}
+const uint TEXKEY::TILE01()		{	return TEX_TILE01;	}
+const uint TEXKEY::TILE02()		{	return TEX_TILE02;	}
+const uint TEXKEY::TILE03()		{	return TEX_TILE03;	}
+const uint TEXKEY::TILE04()		{	return TEX_TILE04;	}
+const uint TEXKEY::TILE05()		{	return TEX_TILE05;	}
+const uint TEXKEY::TILE06()		{	return TEX_TILE06;	}
 const uint TEXKEY::SUM()		{	return TEX_SUM;		}
 
 

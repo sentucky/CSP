@@ -8,9 +8,10 @@
 /***********************************************************************/
 #include"CTankIntInter.h"
 #include"CTank.h"
+#include"StageData.h"
 
-CTank* CTankIntInter::_pPlayerTank = NULL;	//	プレイヤータンクのポインタ
-
+CTank*			CTankIntInter::_pPlayerTank = NULL;	//	プレイヤータンクのポインタ
+CStageData*		CTankIntInter::_StageData	= NULL;	//	ステージデータ
 
 /***********************************************************************/
 /*! @brief コンストラクタ
@@ -59,4 +60,9 @@ const uint CTankIntInter::getMoveFlg(){return _MoveDir;}
 const D3DXVECTOR3* CTankIntInter::getTargetPoint()
 {
 	return &_TargetPoint;
+}
+
+void CTankIntInter::setStageData(CStageData* StageData)
+{
+	_StageData = StageData;
 }

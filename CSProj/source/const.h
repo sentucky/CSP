@@ -40,12 +40,24 @@ class TEXPATH
 {
 public:
 	static const char* FADEMASK();
+	static const char* TILE01();
+	static const char* TILE02();
+	static const char* TILE03();
+	static const char* TILE04();
+	static const char* TILE05();
+	static const char* TILE06();
 };
 
 class TEXKEY
 {
 public:
 	static const uint FADEMASK();
+	static const uint TILE01();
+	static const uint TILE02();
+	static const uint TILE03();
+	static const uint TILE04();
+	static const uint TILE05();
+	static const uint TILE06();
 	static const uint SUM();
 };
 

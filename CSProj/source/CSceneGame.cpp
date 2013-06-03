@@ -41,7 +41,7 @@
 #include"CLight.h"
 #include"StageData.h"
 
-	CLight* aaaaaaaaaaaaa;
+	CLight* GLight;
 
 /***********************************************************************/
 /*! @brief コンストラクタ
@@ -60,7 +60,7 @@ CSceneGame::~CSceneGame()
 {
 	release();
 	TASKMNG::release();
-	delete aaaaaaaaaaaaa;
+	delete GLight;
 }
 
 /***********************************************************************/
@@ -75,14 +75,14 @@ void CSceneGame::init()
 	release();
 
 
-	aaaaaaaaaaaaa  = new CLight;
-	aaaaaaaaaaaaa->lightON();
-	aaaaaaaaaaaaa->setDirectionalLight(
+	GLight  = new CLight;
+	GLight->lightON();
+	GLight->setDirectionalLight(
 		COLORVALUE(1.0f,1.0f,1.0f,1.0f),
 		D3DXVECTOR3(1.0,-1.0f,0)
 		);
 
-	//CStageData::getInst()->Load();
+//	CStageData::getInst()->Load();
 
 	//	カメラ作成
 	_pCamera = new CCamera;
@@ -99,6 +99,7 @@ void CSceneGame::init()
 	//...戦車
 	CTank*			pTank = NULL;
 	OBJMNG->push(OBJGROUPKEY::TANK(),pTank = static_cast<CTank*>(OBJFACTORY->create(OBJKEY::TANK01())),NULL);
+
 #ifdef _DEBUG
 	CTank*			pTank2 = NULL;
 //*
@@ -122,11 +123,10 @@ void CSceneGame::init()
 	//...ピン
 	OBJMNG->push(OBJGROUPKEY::PIN(),OBJFACTORY->create(OBJKEY::PIN()),NULL);
 
-	//	追跡カメラの追跡対象設定
-
 	//	あたり判定
-//	OBJMNG->push(OBJGROUPKEY::HITTEST(),static_cast<CHitTestTAndT*>(OBJFACTORY->create(OBJKEY::HITTEST())),NULL);
 	OBJMNG->push(OBJGROUPKEY::HITTEST(),static_cast<CHitTestTAndT*>(OBJFACTORY->create(OBJKEY::HITTEST())),NULL);
+
+//	CTankIntInter::setStageData(CStageData::getInst());
 }
 
 /***********************************************************************/

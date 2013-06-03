@@ -205,9 +205,9 @@ void CTank::draw()
 	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatView());			//カメラ座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());						//ワールド座標変換
 
-	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
+//	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
 
-	debugMesh->DrawSubset(0);
+//	debugMesh->DrawSubset(0);
 	static BOOL flg = TRUE;
 	if(flg)
 	{
