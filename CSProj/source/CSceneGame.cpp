@@ -74,15 +74,16 @@ void CSceneGame::init()
 	//	解放処理
 	release();
 
+	_DrawFlg = FALSE;
+
 
 	GLight  = new CLight;
 	GLight->lightON();
 	GLight->setDirectionalLight(
 		COLORVALUE(1.0f,1.0f,1.0f,1.0f),
-		D3DXVECTOR3(1.0,-1.0f,0)
+		D3DXVECTOR3(0.0,-1.0f,5.0f)
 		);
 
-//	CStageData::getInst()->Load();
 
 	//	カメラ作成
 	_pCamera = new CCamera;
@@ -94,7 +95,8 @@ void CSceneGame::init()
 
 	//	オブジェクト作成
 	//...ステージ
-	OBJMNG->push(OBJGROUPKEY::STAGE(),OBJFACTORY->create(OBJKEY::STAGE01()),NULL);
+	CStage* pStage;
+	OBJMNG->push(OBJGROUPKEY::STAGE(),pStage = static_cast<CStage*>(OBJFACTORY->create(OBJKEY::STAGE01())),NULL);
 
 	//...戦車
 	CTank*			pTank = NULL;
@@ -108,8 +110,6 @@ void CSceneGame::init()
 		for(int n2 = 0; n2 < 10; n2++)
 		{
 			OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
-			const_cast<D3DXMATRIXA16*>(pTank2->getMatBottom())->_41 += 5.0f * n + 0.5f;
-			const_cast<D3DXMATRIXA16*>(pTank2->getMatBottom())->_43 += 5.0f * n2 + 0.5f;
 		}
 	}
 //*/
@@ -127,6 +127,11 @@ void CSceneGame::init()
 	OBJMNG->push(OBJGROUPKEY::HITTEST(),static_cast<CHitTestTAndT*>(OBJFACTORY->create(OBJKEY::HITTEST())),NULL);
 
 //	CTankIntInter::setStageData(CStageData::getInst());
+
+	//	スタート位置に配置
+	standby(pStage);
+	pFCam->update();
+	_DrawFlg = TRUE;
 }
 
 /***********************************************************************/
@@ -190,4 +195,50 @@ void CSceneGame::release()
 CSceneBase * CSceneGame::nextScene()
 {
 	return this;
+}
+
+
+
+
+
+
+
+
+
+void CSceneGame::standby(CStage* pStage)
+{
+	//	要素抽出
+	CListMng<CObjBase*>* pTankMng = OBJMNG->getList(OBJGROUPKEY::TANK());
+	CListItem<CObjBase*>*pListTank	= pTankMng->begin();
+	const CListItem<CObjBase*>*pEnd = pTankMng->end();
+
+
+
+	//	開始位置のタイルを取得したい
+	//....スタート位置タイル取得
+	const TILE* pStTile= pStage->getStageData()->startTile();
+
+	
+	const float moveX = 1.0f;
+	const float moveY = 1.0f;
+
+	//....基点取得
+	const float& pointX = pStTile->posX;
+	const float& pointY = pStTile->posY;
+
+	uint cnt = 0;
+	CTank* pTank = NULL;
+	while(pListTank !=  pEnd)
+	{
+	//	本来の型でポインタ取得
+		
+		pTank = static_cast<CTank*>(pListTank->getInst());
+		pTank->setPos(
+			pointX + moveX * static_cast<float>(cnt % 10),
+			pointY + moveY * static_cast<float>(cnt / 10)
+			);
+		pListTank = pListTank->next();
+		++cnt;
+	}
+	CCamera::update();
 }

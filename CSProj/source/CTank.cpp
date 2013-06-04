@@ -374,3 +374,9 @@ void CTank::setMoveVec( const D3DXVECTOR3 *MoveVec )
 	_pTankBottom->setMoveVec(MoveVec);
 	_pTankBottom->setMoveVec(MoveVec);
 }
+
+
+void CTank::setPos(const float x,const float z)
+{
+	_pTankBottom->setPos(x,z);
+}

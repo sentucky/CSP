@@ -267,3 +267,11 @@ void CTankBottom::setMoveVec( const D3DXVECTOR3 *MoveVec )
 	_MoveVec.y  = MoveVec->y;
 	_MoveVec.z  = MoveVec->x;
 }
+
+
+
+void CTankBottom::setPos(const float x,const float z)
+{
+	_WMat._41 = x;
+	_WMat._43 = z;
+}

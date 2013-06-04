@@ -36,6 +36,7 @@ public:
 	void setIntelligence(CTankIntInter* pIntelligence);
 	void setMoveVec( D3DXVECTOR3& MoveVec );
 	void setMoveVec( const D3DXVECTOR3 *MoveVec );
+	void setPos(const float x,const float y);
 private:
 	CMesh*			_pMesh;
 	CTankIntInter*	_pIntelligence;

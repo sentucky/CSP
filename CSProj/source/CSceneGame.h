@@ -18,6 +18,8 @@
 //	先行宣言
 /***********************************************************************/
 class CCamera;
+class CStage;
+class CObjMng;
 
 
 /***********************************************************************/
@@ -36,6 +38,8 @@ private:
 	void draw();				///<	描画処理
 	void release();				///<	解放処理
 	CSceneBase* nextScene();	///<	シーン切り替え
+
+	void standby(CStage* pStage);	///<	整列
 private:
 	CCamera* _pCamera;	///<	カメラクラスポインタ
 };

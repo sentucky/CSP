@@ -68,6 +68,11 @@ private:
 		void Init();
 		void Load(const char* stageDataPath);
 
+public:
+		const TILE* startTile()const;
+		const TILE** getTile()const;
+
+
 	private:
 		//===========================
 		// ƒƒ“ƒo•Ï” - ”ñŒöŠJ
@@ -78,4 +83,6 @@ private:
 		int rootNum;
 		static CSprite*	pSprite[6];
 		D3DXVECTOR2 root[512];
+
+		TILE* StartTile;
 };

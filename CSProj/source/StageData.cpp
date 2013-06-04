@@ -185,6 +185,10 @@ void CStageData::Load(const char* stageDataPath)
 		for (j = 0 ; j < MAX_DATA ; j++)
 		{
 			tile[i][j].no = out[i][j].no;
+			if(tile[i][j].no == 3)
+			{
+				StartTile = &(tile[i][j]);
+			}
 			if (out[i][j].rot >= (3.14f / 2.0f) * 3.0f)tile[i][j].rot = 3;
 			else if (out[i][j].rot >= (3.14f / 2.0f) * 2.0f)tile[i][j].rot = 2;
 			else if (out[i][j].rot >= (3.14f / 2.0f) * 1.0f)tile[i][j].rot = 1;
@@ -217,4 +221,17 @@ void CStageData::Load(const char* stageDataPath)
 	}
 
 	fclose(fp);
+}
+
+
+
+const TILE* CStageData::startTile()const
+{
+	return StartTile;
+}
+
+
+const TILE** CStageData::getTile()const
+{
+	return (const TILE**)(tile);
 }

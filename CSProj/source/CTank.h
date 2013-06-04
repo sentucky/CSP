@@ -74,6 +74,7 @@ public:
 
 	void setMoveVec( D3DXVECTOR3& MoveVec );
 	void setMoveVec( const D3DXVECTOR3 *MoveVec );
+	void setPos(const float x,const float z);
 private:
 	CTaskList*		_pTaskDraw;
 	CTaskList*		_pTaskPause;

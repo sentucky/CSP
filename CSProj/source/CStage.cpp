@@ -109,3 +109,10 @@ void CStage::draw()
 	_Mesh->draw(&_matW);
 	_StageData->Draw();
 }
+
+
+
+const CStageData* CStage::getStageData()
+{
+	return _StageData;
+}

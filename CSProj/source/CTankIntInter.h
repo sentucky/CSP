@@ -51,18 +51,22 @@ public:
 	virtual ~CTankIntInter();				///<	デストラクタ
 	
 	virtual void update() = 0;				///<	更新関数
+
+protected:
+	void myStep();						//	足下確認
+public:
+
 	const BOOL getFireFlg();				///<	発砲フラグの取得
 	const uint getMoveFlg();				///<	移動方向フラグの取得
 	const D3DXVECTOR3* getTargetPoint();	///<	砲塔を向ける先を取得
-
-	static void setStageData(CStageData* StageData);	//	ステージデータの設定
+	static void setStageData(const CStageData* StageData);	//	ステージデータの設定
 protected:
 	BOOL	_FireFlg;					///<	発砲フラグ
 	uint	_MoveDir;					///<	移動方向フラグ
 	CTank*	_pMyTank;					///<	思考が反映される戦車
 	D3DXVECTOR3			_TargetPoint;	///<	ターゲットの座標
 	static CTank*		_pPlayerTank;	///<	プレイヤータンクのポインタ
-	static CStageData*	_StageData;		///<	ステージデータ
+	static const CStageData*	_StageData;		///<	ステージデータ
 };
 
 

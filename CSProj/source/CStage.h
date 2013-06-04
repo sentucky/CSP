@@ -40,6 +40,8 @@ public:
 	void enableTask();
 	void disableTask();
 	void draw();
+
+	const CStageData*		getStageData();
 private:
 	const char*		_StageDataPath;		///<	ステージデータパス
 	CStageData*		_StageData;			///<	ステージデータ

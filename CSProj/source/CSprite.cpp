@@ -33,7 +33,7 @@ CSprite::CSprite(CTexture* pTexture)
 	 _pD3DSprite(NULL),	
 	 _vecCenter(D3DXVECTOR3(0,0,0)),		
 	 _UV(RECTEX(0,0,0,0)),			
-	 _colorRevision(D3DXCOLOR(1.0f,1.0f,1.0f,1.0f)),
+	 _colorRevision(D3DXCOLOR(0.5f,0.5f,0.5f,1.0f)),
 	 _bDrawFlg(TRUE)
 {
 	_pTexture = pTexture;	//テクスチャの登録
