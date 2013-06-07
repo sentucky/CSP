@@ -19,7 +19,7 @@ const	CStageData*		CTankIntInter::_StageData	= NULL;	//	ステージデータ
 /***********************************************************************/
 CTankIntInter::CTankIntInter(CTank* pMyTank)
 	:_FireFlg(FALSE),
-	_MoveDir(TMV_5),
+	_MoveDir(0,0),
 	_pMyTank(pMyTank),
 	_TargetPoint(0,0,0)
 {
@@ -51,13 +51,6 @@ void CTankIntInter::myStep()
 /***********************************************************************/
 const BOOL CTankIntInter::getFireFlg(){return _FireFlg;}
 
-/***********************************************************************/
-/*! @brief MoveDirの取得
- * 
- *  @retval const uint 
- */
-/***********************************************************************/
-const uint CTankIntInter::getMoveFlg(){return _MoveDir;}
 
 
 /***********************************************************************/

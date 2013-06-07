@@ -90,7 +90,8 @@ void CTankBottom::move()
 {
 
 	//	姿勢からベクトルを計算
-	if(_pIntelligence->getMoveFlg() != TMV_5)
+	const D3DXVECTOR2* pMoveVec = _pIntelligence->getModeDir();
+	if(abs(pMoveVec->x) + abs(pMoveVec->y) != 0)
 	{
 		D3DXVec3Normalize(&_Dir,&_Dir);
 		_MoveVec += _Dir * _fSpeedMove;
@@ -125,13 +126,19 @@ void CTankBottom::rotateMatrix(float fTurnSpeed)
 /***********************************************************************/
 void CTankBottom::turn()
 {
-	uint unMoveDir = _pIntelligence->getMoveFlg();
+//	uint unMoveDir = _pIntelligence->getMoveDir();
 	_MoveVec.y = 0;
 
-	if(unMoveDir == 5)
+//	if(unMoveDir == 5)
+//		return;
+	const D3DXVECTOR2* pMoveDir = _pIntelligence->getModeDir();
+
+	if(abs(pMoveDir->x) + abs(pMoveDir->y) == 0)
+	{
 		return;
+	}
 
-
+	/*
 	switch(unMoveDir % 3)
 	{
 	case 1:_MoveDir.x = -1.0f;	break;
@@ -144,21 +151,23 @@ void CTankBottom::turn()
 	case 1:_MoveDir.z = 0.0f;	break;
 	case 2:_MoveDir.z = 1.0f;	break;
 	}
-		//	移動方向の左右確認
-	static D3DXVECTOR2 v1,v2;
+	*/
+
+	//	移動方向の左右確認
+	static D3DXVECTOR2 v1;
+
 
 	D3DXVec3Normalize(&_MoveDir,&_MoveDir);
-
 	v1.x = _Dir.x;
 	v1.y = _Dir.z;
-	v2.x = _MoveDir.x;
-	v2.y = _MoveDir.z;
+	_MoveDir.x = pMoveDir->x;
+	_MoveDir.z = pMoveDir->y;
 
-	float fCross = D3DXVec2CCW(&v1,&v2);	//	外積
+	float fCross = D3DXVec2CCW(&v1,pMoveDir);	//	外積
 
 	float fDot	 = D3DXVec3Dot(&_Dir,&_MoveDir);
 
-	//	float fDot	 = D3DXVec3Dot(&_Dir,&_MoveVec);
+
 
 	//	左右判定
 	//	平行かつ鋭角
@@ -173,7 +182,7 @@ void CTankBottom::turn()
 	else
 	{
 		if(fDot < 0)
-		rotateMatrix(-_fSpeedTurn);
+			rotateMatrix(-_fSpeedTurn);
 	}
 	
 
@@ -183,11 +192,10 @@ void CTankBottom::turn()
 	}
 	//	鋭角
 
-	float x,y,z;
 
-	x = _WMat._41;
-	y = _WMat._42;
-	z = _WMat._43;
+	const float x = _WMat._41;
+	const float y = _WMat._42;
+	const float z = _WMat._43;
 
 
 	_WMat._41 = _WMat._42 = _WMat._43 = 0;

@@ -236,8 +236,8 @@ void CTank::draw()
 	FONT->DrawInt("FLGS",a3,RECTEX(0,112,0,0));
 
 	flg ^= TRUE;
-	FONT->DrawFloat("TilePosX",tile[x][y].posX,RECTEX(0,80,0,0));
-	FONT->DrawFloat("TilePosZ",tile[x][y].posY,RECTEX(0,96,0,0));
+	FONT->DrawFloat("VecX",_pTankBottom->getMoveVec()->x,RECTEX(0,80,0,0));
+	FONT->DrawFloat("VecZ",_pTankBottom->getMoveVec()->z,RECTEX(0,96,0,0));
 #endif
 }
 
@@ -380,8 +380,8 @@ void CTank::hitTestWall()
 
 	const float top		= tile[x][y].posY + 15.0f;
 	const float left	= tile[x][y].posX - 15.0f;
-	const float bottom	= tile[x][y+1].posY + 15.0f;
-	const float right	= tile[x+1][y].posX - 15.0f;
+	const float bottom	= tile[x][y+1].posY +  17.0f;
+	const float right	= tile[x+1][y].posX -  17.0f;
 
 
 
@@ -391,6 +391,8 @@ void CTank::hitTestWall()
 	NewV.x = 0;
 	NewV.y = 0;
 	NewV.z = 0;
+
+	const float ref = 2.0f;
 
 	//	top
 	if(WallFlg.top)
@@ -408,7 +410,7 @@ void CTank::hitTestWall()
 		
 		if(top < ty)
 		{
-			_pTankBottom->setPos(tx,top - 0.3f);
+			_pTankBottom->setPos(tx,top );
 			NewV.x = _pTankBottom->getMoveVec()->x;
 			NewV.z = -_pTankBottom->getMoveVec()->z;
 			_pTankBottom->setMoveVec(NewV);
@@ -430,7 +432,7 @@ void CTank::hitTestWall()
 
 		if(left > tx)
 		{
-			_pTankBottom->setPos(left + 0.3f,ty);
+			_pTankBottom->setPos(left,ty);
 			NewV.x = -_pTankBottom->getMoveVec()->x;
 			NewV.z = _pTankBottom->getMoveVec()->z;
 			_pTankBottom->setMoveVec(NewV);
@@ -448,9 +450,9 @@ void CTank::hitTestWall()
 			tx,ty,
 			tx + _pTankBottom->getMoveVec()->x,
 			ty + _pTankBottom->getMoveVec()->z);*/
-		if( bottom >= tx2 && bottom <= ty)
+		if( bottom >= ty2 && bottom <= ty)
 		{
-			_pTankBottom->setPos(tx,bottom + 0.3f);
+			_pTankBottom->setPos(tx,bottom);
 			NewV.x = _pTankBottom->getMoveVec()->x;
 			NewV.z = -_pTankBottom->getMoveVec()->z;
 			_pTankBottom->setMoveVec(NewV);
@@ -471,9 +473,9 @@ void CTank::hitTestWall()
 			*/
 		if( right <= tx2 && right >= tx)
 		{
-			_pTankBottom->setPos(right - 0.3f,ty);
-			NewV.z = _pTankBottom->getMoveVec()->z;
+			_pTankBottom->setPos(right,ty);
 			NewV.x = -_pTankBottom->getMoveVec()->x;
+			NewV.z = _pTankBottom->getMoveVec()->z;
 			_pTankBottom->setMoveVec(NewV);
 		}
 	}

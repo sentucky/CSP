@@ -44,6 +44,8 @@
 #include"CLight.h"
 #include"StageData.h"
 
+#include "CTankIntDummy.h"
+
 	CLight* GLight;
 
 /***********************************************************************/
@@ -107,7 +109,7 @@ void CSceneGame::init()
 
 #ifdef _DEBUG
 	CTank*			pTank2 = NULL;
-//*
+/*
 	TILE t[16][16];
 	pStage->getStageData()->getTile(t);
 	CPin* pin = NULL;
@@ -184,6 +186,8 @@ void CSceneGame::draw()
 {
 	CHECK_DRAW;
 	CTaskMng::draw();
+
+	CTankIntDummy::Debug();
 	
 #ifdef _DEBUG
 	static RECTEX fpspos(0,0,0,0);
@@ -231,8 +235,8 @@ void CSceneGame::standby(CStage* pStage)
 	const TILE* pStTile= pStage->getStageData()->startTile();
 
 	
-	const float moveX = 10.0f;
-	const float moveY = 10.0f;
+	const float moveX = 1.0f;
+	const float moveY = 1.0f;
 
 	//....Šî“_Žæ“¾
 	const float& pointX = pStTile->posX;

@@ -35,6 +35,7 @@ class CObjBase;
 /***********************************************************************/
 class CObjMng:public CListGroup<CObjBase*>,public CSingleton<CObjMng>
 {
+	//	フレンド登録
 	friend class CSingleton<CObjMng>;
 public:
 	void checkDelete();		///<	削除チェック

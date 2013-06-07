@@ -114,7 +114,6 @@ void CStageData::Init()
 	{
 		for (j = 0 ; j < MAX_DATA + 1 ; j++)
 		{
-			line[i][j] = false;
 		}
 	}
 	
@@ -161,6 +160,19 @@ void CStageData::Draw()
 			pSprite[tile[i][j].no]->draw(0 ,&matW,CCamera::getMatView());
 		}
 	}
+
+	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,FALSE);
+	D3DDEVICE->SetRenderState(D3DRS_ZENABLE,FALSE);
+	D3DDEVICE->SetFVF(FVF_LINE);
+	static float size = 10.0f;
+	D3DDEVICE->SetRenderState(D3DRS_POINTSIZE,*((DWORD*)&size));
+
+	D3DDEVICE->DrawPrimitiveUP(D3DPT_LINESTRIP,rootNum - 1, &line[0],sizeof(LINE));
+	D3DDEVICE->DrawPrimitiveUP(D3DPT_POINTLIST,rootNum , &line[0],sizeof(LINE));
+
+	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,TRUE);
+	D3DDEVICE->SetRenderState(D3DRS_ZENABLE,TRUE);
+
 }
 
 

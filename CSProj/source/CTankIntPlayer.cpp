@@ -52,25 +52,31 @@ void CTankIntPlayer::update()
 	//	ˆÚ“®•ûŒü
 	if(KEYBOARD.getPrsKey(DIK_W))
 	{
-		_MoveDir = 7;
+		_MoveDir.y = 1.0f;
 	}
 	else if(KEYBOARD.getPrsKey(DIK_S))
 	{
-		_MoveDir = 1;
+		_MoveDir.y = -1.0f;
 	}
 	else
 	{
-		_MoveDir = 4;
+		_MoveDir.y = 0;
 	}
 
 	if(KEYBOARD.getPrsKey(DIK_D))
 	{
-		_MoveDir += 2;
+		_MoveDir.x = 1.0f;
 	}
-	else if(!KEYBOARD.getPrsKey(DIK_A))
+	else if(KEYBOARD.getPrsKey(DIK_A))
 	{
-		_MoveDir += 1;
+		_MoveDir.x = -1.0f;
 	}
+	else
+	{
+		_MoveDir.x = 0;
+	}
+
+	D3DXVec2Normalize(&_MoveDir,&_MoveDir);
 
 	myStep();
 	//	”­–Cƒtƒ‰ƒO

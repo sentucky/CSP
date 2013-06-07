@@ -54,6 +54,16 @@ class CSprite;
 // クラス定義
 //	要素
 //================================================================================
+struct LINE{
+	D3DXVECTOR3 vtx;
+	D3DCOLOR	color;
+
+};
+
+#define FVF_LINE	( D3DFVF_XYZ | D3DFVF_DIFFUSE )
+
+
+
 class CStageData
 {
 	public:
@@ -87,10 +97,11 @@ private:
 		//===========================
 		int rot;
 		TILE tile[MAX_DATA][MAX_DATA];
-		bool line[MAX_DATA + 1][MAX_DATA + 1];
 		BOOL LINE2[2][MAX_DATA+1][MAX_DATA + 1];
 		int rootNum;
 		static CSprite*	pSprite[6];
 		D3DXVECTOR2 root[512];
 		TILE* StartTile;
+		LINE line[512];
 };
+
