@@ -31,7 +31,12 @@ public:
 	//	リスト登録タスク
 	void draw();		///<	描画
 	void move();		///<	更新
-
+	void setPos(const float x,const float y,const float z)
+	{
+		_matW._41 = x;
+		_matW._42 = y;
+		_matW._43 = z;
+	}
 private:
 	CTaskList* _pTaskDraw;
 	CTaskList* _pTaskUpdate;

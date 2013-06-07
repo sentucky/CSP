@@ -17,6 +17,7 @@
 #include"CShell.h"
 #include"CObjMng.h"
 #include"CTankIntInter.h"
+#include"CTankBottom.h"
 
 
 #include"CInputCommon.h"
@@ -33,11 +34,13 @@
  */
 /***********************************************************************/
 CTankTop::CTankTop(
+	CTank*			pOwner,
 	CMesh*			pMesh,
 	CTankIntInter*	pTankIntInter,
 	CShell*			pProtoShell
 	)
-	:_pTankIntelligence(_pTankIntelligence),
+	:_Owner(pOwner),
+	_pTankIntelligence(_pTankIntelligence),
 	_pMesh(pMesh),
 	_pProtoShell(pProtoShell),
 	_TopDir(0,0,0)
@@ -68,7 +71,8 @@ CTankTop::~CTankTop()
 CTankTop::CTankTop(
 	const CTankTop& src
 	)
-	:_pTankIntelligence(_pTankIntelligence),
+	:_Owner(src._Owner),
+	_pTankIntelligence(_pTankIntelligence),
 	_pMesh(new CMesh( *src._pMesh)),
 	_pProtoShell(new CShell(*src._pProtoShell)),
 	_TopDir(0,0,1.0f)
@@ -88,20 +92,17 @@ CTankTop::CTankTop(
 /***********************************************************************/
 void CTankTop::fire()
 {
-	/*
-	if(_CntCool > 0)
-		return;
-
-	_CntCool = 60;
-	*/
-
 	if(!_pTankIntelligence->getFireFlg())
 		return;
 
 	CShell* pShell = NULL;
 	OBJMNG->push(OBJGROUPKEY::SHELL(),pShell = new CShell(*_pProtoShell),NULL);
-	pShell->setMoveVector(&_TopDir);
+	D3DXVECTOR3 ShellVec;;
+	D3DXVec3Normalize(&ShellVec,&_TopDir);
+	ShellVec += *_Bottom->getMoveVec();
+	pShell->setMoveVector(&ShellVec);
 	pShell->setPos(&_WMat);
+	pShell->setOwner(_Owner);
 }
 
 /***********************************************************************/
@@ -114,7 +115,7 @@ void CTankTop::turn()
 {
 	const D3DXVECTOR3* 	p1 = _pTankIntelligence->getTargetPoint();
 	D3DXVECTOR2 cr;
-//	MOUSE.mousePoint3D(&p1,0);
+
 	_TopDir.x = cr.x = p1->x - _WMat._41;
 	_TopDir.z = cr.y = p1->z - _WMat._43;
 

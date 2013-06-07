@@ -26,6 +26,8 @@
 #include"CFactory.h"
 #include"CObjMng.h"
 
+#include"StageData.h"
+
 #ifdef _DEBUG
 #include"CCamera.h"
 #include"CScreen.h"
@@ -38,6 +40,8 @@
 LPD3DXMESH debugMesh = NULL;
 int			Cnt = 0;
 #endif
+
+const CStageData* CTank::_StageData = NULL;
 
 /***********************************************************************/
 /*! @brief コンストラクタ
@@ -68,8 +72,9 @@ CTank::CTank(
 	_fRadius		( 1.0f			),
 	_unIntType		( unIntType		)
 {
-	_pTankTop = new CTankTop(pMeshTop,NULL,pShellProto);
+	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
 	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
+	debugMesh = NULL;
 }
 
 /***********************************************************************/
@@ -83,8 +88,8 @@ CTank::~CTank()
 	SAFE_DELETE(_pTankBottom);
 	release();
 #ifdef _DEBUG
-	Cnt--;
-	if(Cnt == 0)
+//	Cnt--;
+	if(debugMesh != 0)
 	{
 		debugMesh->Release();
 		debugMesh = NULL;
@@ -122,15 +127,16 @@ CTank::CTank(const CTank& src)
 	_pTankTop->setIntelligence(_pIntelligence);
 	_pTankBottom->setIntelligence(_pIntelligence);
 
+	_pTankTop->setOwner(this);
+	_pTankTop->setTankBottom(_pTankBottom);
+
 	//	タスク有効化
 	enableTask();
 
 #ifdef _DEBUG
-	if(Cnt == 0)
-	{
-		D3DXCreateSphere(D3DDEVICE,_fRadius,10,5,&debugMesh,NULL);
-		Cnt++;
-	}
+	debugMesh = NULL;
+	D3DXCreateSphere(D3DDEVICE,_fRadius,10,5,&debugMesh,NULL);
+	Cnt++;
 #endif
 }
 
@@ -205,18 +211,33 @@ void CTank::draw()
 	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatView());			//カメラ座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());						//ワールド座標変換
 
-//	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
+	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
 
-//	debugMesh->DrawSubset(0);
+	if(debugMesh != NULL)
+		debugMesh->DrawSubset(0);
 	static BOOL flg = TRUE;
-	if(flg)
+	uint x;
+	uint y;
+	_StageData->step(&x,&y,_pTankBottom->getWMat()->_41,_pTankBottom->getWMat()->_43);
+	FONT->DrawInt("step",x,RECTEX(0,32,0,0));
+	FONT->DrawInt("step",y,RECTEX(100,32,0,0));
+//	if(flg)
 	{
-		FONT->DrawFloat("MVecX",_pTankBottom->getMoveVec()->x,RECTEX(0,48,0,0));
-		FONT->DrawFloat("MVecZ",_pTankBottom->getMoveVec()->z,RECTEX(0,64,0,0));
+		FONT->DrawFloat("TPOS",_pTankBottom->getWMat()->_41,RECTEX(0,48,0,0));
+		FONT->DrawFloat("TPOS",_pTankBottom->getWMat()->_43,RECTEX(0,64,0,0));
 	}
+	TILE tile[16][16];
+	_StageData->getTile(tile);
+
+	RECT a;
+	_StageData->wallFlg(&a,x,y);
+	int a3 = 0;
+	a3 = a.top * 1000 + a.left * 100 + a.bottom * 10 + a.right;
+	FONT->DrawInt("FLGS",a3,RECTEX(0,112,0,0));
+
 	flg ^= TRUE;
-	FONT->DrawInt("X",MOUSE.getPointWindow().x,RECTEX(0,80,0,0));
-	FONT->DrawInt("X",MOUSE.getPointWindow().y,RECTEX(0,96,0,0));
+	FONT->DrawFloat("TilePosX",tile[x][y].posX,RECTEX(0,80,0,0));
+	FONT->DrawFloat("TilePosZ",tile[x][y].posY,RECTEX(0,96,0,0));
 #endif
 }
 
@@ -272,7 +293,7 @@ void CTank::fire()
  *  @retval void
  */
 /***********************************************************************/
-void CTank::hitTank( CTank* pTank)
+void CTank::hitTestTank( CTank* pTank)
 {
 	if(pTank == this)
 		return;
@@ -282,18 +303,180 @@ void CTank::hitTank( CTank* pTank)
 	const D3DXVECTOR3* v2 = pTank->getMoveVec();
 	const D3DXVECTOR3* vBak;
 
-	for(uint Cnt = 0; Cnt < 2; ++Cnt)
-	{
-		commonfunc::repulsion(&v1ref[Cnt].x,v1->x,v2->x,100,100,1.0F,1.0F);
-		commonfunc::repulsion(&v1ref[Cnt].z,v1->z,v2->z,100,100,1.0F,1.0F);
-		v1ref[Cnt].y = 0;
-		vBak = v1;
-		v1 = v2;
-		v2 = vBak;
-	}
+	const D3DXMATRIXA16* pmatW1 = _pTankBottom->getWMat();
+	const D3DXMATRIXA16* pmatW2 = pTank->getMatBottom();
 
+	D3DXVECTOR3 pos1(pmatW1->_41,pmatW1->_42,pmatW1->_43);
+	D3DXVECTOR3 pos2(pmatW2->_41,pmatW2->_42,pmatW2->_43);
+
+	D3DXVECTOR3 v3 = pos1 - pos2;
+
+	D3DXVec3Normalize(&v3,&v3);
+
+	float f = (sqrt(v1->x * v1->x + v1->z * v1->z) + sqrt(v2->x * v2->x + v2->z * v2->z))*0.5f;
+	v1ref[0] = v3 * f;
+	v1ref[1] = -v3 * f;
+
+	/*
+	//for(uint Cnt = 0; Cnt < 2; ++Cnt)
+	{
+//		commonfunc::repulsion(&v1ref[Cnt].x,v1->x,v2->x,100,100,1.0F,1.0F);
+//		commonfunc::repulsion(&v1ref[Cnt].z,v1->z,v2->z,100,100,1.0F,1.0F);
+//*
+		CalcParticleColliAfterPos(
+			&pos1,
+			&pos2,
+			v1,
+			v2,
+			1.0f,
+			1.0f,
+			1.0f,
+			1.0f,
+			&v1ref[0],
+			&v1ref[1]
+		);
+//	
+//		v1ref[Cnt].y = 0;
+//		vBak = v1;
+//		v1 = v2;
+//		v2 = vBak;
+	}
+*/
 	_pTankBottom->setMoveVec(v1ref[0]);
 	pTank->setMoveVec(v1ref[1]);
+}
+
+void CTank::hitTestShell(CShell* pShell)
+{
+	_DeleteFlg = TRUE;
+}
+
+void CTank::hitTestWall()
+{
+
+	//	立っている場所を知る
+	uint x;
+	uint y;
+	uint x2;
+	uint y2;
+	float tx = _pTankBottom->getWMat()->_41;
+	float ty = _pTankBottom->getWMat()->_43;
+	float tx2 = tx + _pTankBottom->getMoveVec()->x;
+	float ty2 = ty + _pTankBottom->getMoveVec()->z;
+	_StageData->step(&x,&y,tx,ty);
+
+	_StageData->step(&x2,&y2,tx,ty);
+
+
+	//	壁の情報を取得
+	RECT WallFlg;
+	_StageData->wallFlg(&WallFlg,x,y);
+
+	const TILE tile[MAX_DATA][MAX_DATA];
+	_StageData->getTile(tile);
+
+	float hitX;
+	float hitY;
+
+	const float top		= tile[x][y].posY + 15.0f;
+	const float left	= tile[x][y].posX - 15.0f;
+	const float bottom	= tile[x][y+1].posY + 15.0f;
+	const float right	= tile[x+1][y].posX - 15.0f;
+
+
+
+	bool flg;
+
+	D3DXVECTOR3 NewV;
+	NewV.x = 0;
+	NewV.y = 0;
+	NewV.z = 0;
+
+	//	top
+	if(WallFlg.top)
+	{
+		/*
+		flg = LineToLine(
+			&hitX,
+			&hitY,
+			tile[x][y].posX,tile[x][y].posY,
+			tile[x+1][y].posX,tile[x+1][y].posY,
+			tx,ty,
+			tx + _pTankBottom->getMoveVec()->x,
+			ty + _pTankBottom->getMoveVec()->z);
+			*/
+		
+		if(top < ty)
+		{
+			_pTankBottom->setPos(tx,top - 0.3f);
+			NewV.x = _pTankBottom->getMoveVec()->x;
+			NewV.z = -_pTankBottom->getMoveVec()->z;
+			_pTankBottom->setMoveVec(NewV);
+		}
+	}
+	//	left
+	if(WallFlg.left)
+	{
+		/*
+		flg = LineToLine(
+			&hitX,
+			&hitY,
+			tile[x][y].posX,tile[x][y].posY,
+			tile[x][y+1].posX,tile[x][y+1].posY,
+			tx,ty,
+			tx + _pTankBottom->getMoveVec()->x,
+			ty + _pTankBottom->getMoveVec()->z);
+			*/
+
+		if(left > tx)
+		{
+			_pTankBottom->setPos(left + 0.3f,ty);
+			NewV.x = -_pTankBottom->getMoveVec()->x;
+			NewV.z = _pTankBottom->getMoveVec()->z;
+			_pTankBottom->setMoveVec(NewV);
+		}
+	}
+	//	bottom
+	if(WallFlg.bottom)
+	{
+		/*
+		flg = LineToLine(
+			&hitX,
+			&hitY,
+			tile[x][y+1].posX,tile[x][y+1].posY,
+			tile[x+1][y+1].posX,tile[x+1][y+1].posY,
+			tx,ty,
+			tx + _pTankBottom->getMoveVec()->x,
+			ty + _pTankBottom->getMoveVec()->z);*/
+		if( bottom >= tx2 && bottom <= ty)
+		{
+			_pTankBottom->setPos(tx,bottom + 0.3f);
+			NewV.x = _pTankBottom->getMoveVec()->x;
+			NewV.z = -_pTankBottom->getMoveVec()->z;
+			_pTankBottom->setMoveVec(NewV);
+		}
+	}
+	//	right
+	if(WallFlg.right)
+	{
+		/*
+		flg = LineToLine(
+			&hitX,
+			&hitY,
+			tile[x+1][y].posX,tile[x+1][y].posY,
+			tile[x+1][y+1].posX,tile[x+1][y+1].posY,
+			tx,ty,
+			tx + _pTankBottom->getMoveVec()->x,
+			ty + _pTankBottom->getMoveVec()->z);	
+			*/
+		if( right <= tx2 && right >= tx)
+		{
+			_pTankBottom->setPos(right - 0.3f,ty);
+			NewV.z = _pTankBottom->getMoveVec()->z;
+			NewV.x = -_pTankBottom->getMoveVec()->x;
+			_pTankBottom->setMoveVec(NewV);
+		}
+	}
 }
 
 /***********************************************************************/
@@ -356,8 +539,6 @@ const float	CTank::getMass()
 void CTank::setMoveVec( D3DXVECTOR3& MoveVec )
 {
 	_pTankBottom->setMoveVec(MoveVec);
-	_pTankBottom->setMoveVec(MoveVec);
-	_pTankBottom->setMoveVec(MoveVec);
 }
 
 
@@ -370,8 +551,6 @@ void CTank::setMoveVec( D3DXVECTOR3& MoveVec )
 /***********************************************************************/
 void CTank::setMoveVec( const D3DXVECTOR3 *MoveVec )
 {
-	_pTankBottom->setMoveVec(MoveVec);
-	_pTankBottom->setMoveVec(MoveVec);
 	_pTankBottom->setMoveVec(MoveVec);
 }
 

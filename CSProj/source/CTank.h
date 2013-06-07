@@ -27,6 +27,7 @@ class CTankIntInter;
 class CShell;
 class CTankTop;
 class CTankBottom;
+class CStageData;
 /***********************************************************************/
 /*!
  *	@class CTank
@@ -58,7 +59,9 @@ public:
 	void fire();				///<	発砲
 
 	//	呼出し
-	void hitTank(CTank* pTank);	///<	あたり判定
+	void hitTestTank(CTank* pTank);	///<	あたり判定
+	void hitTestShell(CShell* pShell);
+	void hitTestWall();
 
 private:
 	void turnTop();				///<	上部の回転
@@ -68,13 +71,17 @@ public:
 	void disableTask();			///<	タスク無効化
 
 	const D3DXMATRIXA16*	getMatBottom();	///<	ボトムのマトリクス取得
-	const D3DXVECTOR3*		getMoveVec();///<	移動ベクトル
+	const D3DXVECTOR3*		getMoveVec();	///<	移動ベクトル
 	const float				getRadius();	///<	半径の取得
 	const float				getMass();		///<	質量の取得
 
 	void setMoveVec( D3DXVECTOR3& MoveVec );
 	void setMoveVec( const D3DXVECTOR3 *MoveVec );
 	void setPos(const float x,const float z);
+	static void setStageData(const CStageData* pStageData)
+	{
+		_StageData = pStageData;
+	}
 private:
 	CTaskList*		_pTaskDraw;
 	CTaskList*		_pTaskPause;
@@ -89,5 +96,10 @@ private:
 	float			_fRadius;			///<	半径
 	float			_fMass;				///<	質量
 	uint			_unIntType;			///<	思考タイプ
+#ifdef _DEBUG
+LPD3DXMESH debugMesh;;
+#endif
+
+	static const CStageData* _StageData;
 };
 #endif

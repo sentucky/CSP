@@ -11,6 +11,8 @@
 
 class CTaskList;
 class CMesh;
+class CTank;
+class CStageData;
 
 #include"CObjBase.h"
 
@@ -42,14 +44,25 @@ public:
 	void checkAlive();
 	void explosion();
 
+	//
+	void hitTestTank(CTank* pTank);	//	戦車との衝突
+	void hitTestWall();
+
 	//	ゲッタ
 	D3DXVECTOR3& getTrajectory();
 	D3DXVECTOR3& getMoveVector();
+	const D3DXMATRIXA16* getMatW(){return &_matW;}
+	const CTank* getOwner(){
+		return _Owner;
+	}
 
 	//	セッタ
 	void setMoveVector(const D3DXVECTOR3* MoveVec);
 	void setPos(const D3DXMATRIXA16*	pos);
 	void setPos(const D3DXVECTOR3*		pos);
+	void setOwner(CTank* pTank){
+		_Owner = pTank;
+	}
 
 private:
 	D3DXMATRIXA16	_matW;			///<	ワールドマトリクス
@@ -60,12 +73,21 @@ private:
 	float			_MoveSpeed;		///<	移動速度
 	const int		_nMaxLife;		///<	ライフ最大値
 	int				_nLife;			///<	現在ライフ
+	CTank*			_Owner;			///<	発射した戦車
 
 	//	タスク
 	CTaskList*		_TaskListDraw;			///<	描画タスク
 	CTaskList*		_TaskListMove;			///<	移動タスク
 	CTaskList*		_TaskListCheckAlive;	///<	生死確認タスク
 	CTaskList*		_TaskListExplosion;		///<	爆発タスク
+
+	static CStageData* _StageData;
+
+#ifdef _DEBUG
+public:
+	const float getRad(){return _fRad;}
+	float _fRad;
+#endif
 
 };
 

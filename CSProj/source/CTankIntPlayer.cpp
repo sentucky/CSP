@@ -72,7 +72,7 @@ void CTankIntPlayer::update()
 		_MoveDir += 1;
 	}
 
-
+	myStep();
 	//	”­–Cƒtƒ‰ƒO
 	_FireFlg = MOUSE.getTrgMouseButton(0) ? TRUE : FALSE;
 

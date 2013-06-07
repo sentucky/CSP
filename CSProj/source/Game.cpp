@@ -29,7 +29,10 @@
 #include"CFollowCamera.h"
 #include"CPin.h"
 #include"CShell.h"
+
 #include"CHItTestTAndT.h"
+#include"CHitTestTankToWall.h"
+#include"CHitTestTankToShell.h"
 /***********************************************************************/
 //	ƒOƒ[ƒoƒ‹•Ï”éŒ¾
 /***********************************************************************/
@@ -124,13 +127,16 @@ void gameInit()
 #ifdef _DEBUG
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANKDUMMY(),pObj2);
 #endif
-	OBJFACTORY->registPrototype<CStage>(OBJKEY::STAGE01(),pStage);
-	OBJFACTORY->registPrototype<CFollowCamera>(OBJKEY::FOLLOW(),new CFollowCamera);
-	OBJFACTORY->registPrototype<CPin>(OBJKEY::PIN(),new CPin(MESHFACTORY->create(MESHKEY::PIN())));
+	OBJFACTORY->registPrototype(OBJKEY::STAGE01(),pStage);
+	OBJFACTORY->registPrototype(OBJKEY::FOLLOW(),new CFollowCamera);
+	OBJFACTORY->registPrototype(OBJKEY::PIN(),new CPin(MESHFACTORY->create(MESHKEY::PIN())));
+	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOW(),new CHitTestTankToWall);
 
 	CHitTestTAndT* pHTTAT;
 	pHTTAT = new CHitTestTAndT;
-	OBJFACTORY->registPrototype(OBJKEY::HITTEST(),pHTTAT);
+
+	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOT(),pHTTAT);
+	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOS(),new CHitTestTankToShell);
 
 }
 

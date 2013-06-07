@@ -41,6 +41,7 @@ public:
 	void disableTask();
 	void draw();
 
+
 	const CStageData*		getStageData();
 private:
 	const char*		_StageDataPath;		///<	ステージデータパス

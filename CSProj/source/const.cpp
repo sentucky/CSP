@@ -98,10 +98,10 @@ enum eTID
 {
 	TID_INTELLIGENCE,			//
 	TID_FIRE,					//
-	TID_HITTEST_WALL,			//
-	TID_HITTEST_TANK_AND_TANK,	//
-	TID_HITTEST_TANK_AND_SHELL,	//0
 	TID_PAUSE,					//
+	TID_HITTEST_TANK_AND_TANK,	//
+	TID_HITTEST_TANK_TO_SHELL,	//0
+	TID_HITTEST_WALL,			//
 	TID_MOVE,					//
 	TID_EXPLOSION,				//
 	TID_FOLLOW,					//	ÉJÉÅÉâí«îˆ
@@ -111,8 +111,8 @@ enum eTID
 };
 
 const uint TASKKEY::HITTEST_TANKADNTANK(){return TID_HITTEST_TANK_AND_TANK;}
-const uint TASKKEY::HITTEST_TANKANDSHELL(){return TID_HITTEST_TANK_AND_SHELL;}
-const uint TASKKEY::HITTEST_TANKANDWALL(){return TID_HITTEST_WALL;}
+const uint TASKKEY::HITTEST_TANKTOSHELL(){return TID_HITTEST_TANK_TO_SHELL;}
+const uint TASKKEY::HITTEST_TANKTOWALL(){return TID_HITTEST_WALL;}
 const uint TASKKEY::CHECKALIVE(){return TID_CHECKALIVE;}
 const uint TASKKEY::INTELLIGENCE(){return TID_INTELLIGENCE;}
 const uint TASKKEY::UPDATECAMERA(){return TID_FOLLOW;}
@@ -126,7 +126,9 @@ const uint TASKKEY::SUM(){return TID_SUM;}
 
 enum eOBJID
 {
-	OID_HITTEST,
+	OID_HITTESTTOT,
+	OID_HITTESTTOS,
+	OID_HITTESTTOW,
 	OID_SHELL01,	//
 	OID_SHELL02,	//
 	OID_SHELL03,	//
@@ -146,7 +148,9 @@ enum eOBJID
 #ifdef _DEBUG
 const uint OBJKEY::TANKDUMMY(){return OID_TANKDUMMY;}
 #endif
-const uint OBJKEY::HITTEST(){return OID_HITTEST;}	///<	@brift	Ç†ÇΩÇËîªíË
+const uint OBJKEY::HITTESTTTOT(){return OID_HITTESTTOT;}	///<	@brift	Ç†ÇΩÇËîªíË
+const uint OBJKEY::HITTESTTTOS(){return OID_HITTESTTOS;}	///<	@brift	Ç†ÇΩÇËîªíË
+const uint OBJKEY::HITTESTTTOW(){return OID_HITTESTTOW;}	///<	@brift	Ç†ÇΩÇËîªíË
 const uint OBJKEY::SHELL01(){return OID_SHELL01;}	///<	
 const uint OBJKEY::SHELL02(){return OID_SHELL02;}	///<	
 const uint OBJKEY::SHELL03(){return OID_SHELL03;}	///<	

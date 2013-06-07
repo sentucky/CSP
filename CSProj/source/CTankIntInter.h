@@ -38,7 +38,17 @@ enum eTANK_MOVE
 	TMV_9,
 };
 
-
+const float Rad[8] =
+{
+	0.0f,	//
+	0.25f,	//
+	0.5f,	//	
+	0.75f,	//
+	1.0f,	//
+	1.25f,	//
+	1.5f,	//
+	1.75f,	//
+};
 /***********************************************************************/
 /*!	@class CTankIntInter
  *	@brift タンク思考インターフェース
@@ -63,6 +73,7 @@ public:
 protected:
 	BOOL	_FireFlg;					///<	発砲フラグ
 	uint	_MoveDir;					///<	移動方向フラグ
+	
 	CTank*	_pMyTank;					///<	思考が反映される戦車
 	D3DXVECTOR3			_TargetPoint;	///<	ターゲットの座標
 	static CTank*		_pPlayerTank;	///<	プレイヤータンクのポインタ

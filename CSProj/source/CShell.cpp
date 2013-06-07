@@ -11,6 +11,11 @@
 #include"CTaskList.h"
 #include"CMesh.h"
 #include"CTaskMng.h"
+#include"CTank.h"
+
+#include"StageData.h"
+
+CStageData* CShell::_StageData = 0;
 
 /***********************************************************************/
 /*! @brief 
@@ -36,7 +41,8 @@ CShell::CShell(
 	_TaskListCheckAlive(NULL),
 	_TaskListExplosion(NULL),
 	_nMaxLife(nMaxLife),
-	_nLife(-1)
+	_nLife(-1),
+	_Owner(NULL)
 {
 	D3DXMatrixIdentity(&_matW);
 }
@@ -63,7 +69,8 @@ CShell::~CShell()
 CShell::CShell(
 	const CShell& src
 	)
-	:_OldPos(0,0,0),
+	:_Owner(src._Owner),
+	_OldPos(0,0,0),
 	_Trajectory(0,0,0),
 	_MoveVector(0,0,0),
 	_pMesh(new CMesh(*src._pMesh)),
@@ -73,10 +80,13 @@ CShell::CShell(
 	_TaskListCheckAlive(NULL),
 	_TaskListExplosion(NULL),
 	_nMaxLife(src._nMaxLife),
-	_nLife(30)
-{
+	_nLife(30){
 	D3DXMatrixIdentity(&_matW);
 	enableTask();
+#ifdef _DEBUG
+	_fRad = 1.0f;
+#endif
+
 }
 
 /***********************************************************************/
@@ -159,6 +169,16 @@ void CShell::explosion()
 {
 }
 
+void CShell::hitTestTank(CTank* pTank)
+{
+	_DeleteFlg = TRUE;
+}
+
+void CShell::hitTestWall()
+{
+
+}
+
 /***********************************************************************/
 /*! @brief 
  * 
@@ -180,7 +200,7 @@ D3DXVECTOR3& CShell::getTrajectory()
 void CShell::setMoveVector(const D3DXVECTOR3* MoveVec)
 {
 	_MoveVector = *MoveVec;
-	D3DXVec3Normalize(&_MoveVector,&_MoveVector);
+//	D3DXVec3Normalize(&_MoveVector,&_MoveVector);
 	_MoveVector *= _MoveSpeed;
 }
 

@@ -179,10 +179,7 @@ void CTankBottom::turn()
 
 	if(fDot > 0.999f)
 	{
-	//	if(fDot > 0)
-		{
-			_Dir = _MoveDir;
-		}
+		_Dir = _MoveDir;
 	}
 	//	‰sŠp
 
@@ -250,7 +247,7 @@ void CTankBottom::setMoveVec( D3DXVECTOR3& MoveVec )
 {
 	_MoveVec.x  = MoveVec.x;
 	_MoveVec.y  = MoveVec.y;
-	_MoveVec.z  = MoveVec.x;
+	_MoveVec.z  = MoveVec.z;
 }
 
 
@@ -265,7 +262,7 @@ void CTankBottom::setMoveVec( const D3DXVECTOR3 *MoveVec )
 {
 	_MoveVec.x  = MoveVec->x;
 	_MoveVec.y  = MoveVec->y;
-	_MoveVec.z  = MoveVec->x;
+	_MoveVec.z  = MoveVec->z;
 }
 
 

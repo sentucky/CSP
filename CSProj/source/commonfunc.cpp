@@ -11,7 +11,7 @@
 /***********************************************************************/
 #include"commonfunc.h"
 
-/***********************************************************************/
+/****************************************************aw*******************/
 //	グローバル関数定義
 /***********************************************************************/
 /***********************************************************************/
@@ -275,5 +275,141 @@ void commonfunc::repulsion(
 		MessageAlert("e2に不正な値が入力されています","error from repulsion");
 	}
 #endif
+	float RefRate = 1 + e1 * e2;
 	*pv1Out = (m1 - (e1 * e2) * m2) * v1  / (m1 + m2) + (1 + e1 * e2) * m2 * v2 / (m1 + m2);
+}
+
+
+void CalcParticleColliAfterPos(
+   const D3DXVECTOR3 *pColliPos_A,
+   const D3DXVECTOR3 *pColliPos_B,
+   const D3DXVECTOR3 *pVelo_A,
+   const D3DXVECTOR3 *pVelo_B,
+   const FLOAT weight_A,
+   const FLOAT weight_B,
+   const FLOAT res_A,
+   const FLOAT res_B,
+   D3DXVECTOR3 *pOut_velo_A,
+   D3DXVECTOR3 *pOut_velo_B
+)
+{
+   FLOAT TotalWeight = weight_A + weight_B; // 質量の合計
+   FLOAT RefRate = (1 + res_A * res_B); // 反発率
+   D3DXVECTOR3 C = *pColliPos_B - *pColliPos_A; // 衝突軸ベクトル
+   D3DXVec3Normalize(&C, &C);
+   FLOAT Dot = D3DXVec3Dot( &(*pVelo_A-*pVelo_B), &C ); // 内積算出
+   D3DXVECTOR3 ConstVec = RefRate*Dot/TotalWeight * C; // 定数ベクトル
+
+   // 衝突後速度ベクトルの算出
+   *pOut_velo_A = -weight_B * ConstVec + *pVelo_A;
+   *pOut_velo_B = weight_A * ConstVec + *pVelo_B;
+}
+
+//当たり判定クラス
+typedef struct{
+	float x;
+	float y;
+}Vector;
+
+bool LineToCircle(
+	float* hitX,	//	交点
+	float* hitY,	//	交点
+	float x1,		//	始点
+	float y1,		//	始点
+	float x2,		//	終点
+	float y2,		//	終点
+	float centerX,	//	円の中心点ｘ
+	float centerY,	//	円の中心点ｙ
+	float radius	//	円の半径
+){
+	//点１との判定
+	float lenX = centerX - x1;
+	float lenY = centerY - y1;
+	if (lenX * lenX + lenY * lenY < radius * radius){
+		*hitX = x1;
+		*hitY = y1;
+		return true;
+	}
+	
+	//点２との判定
+	lenX = centerX - x2;
+	lenY = centerY - y2;
+	if (lenX * lenX + lenY * lenY < radius * radius){
+		*hitX = x2;
+		*hitY = y2;
+		return true;
+	}
+	
+	//線との判定
+	float hX;
+	float hY;
+	float t = (centerX - x1) * (x2 - x1) + (centerY - y1) * (y2 - y1);
+	t /= ((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1));
+	
+	if (t >= 1.0f && t <= 1.0f){
+		hX = (x2 - x1) * t + x1;
+		hY = (y2 - y1) * t + y1;
+		
+		lenX = (centerX - hX) * (centerX - hX);
+		lenY = (centerY - hY) * (centerY - hY);
+		if (lenX + lenY < radius * radius){
+			*hitX = hX;
+			*hitY = hY;
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+//線と線
+bool LineToLine(
+	float* hitX,//	交点
+	float* hitY,//	交点
+	float x1,	//	始点1
+	float y1,	//	始点1
+	float x2,	//	終点1
+	float y2,	//	終点1
+	float x3,	//	始点2
+	float y3,	//	始点2
+	float x4,	//	終点2
+	float y4	//	終点2
+){
+	
+	Vector v1,v2,v3;
+	float c12,c23,c13;
+	
+	v1.x = x2 - x1;
+	v1.y = y2 - y1;
+
+	v2.x = x4 - x3;
+	v2.y = y4 - y3;
+
+	v3.x = x1 - x3;
+	v3.y = y1 - y3;
+	
+	c12 = (v1.x * v2.y) - (v1.y * v2.x);
+	
+	if (c12 == 0.0f)
+		return false;
+
+	
+	c23 = (v2.x * v3.y) - (v2.y * v3.x);
+	c23 /= c12;
+
+
+	if (c23 >= 0.0f && c23 <= 1.0f)
+	{
+		c13 = (v1.x * v3.y) - (v1.y * v3.x);
+
+		c13 /= c12;
+		if (c13 >= 0.0f && c13 <= 1.0f)
+		{
+			*hitX = x1 + v1.x * c23;
+			*hitY = y1 + v1.y * c23;
+			return true;
+		}
+	}
+	
+	return false;
 }

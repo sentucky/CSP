@@ -55,6 +55,7 @@ CTankIntDummy::CTankIntDummy(const CTankIntDummy& src)
 /***********************************************************************/
 void CTankIntDummy::update()
 {
+	/*
 	switch(getRand(2))
 	{
 	case 0:
@@ -63,5 +64,5 @@ void CTankIntDummy::update()
 	case 1:
 		_MoveDir = 8;
 		break;
-	}
+	}*/
 }

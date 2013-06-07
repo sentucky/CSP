@@ -116,3 +116,5 @@ const CStageData* CStage::getStageData()
 {
 	return _StageData;
 }
+
+

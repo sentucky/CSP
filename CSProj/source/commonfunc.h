@@ -173,4 +173,42 @@ namespace commonfunc
 {
 void repulsion(float* pv1Out,float v1, float v2,float m1,float m2, float e1, float e2);
 };
+void CalcParticleColliAfterPos(
+   const D3DXVECTOR3 *pColliPos_A,
+   const D3DXVECTOR3 *pColliPos_B,
+   const D3DXVECTOR3 *pVelo_A,
+   const D3DXVECTOR3 *pVelo_B,
+   const FLOAT weight_A,
+   const FLOAT weight_B,
+   const FLOAT res_A,
+   const FLOAT res_B,
+   D3DXVECTOR3 *pOut_velo_A,
+   D3DXVECTOR3 *pOut_velo_B
+);
+
+//線と線
+bool LineToLine(
+	float* hitX,//	交点
+	float* hitY,//	交点
+	float x1,	//	始点1
+	float y1,	//	始点1
+	float x2,	//	終点1
+	float y2,	//	終点1
+	float x3,	//	始点2
+	float y3,	//	始点2
+	float x4,	//	終点2
+	float y4	//	終点2
+);
+//線と円
+bool LineToCircle(
+	float* hitX,	//	交点
+	float* hitY,	//	交点
+	float x1,		//	始点
+	float y1,		//	始点
+	float x2,		//	終点
+	float y2,		//	終点
+	float centerX,	//	円の中心点ｘ
+	float centerY,	//	円の中心点ｙ
+	float radius	//	円の半径
+);//線と円
 //EOF

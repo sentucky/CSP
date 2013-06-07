@@ -94,8 +94,8 @@ class TASKKEY
 {
 public:
 	static const uint HITTEST_TANKADNTANK();
-	static const uint HITTEST_TANKANDSHELL();
-	static const uint HITTEST_TANKANDWALL();
+	static const uint HITTEST_TANKTOSHELL();
+	static const uint HITTEST_TANKTOWALL();
 
 	static const uint CHECKALIVE();
 	static const uint INTELLIGENCE();
@@ -114,7 +114,9 @@ public:
 class OBJKEY
 {
 public:
-	static const uint HITTEST();
+	static const uint HITTESTTTOT();
+	static const uint HITTESTTTOS();
+	static const uint HITTESTTTOW();
 	static const uint SHELL01();
 	static const uint SHELL02();
 	static const uint SHELL03();

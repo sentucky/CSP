@@ -35,43 +35,12 @@ CTankIntInter::~CTankIntInter()
 }
 
 
+/***********************************************************************/
+//	‘«‰º‚ÌŠm”F
+/***********************************************************************/
 void CTankIntInter::myStep()
 {
-	/*
-	//....“ñ•ª’Tõ‚ÅŽ©•ª‚ª—§‚Á‚Ä‚¢‚éêŠ‚ð’T‚·
-	const TILE **pT = _StageData->getTile();
-	uint x = 8;
-	uint z = 8;
 
-	float ary[17]={0};
-
-	for(uint Cnt = 0; Cnt < 16; Cnt+=1)
-	{
-		ary[Cnt] = ary[16];
-
-		ary[16] += 500.0f / 16;
-	}
-
-	float tX = _pMyTank->getMatBottom()->_41;
-	float tZ = _pMyTank->getMatBottom()->_43;
-
-	uint ud = 8;
-
-	while(1)
-	{
-		ud /= 2;
-		if(ary[x] <= tX && ary[x + 1] > tX )
-		{
-			break;
-		}
-		else if(ary[x] < tX)
-		{
-		}
-		else
-		{
-		}
-	}
-	*/
 }
 
 /***********************************************************************/

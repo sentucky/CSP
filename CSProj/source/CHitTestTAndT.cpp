@@ -130,9 +130,9 @@ void CHitTestTAndT::hitTest()
 			const float fZ = (pMatB->_43 - pMatA->_43) * (pMatB->_43 - pMatA->_43);
 			const float fSumRad = (fRadA + fRadB) * (fRadA + fRadB);
 			//‹…‚ÆƒvƒŒƒCƒ„[‚Ì‚ ‚½‚è”»’è
-			if(	fX + fZ <=  fSumRad)
+			if(	fX + fZ <  fSumRad)
 			{
-				pTankA->hitTank(pTankB);
+				pTankA->hitTestTank(pTankB);
 			}
 			pRunB = pRunB->next();
 		}

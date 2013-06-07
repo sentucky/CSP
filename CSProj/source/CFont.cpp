@@ -40,7 +40,7 @@ CFont::~CFont()
 /***********************************************************************/
 void CFont::init()
 {
-	_Color = D3DCOLOR_XRGB(128,128,128);
+	_Color = D3DCOLOR_XRGB(255,255,255);
 
 	_LogFont.Height = 20;
 	_LogFont.Width = 10;

@@ -27,8 +27,11 @@
 
 #include"CTankIntPlayer.h"
 #include"CHItTestTAndT.h"
+#include"CHitTestTankToShell.h"
+#include"CHitTestTankToWall.h"
 
 #ifdef _DEBUG
+#include"CPin.h"
 #include"CTankIntDummy.h"
 
 #include"CInputCommon.h"
@@ -105,11 +108,17 @@ void CSceneGame::init()
 #ifdef _DEBUG
 	CTank*			pTank2 = NULL;
 //*
-	for(int n = 0; n < 10; n++)
+	TILE t[16][16];
+	pStage->getStageData()->getTile(t);
+	CPin* pin = NULL;
+	for(int n = 0; n < 8; n++)
 	{
-		for(int n2 = 0; n2 < 10; n2++)
+		for(int n2 = 0; n2 < 8; n2++)
 		{
 			OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
+			pTank2->setPos(
+				pTank->getMatBottom()->_41 + n * 0.1, 
+				pTank->getMatBottom()->_43 + n2 * 0.1);
 		}
 	}
 //*/
@@ -122,11 +131,22 @@ void CSceneGame::init()
 
 	//...ピン
 	OBJMNG->push(OBJGROUPKEY::PIN(),OBJFACTORY->create(OBJKEY::PIN()),NULL);
+#ifdef _DEBUG
+
+#endif
 
 	//	あたり判定
-	OBJMNG->push(OBJGROUPKEY::HITTEST(),static_cast<CHitTestTAndT*>(OBJFACTORY->create(OBJKEY::HITTEST())),NULL);
+	OBJMNG->push(OBJGROUPKEY::HITTEST(),(OBJFACTORY->create(OBJKEY::HITTESTTTOT())),NULL);
+	OBJMNG->push(OBJGROUPKEY::HITTEST(),(OBJFACTORY->create(OBJKEY::HITTESTTTOW())),NULL);
+	OBJMNG->push(OBJGROUPKEY::HITTEST(),(OBJFACTORY->create(OBJKEY::HITTESTTTOS())),NULL);
 
-//	CTankIntInter::setStageData(CStageData::getInst());
+	
+	CTankIntInter::setStageData(pStage->getStageData());
+	CTank::setStageData(pStage->getStageData());
+	CHitTestTankToWall::setTankList(OBJMNG->getList(OBJGROUPKEY::TANK()));
+	CHitTestTankToShell::setShellList(OBJMNG->getList(OBJGROUPKEY::SHELL()));
+	CHitTestTankToShell::setTankList(OBJMNG->getList(OBJGROUPKEY::TANK()));
+
 
 	//	スタート位置に配置
 	standby(pStage);
@@ -197,14 +217,6 @@ CSceneBase * CSceneGame::nextScene()
 	return this;
 }
 
-
-
-
-
-
-
-
-
 void CSceneGame::standby(CStage* pStage)
 {
 	//	要素抽出
@@ -219,8 +231,8 @@ void CSceneGame::standby(CStage* pStage)
 	const TILE* pStTile= pStage->getStageData()->startTile();
 
 	
-	const float moveX = 1.0f;
-	const float moveY = 1.0f;
+	const float moveX = 10.0f;
+	const float moveY = 10.0f;
 
 	//....基点取得
 	const float& pointX = pStTile->posX;
@@ -228,6 +240,7 @@ void CSceneGame::standby(CStage* pStage)
 
 	uint cnt = 0;
 	CTank* pTank = NULL;
+
 	while(pListTank !=  pEnd)
 	{
 	//	本来の型でポインタ取得

@@ -44,6 +44,7 @@ typedef struct{
 // インクルード
 //================================================================================
 #include "CSingleton.h"
+#include "common.h"
 #include "d3dx9.h"
 #include "d3d9.h"
 
@@ -67,22 +68,29 @@ class CStageData
 private:
 		void Init();
 		void Load(const char* stageDataPath);
+		void initwall(TILE tile[][16]);
 
 public:
-		const TILE* startTile()const;
-		const TILE** getTile()const;
+		void wallFlg(RECT* pOutWallFlg,uint TileX,uint TileY)const ;
+		void step(
+		uint* xOut,
+		uint* yOut,
+		const float x,
+		const float z)const ;
+	const TILE* startTile()const;
+	const void getTile(const TILE ary[MAX_DATA][MAX_DATA])const;
 
 
-	private:
+private:
 		//===========================
 		// メンバ変数 - 非公開
 		//===========================
 		int rot;
 		TILE tile[MAX_DATA][MAX_DATA];
 		bool line[MAX_DATA + 1][MAX_DATA + 1];
+		BOOL LINE2[2][MAX_DATA+1][MAX_DATA + 1];
 		int rootNum;
 		static CSprite*	pSprite[6];
 		D3DXVECTOR2 root[512];
-
 		TILE* StartTile;
 };

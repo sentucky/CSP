@@ -20,8 +20,8 @@
  */
 /***********************************************************************/
 CFollowCamera::CFollowCamera(
-	):_fDistance(	50.0f),	
-	  _NAtToEye	(	D3DXVECTOR3(0,1.0f,0)),
+	):_fDistance(	50),	
+	  _NAtToEye	(	D3DXVECTOR3(0,1.0f,-1.0f)),
 	  _pTank	(	NULL),
 	  _pUpdate	(	NULL)
 {
@@ -49,8 +49,8 @@ CFollowCamera::~CFollowCamera()
 /***********************************************************************/
 CFollowCamera::CFollowCamera(
 	const CFollowCamera& src
-	):_fDistance(	50.0f					),	
-	  _NAtToEye	(	D3DXVECTOR3(0,0.8f,-0.2f)	),
+	):_fDistance(	src._fDistance					),	
+	_NAtToEye	(	src._NAtToEye	),
 	  _pTank	(	NULL),
 	  _pUpdate	(	NULL					)
 {
