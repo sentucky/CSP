@@ -90,17 +90,22 @@ void CTankBottom::move()
 {
 
 	//	Žp¨‚©‚çƒxƒNƒgƒ‹‚ðŒvŽZ
+	_MoveVec *= _fDeceleration;
+	_WMat._41 += _MoveVec.x;
+	_WMat._42 += _MoveVec.y;
+	_WMat._43 += _MoveVec.z;
+}
+
+void CTankBottom::clacMove()
+{
 	const D3DXVECTOR2* pMoveVec = _pIntelligence->getModeDir();
 	if(abs(pMoveVec->x) + abs(pMoveVec->y) != 0)
 	{
 		D3DXVec3Normalize(&_Dir,&_Dir);
 		_MoveVec += _Dir * _fSpeedMove;
 	}
-	_MoveVec *= _fDeceleration;
-	_WMat._41 += _MoveVec.x;
-	_WMat._42 += _MoveVec.y;
-	_WMat._43 += _MoveVec.z;
 }
+
 
 /***********************************************************************/
 /*! @brief 

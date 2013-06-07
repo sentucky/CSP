@@ -28,7 +28,9 @@ public:
 	void draw();
 	void move();
 	void turn();
+	void clacMove();
 	void rotateMatrix(float fTurnSpeed);
+
 	const D3DXMATRIXA16* getWMat();
 
 

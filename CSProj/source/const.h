@@ -96,7 +96,7 @@ public:
 	static const uint HITTEST_TANKADNTANK();
 	static const uint HITTEST_TANKTOSHELL();
 	static const uint HITTEST_TANKTOWALL();
-
+	static const uint CALCACTIVEMOVE();
 	static const uint CHECKALIVE();
 	static const uint INTELLIGENCE();
 	static const uint UPDATECAMERA();

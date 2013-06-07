@@ -57,6 +57,7 @@ public:
 	void pause();				///<	p¨‚ÌXV
 	void move();				///<	ˆÚ“®ˆ—
 	void fire();				///<	”­–C
+	void calcMove();			///<	ˆÚ“®—ÊŒvZ
 
 	//	ŒÄo‚µ
 	void hitTestTank(CTank* pTank);	///<	‚ ‚½‚è”»’è
@@ -88,6 +89,7 @@ private:
 	CTaskList*		_pTaskMove;
 	CTaskList*		_pTaskIntelligence;
 	CTaskList*		_pTaskFire;
+	CTaskList*		_pTaskCalcAM;
 	CTankTop*		_pTankTop;			///<	íÔ‚Ìã•”
 	CTankBottom*	_pTankBottom;		///<	íÔ‚Ì‰º•”
 

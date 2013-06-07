@@ -66,6 +66,7 @@ CTank::CTank(
 	_pTaskMove		( NULL			),
 	_pTaskIntelligence( NULL		),
 	_pTaskFire		( NULL			),
+	_pTaskCalcAM		( NULL								),
 	_pTankTop		( NULL			),
 	_pTankBottom	( NULL			),
 	_pIntelligence	( NULL			),
@@ -109,10 +110,11 @@ CTank::CTank(const CTank& src)
 	_pTaskMove			( NULL								),
 	_pTaskIntelligence	( NULL								),
 	_pTaskFire			( NULL								),
+	_pTaskCalcAM		( NULL								),
 	_pTankTop			( new CTankTop(*src._pTankTop)		),
 	_pTankBottom		( new CTankBottom(*src._pTankBottom)),
 	_pIntelligence		( NULL								),
-	_fRadius			( src._fRadius							),
+	_fRadius			( src._fRadius						),
 	_unIntType			( src._unIntType					)
 {
 
@@ -166,7 +168,7 @@ void CTank::enableTask()
 	CTaskMng::push<CTank>(TASKKEY::MOVE(),			this,&CTank::move,	&_pTaskMove			);
 	CTaskMng::push<CTank>(TASKKEY::INTELLIGENCE(),	this,&CTank::intelligence,	&_pTaskIntelligence	);
 	CTaskMng::push<CTank>(TASKKEY::FIRE(),			this,&CTank::fire,	&_pTaskFire);
-
+	CTaskMng::push<CTank>(TASKKEY::CALCACTIVEMOVE(),this,&CTank::calcMove,&_pTaskCalcAM);
 }
 
 /***********************************************************************/
@@ -182,6 +184,7 @@ void CTank::disableTask()
 	CTaskMng::erase(&_pTaskMove);
 	CTaskMng::erase(&_pTaskIntelligence);
 	CTaskMng::erase(&_pTaskFire);
+	CTaskMng::erase(&_pTaskCalcAM);
 }
 
 /***********************************************************************/
@@ -209,7 +212,7 @@ void CTank::draw()
 #ifdef _DEBUG
 	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
 	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatView());			//カメラ座標変換
-	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());						//ワールド座標変換
+	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());	//ワールド座標変換
 
 	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
 
@@ -284,6 +287,10 @@ void CTank::fire()
 	_pTankTop->fire();
 }
 
+void CTank::calcMove()
+{
+	_pTankBottom->clacMove();
+}
 
 
 /***********************************************************************/
@@ -378,14 +385,13 @@ void CTank::hitTestWall()
 	float hitX;
 	float hitY;
 
-	const float top		= tile[x][y].posY + 15.0f;
-	const float left	= tile[x][y].posX - 15.0f;
-	const float bottom	= tile[x][y+1].posY +  17.0f;
-	const float right	= tile[x+1][y].posX -  17.0f;
+	float f = 500.0f / 16.0f * 0.5f;
 
+	const float top		= tile[x][y].posY + f - 1.0f;
+	const float left	= tile[x][y].posX - f + 1.0f;
+	const float bottom	= tile[x][y+1].posY +  f + 1.0f;
+	const float right	= tile[x+1][y].posX -  f - 1.0f;
 
-
-	bool flg;
 
 	D3DXVECTOR3 NewV;
 	NewV.x = 0;
@@ -407,7 +413,6 @@ void CTank::hitTestWall()
 			tx + _pTankBottom->getMoveVec()->x,
 			ty + _pTankBottom->getMoveVec()->z);
 			*/
-		
 		if(top < ty)
 		{
 			_pTankBottom->setPos(tx,top );
@@ -429,7 +434,6 @@ void CTank::hitTestWall()
 			tx + _pTankBottom->getMoveVec()->x,
 			ty + _pTankBottom->getMoveVec()->z);
 			*/
-
 		if(left > tx)
 		{
 			_pTankBottom->setPos(left,ty);
@@ -484,12 +488,6 @@ void CTank::hitTestWall()
 /***********************************************************************/
 /*!	@brift	ボトムのマトリクス取得
  *	@retval	D3DXMATRIXA16* マトリクス
- */
-/***********************************************************************/
-/***********************************************************************/
-/*! @brief 
- * 
- *  @retval const D3DXMATRIXA16* 
  */
 /***********************************************************************/
 const D3DXMATRIXA16* CTank::getMatBottom()
