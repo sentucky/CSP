@@ -109,13 +109,14 @@ void CSceneGame::init()
 
 #ifdef _DEBUG
 	CTank*			pTank2 = NULL;
-/*
+//*
 	TILE t[16][16];
 	pStage->getStageData()->getTile(t);
 	CPin* pin = NULL;
+	int n2 = 0;
 	for(int n = 0; n < 8; n++)
 	{
-		for(int n2 = 0; n2 < 8; n2++)
+	//	for( = 0; n2 < 8; n2++)
 		{
 			OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
 			pTank2->setPos(
@@ -145,10 +146,10 @@ void CSceneGame::init()
 	
 	CTankIntInter::setStageData(pStage->getStageData());
 	CTank::setStageData(pStage->getStageData());
+	CHitTestTankToWall::setStageData(pStage->getStageData());
 	CHitTestTankToWall::setTankList(OBJMNG->getList(OBJGROUPKEY::TANK()));
 	CHitTestTankToShell::setShellList(OBJMNG->getList(OBJGROUPKEY::SHELL()));
 	CHitTestTankToShell::setTankList(OBJMNG->getList(OBJGROUPKEY::TANK()));
-
 
 	//	スタート位置に配置
 	standby(pStage);
@@ -187,11 +188,11 @@ void CSceneGame::draw()
 	CHECK_DRAW;
 	CTaskMng::draw();
 
-	CTankIntDummy::Debug();
+//	CTankIntDummy::Debug();
 	
 #ifdef _DEBUG
-	static RECTEX fpspos(0,0,0,0);
-	FONT->DrawInt("FPS:",CTIMER->getFPS(),fpspos);
+//	static RECTEX fpspos(0,0,0,0);
+//	FONT->DrawInt("FPS:",CTIMER->getFPS(),fpspos);
    
 #endif
 }

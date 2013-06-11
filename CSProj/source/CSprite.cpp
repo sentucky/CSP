@@ -448,6 +448,11 @@ D3DCOLOR CSprite::getColorRevision()
 	return _colorRevision;
 }
 
+const RECTEX*	CSprite::getUV()
+{
+	return &_UV;
+}
+
 /***********************************************************************/
 /*! @brief テクスチャ情報取得
  * 

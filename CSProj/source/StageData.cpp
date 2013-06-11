@@ -67,6 +67,7 @@ CStageData::CStageData(const char* stageDataPath)
 	ZeroMemory(LINE2,sizeof(LINE2));
 	Init();
 	Load(stageDataPath);
+
 	pSprite[0] = SPRITEFACTORY->create(TEXKEY::TILE01());
 	pSprite[1] = SPRITEFACTORY->create(TEXKEY::TILE02());
 	pSprite[2] = SPRITEFACTORY->create(TEXKEY::TILE03());
@@ -110,12 +111,7 @@ void CStageData::Init()
 		}
 	}
 	
-	for (i = 0 ; i < MAX_DATA + 1 ; i++)
-	{
-		for (j = 0 ; j < MAX_DATA + 1 ; j++)
-		{
-		}
-	}
+	
 	
 	for (i = 0 ; i < 512 ; i++)
 	{
@@ -219,8 +215,8 @@ void CStageData::Load(const char* stageDataPath)
 	
 	for (i = 0 ; i < 512 ; i++)
 	{
-	//	root[i].x += 300.0f;
-	//	root[i].y += 300.0f;
+		root[i].x += 300.0f;
+		root[i].y += 300.0f;
 	}
 	
 	float x;

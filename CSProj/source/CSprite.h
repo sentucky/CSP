@@ -22,6 +22,7 @@
 #define	FVF_VERTEX_2D	(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
 
+
 const DWORD kdwColorRevisionMax = 0xffffffff;
 /***********************************************************************/
 //	クラス定義
@@ -87,6 +88,7 @@ public:
 
 	//....色補正
 	D3DCOLOR CSprite::getColorRevision();	///<	色補正の取得
+	const RECTEX*	CSprite::getUV();		///<	UV座標の取得
 
 	//...テクスチャ情報の取得
 	const D3DXIMAGE_INFO* getTextureInfo();	///<	テクスチャ情報取得

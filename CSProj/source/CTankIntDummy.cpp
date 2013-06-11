@@ -25,7 +25,8 @@ CTankIntDummy::CTankIntDummy(CTank* pTank)
 {
 	_pMyTank = pTank;
 	_point = 1;
-	_MoveDir = D3DXVECTOR2(0,0);
+	_MoveDir = D3DXVECTOR2(0,1);
+
 }
 
 /***********************************************************************/

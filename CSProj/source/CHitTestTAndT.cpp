@@ -111,6 +111,12 @@ void CHitTestTAndT::hitTest()
 		//	判定オブジェクトAを設定
 		pTankA = static_cast<CTank*>(pRunA->getInst());
 
+		if(pTankA->getDestroyed() == TRUE)
+		{
+			pRunA = pRunA->next();
+			continue;
+		}
+
 		//	
 		pRunB = pRunA->next();
 
@@ -118,6 +124,12 @@ void CHitTestTAndT::hitTest()
 		while(pRunB != pEnd)
 		{
 			pTankB = static_cast<CTank*>(pRunB->getInst());
+
+			if(pTankB->getDestroyed())
+			{
+				pRunB = pRunB->next();
+				continue;
+			}
 
 			pMatA = pTankA->getMatBottom();
 			pMatB = pTankB->getMatBottom();

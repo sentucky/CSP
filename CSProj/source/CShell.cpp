@@ -29,7 +29,8 @@ CStageData* CShell::_StageData = 0;
 CShell::CShell(
 	const	int		nMaxLife,
 			float	MoveSpeed,
-			CMesh*	pMesh
+			CMesh*	pMesh,
+			const int power
 	)
 	:_OldPos(0,0,0),
 	_Trajectory(0,0,0),
@@ -42,7 +43,8 @@ CShell::CShell(
 	_TaskListExplosion(NULL),
 	_nMaxLife(nMaxLife),
 	_nLife(-1),
-	_Owner(NULL)
+	_Owner(NULL),
+	_Power(power)
 {
 	D3DXMatrixIdentity(&_matW);
 }
@@ -80,7 +82,9 @@ CShell::CShell(
 	_TaskListCheckAlive(NULL),
 	_TaskListExplosion(NULL),
 	_nMaxLife(src._nMaxLife),
-	_nLife(30){
+	_nLife(src._nMaxLife),
+	_Power(src._Power)
+{
 	D3DXMatrixIdentity(&_matW);
 	enableTask();
 #ifdef _DEBUG
@@ -197,11 +201,11 @@ D3DXVECTOR3& CShell::getTrajectory()
  *  @retval void
  */
 /***********************************************************************/
-void CShell::setMoveVector(const D3DXVECTOR3* MoveVec)
+void CShell::moveVector(const D3DXVECTOR3* MoveVec)
 {
-	_MoveVector = *MoveVec;
-//	D3DXVec3Normalize(&_MoveVector,&_MoveVector);
+	D3DXVec3Normalize(&_MoveVector,&_MoveVector);
 	_MoveVector *= _MoveSpeed;
+	_MoveVector += *MoveVec;
 }
 
 /***********************************************************************/

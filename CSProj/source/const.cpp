@@ -28,6 +28,10 @@ const char* MESHPATH::TANK04_BOTTOM(){	return "data/model/tank04_bottom.x";	}
 
 
 const char* TEXPATH::FADEMASK(){return "data/texture/fademask.jpg";			}
+const char* TEXPATH::TITLE_BG(){return "data/texture/title_bg.jpg";}
+const char* TEXPATH::TITLE_BUTTON01(){return "data/texture/title_button01.jpg";}
+const char* TEXPATH::TITLE_BUTTON02(){return "data/texture/title_button02.jpg";}
+const char* TEXPATH::TITLE_BUTTON03(){return "data/texture/title_button03.jpg";}
 const char* TEXPATH::TILE01(){return "data/Stage/001.jpg";}
 const char* TEXPATH::TILE02(){return "data/Stage/004.jpg";}
 const char* TEXPATH::TILE03(){return "data/Stage/005.jpg";}
@@ -37,6 +41,10 @@ const char* TEXPATH::TILE06(){return "data/Stage/003.jpg";}
 
 enum eTEXKEY{
 	TEX_FADEMASK,	//
+	TEX_TITLE_BG,
+	TEX_TITLE_BUTTON01,
+	TEX_TITLE_BUTTON02,
+	TEX_TITLE_BUTTON03,
 	TEX_TILE01,
 	TEX_TILE02,
 	TEX_TILE03,
@@ -45,14 +53,18 @@ enum eTEXKEY{
 	TEX_TILE06,
 	TEX_SUM,		//
 };
-const uint TEXKEY::FADEMASK()	{	return TEX_FADEMASK;}
-const uint TEXKEY::TILE01()		{	return TEX_TILE01;	}
-const uint TEXKEY::TILE02()		{	return TEX_TILE02;	}
-const uint TEXKEY::TILE03()		{	return TEX_TILE03;	}
-const uint TEXKEY::TILE04()		{	return TEX_TILE04;	}
-const uint TEXKEY::TILE05()		{	return TEX_TILE05;	}
-const uint TEXKEY::TILE06()		{	return TEX_TILE06;	}
-const uint TEXKEY::SUM()		{	return TEX_SUM;		}
+const uint TEXKEY::FADEMASK()		{	return TEX_FADEMASK;}
+const uint TEXKEY::TITLE_BG()		{	return TEX_TITLE_BG;	}
+const uint TEXKEY::TITLE_BUTTON01()	{	return TEX_TITLE_BUTTON01;	}
+const uint TEXKEY::TITLE_BUTTON02()	{	return TEX_TITLE_BUTTON02;	}
+const uint TEXKEY::TITLE_BUTTON03()	{	return TEX_TITLE_BUTTON03;	}
+const uint TEXKEY::TILE01()			{	return TEX_TILE01;	}
+const uint TEXKEY::TILE02()			{	return TEX_TILE02;	}
+const uint TEXKEY::TILE03()			{	return TEX_TILE03;	}
+const uint TEXKEY::TILE04()			{	return TEX_TILE04;	}
+const uint TEXKEY::TILE05()			{	return TEX_TILE05;	}
+const uint TEXKEY::TILE06()			{	return TEX_TILE06;	}
+const uint TEXKEY::SUM()			{	return TEX_SUM;		}
 
 
 

@@ -92,15 +92,13 @@ CTankTop::CTankTop(
 /***********************************************************************/
 void CTankTop::fire()
 {
-	if(!_pTankIntelligence->getFireFlg())
-		return;
 
 	CShell* pShell = NULL;
 	OBJMNG->push(OBJGROUPKEY::SHELL(),pShell = new CShell(*_pProtoShell),NULL);
 	D3DXVECTOR3 ShellVec;;
 	D3DXVec3Normalize(&ShellVec,&_TopDir);
 	ShellVec += *_Bottom->getMoveVec();
-	pShell->setMoveVector(&ShellVec);
+	pShell->moveVector(&ShellVec);
 	pShell->setPos(&_WMat);
 	pShell->setOwner(_Owner);
 }

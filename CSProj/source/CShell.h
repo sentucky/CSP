@@ -27,7 +27,8 @@ public:
 	CShell(
 		const	int		MaxLife,
 				float	MoveSpeed,
-				CMesh*	Mesh
+				CMesh*	Mesh,
+				const int power
 		);
 	//	デストラクタ
 	~CShell();
@@ -55,9 +56,11 @@ public:
 	const CTank* getOwner(){
 		return _Owner;
 	}
+	const int	getPower(){return _Power;}
+
+	void moveVector(const D3DXVECTOR3* MoveVec);
 
 	//	セッタ
-	void setMoveVector(const D3DXVECTOR3* MoveVec);
 	void setPos(const D3DXMATRIXA16*	pos);
 	void setPos(const D3DXVECTOR3*		pos);
 	void setOwner(CTank* pTank){
@@ -71,8 +74,9 @@ private:
 	D3DXVECTOR3		_MoveVector;	///<	移動ベクトル
 	CMesh*			_pMesh;			///<	メッシュ
 	float			_MoveSpeed;		///<	移動速度
-	const int		_nMaxLife;		///<	ライフ最大値
-	int				_nLife;			///<	現在ライフ
+	int				_Power;			///<	威力
+	const int		_nMaxLife;		///<	ライフ
+	int				_nLife;			///
 	CTank*			_Owner;			///<	発射した戦車
 
 	//	タスク

@@ -43,7 +43,8 @@ public:
 		uint   unIntType,		///<	インテリジェンス
 		CShell* pShellProto,
 		const float fMoveSpeed,	///<	速度
-		const float fTurnSpeed	//		旋回速度
+		const float fTurnSpeed,	///<	旋回速度
+		const int	Life		///<
 		);
 	~CTank();					///<	デストラクタ
 	CTank(const CTank& src);	///<	コピーコンストラクタ
@@ -60,12 +61,13 @@ public:
 	void calcMove();			///<	移動量計算
 
 	//	呼出し
-	void hitTestTank(CTank* pTank);	///<	あたり判定
-	void hitTestShell(CShell* pShell);
-	void hitTestWall();
+	void hitTestTank(CTank* pTank);		///<	あたり判定
+	void hitTestShell(CShell* pShell);	///<	弾とのあたり判定後処理
+	void hitTestWall();					///<	壁とのあたり判定の処理
 
 private:
 	void turnTop();				///<	上部の回転
+	void destroyed();			///<	非破壊
 
 public:
 	void enableTask();			///<	タスク有効化
@@ -74,15 +76,11 @@ public:
 	const D3DXMATRIXA16*	getMatBottom();	///<	ボトムのマトリクス取得
 	const D3DXVECTOR3*		getMoveVec();	///<	移動ベクトル
 	const float				getRadius();	///<	半径の取得
-	const float				getMass();		///<	質量の取得
-
+	const BOOL				getDestroyed(){return _Destroyed;}	///<	被破壊フラグ取得
 	void setMoveVec( D3DXVECTOR3& MoveVec );
 	void setMoveVec( const D3DXVECTOR3 *MoveVec );
 	void setPos(const float x,const float z);
-	static void setStageData(const CStageData* pStageData)
-	{
-		_StageData = pStageData;
-	}
+	static void setStageData(const CStageData* pStageData){	_StageData = pStageData;}
 private:
 	CTaskList*		_pTaskDraw;
 	CTaskList*		_pTaskPause;
@@ -96,8 +94,11 @@ private:
 	CTankIntInter*	_pIntelligence;		///<	思考
 
 	float			_fRadius;			///<	半径
-	float			_fMass;				///<	質量
 	uint			_unIntType;			///<	思考タイプ
+
+	int				_life;				///<	耐久力
+
+	BOOL			_Destroyed;			///<	破壊判定フラグ
 #ifdef _DEBUG
 LPD3DXMESH debugMesh;;
 #endif

@@ -13,6 +13,9 @@
 #include"CSpriteFactory.h"
 #include"CSceneBase.h"
 #include"CSceneGame.h"
+#include"CSceneTitle.h"
+
+
 #include"CSceneTestSpace.h"
 #include"CScreen.h"
 #include"CFadeInOut.h"
@@ -72,11 +75,17 @@ void gameInit()
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
 	ps = new CSceneGame;
+//	ps = new CSceneTitle;
 	pScene = ps;
 
 
 	TEXTUREFACTORY->reserve(TEXKEY::SUM());
 	SPRITEFACTORY->registTexture(TEXKEY::FADEMASK(),TEXPATH::FADEMASK());
+
+	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BG(),TEXPATH::TITLE_BG());
+	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON01(),TEXPATH::TITLE_BUTTON01());
+	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON02(),TEXPATH::TITLE_BUTTON02());
+	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON03(),TEXPATH::TITLE_BUTTON03());
 	SPRITEFACTORY->registTexture(TEXKEY::TILE01(),TEXPATH::TILE01());
 	SPRITEFACTORY->registTexture(TEXKEY::TILE02(),TEXPATH::TILE02());
 	SPRITEFACTORY->registTexture(TEXKEY::TILE03(),TEXPATH::TILE03());
@@ -107,9 +116,11 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK01_TOP()),
 		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM()),
 		0,
-		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::PIN())),
+		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::PIN()),1),
 		0.05f,
-		0.05f);
+		0.05f,
+		3
+		);
 	CStage* pStage = new CStage(STAGEPATH::NO_01(),MESHFACTORY->create(MESHKEY::STAGE01()));
 
 #ifdef _DEBUG
@@ -117,9 +128,10 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK04_TOP()),
 		MESHFACTORY->create(MESHKEY::TANK04_BOTTOM()),
 		-1,
-		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::PIN())),
+		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::PIN()),1),
 		0.05f,
-		0.05f);
+		0.05f,
+		3);
 #endif
 
 	OBJFACTORY->reserve(OBJKEY::SUM());

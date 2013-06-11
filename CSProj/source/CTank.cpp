@@ -6,11 +6,12 @@
  *  @date 
  */
 /***********************************************************************/
+#include"CTank.h"
+
 #include"const.h"
 //...タスク
 #include"CTaskBase.h"
 #include"CTaskList.h"
-#include"CTank.h"
 #include"CTaskMng.h"
 //...パラメタ
 #include"CMesh.h"
@@ -38,7 +39,6 @@
 
 #ifdef _DEBUG
 LPD3DXMESH debugMesh = NULL;
-int			Cnt = 0;
 #endif
 
 const CStageData* CTank::_StageData = NULL;
@@ -59,19 +59,23 @@ CTank::CTank(
 	uint   unIntType,
 	CShell* pShellProto,
 	const float fMoveSpeed,
-	const float fTurnSpeed
+	const float fTurnSpeed,
+	const int	Life
+
 	)
-	:_pTaskDraw		( NULL			),
-	_pTaskPause		( NULL			),
-	_pTaskMove		( NULL			),
-	_pTaskIntelligence( NULL		),
-	_pTaskFire		( NULL			),
-	_pTaskCalcAM		( NULL								),
-	_pTankTop		( NULL			),
-	_pTankBottom	( NULL			),
-	_pIntelligence	( NULL			),
-	_fRadius		( 1.0f			),
-	_unIntType		( unIntType		)
+	:_pTaskDraw			( NULL			),
+	_pTaskPause			( NULL			),
+	_pTaskMove			( NULL			),
+	_pTaskIntelligence	( NULL			),
+	_pTaskFire			( NULL			),
+	_pTaskCalcAM		( NULL			),
+	_pTankTop			( NULL			),
+	_pTankBottom		( NULL			),
+	_pIntelligence		( NULL			),
+	_fRadius			( 1.0f			),
+	_unIntType			( unIntType		),
+	_life				( Life			),
+	_Destroyed			( FALSE			)
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
 	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
@@ -89,7 +93,6 @@ CTank::~CTank()
 	SAFE_DELETE(_pTankBottom);
 	release();
 #ifdef _DEBUG
-//	Cnt--;
 	if(debugMesh != 0)
 	{
 		debugMesh->Release();
@@ -115,7 +118,9 @@ CTank::CTank(const CTank& src)
 	_pTankBottom		( new CTankBottom(*src._pTankBottom)),
 	_pIntelligence		( NULL								),
 	_fRadius			( src._fRadius						),
-	_unIntType			( src._unIntType					)
+	_unIntType			( src._unIntType					),
+	_life				( src._life							),
+	_Destroyed			( FALSE								)
 {
 
 	//	思考設定
@@ -138,7 +143,6 @@ CTank::CTank(const CTank& src)
 #ifdef _DEBUG
 	debugMesh = NULL;
 	D3DXCreateSphere(D3DDEVICE,_fRadius,10,5,&debugMesh,NULL);
-	Cnt++;
 #endif
 }
 
@@ -216,8 +220,7 @@ void CTank::draw()
 
 	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
 
-	if(debugMesh != NULL)
-		debugMesh->DrawSubset(0);
+	debugMesh->DrawSubset(0);
 	static BOOL flg = TRUE;
 	uint x;
 	uint y;
@@ -284,7 +287,8 @@ void CTank::move()
 /***********************************************************************/
 void CTank::fire()
 {
-	_pTankTop->fire();
+	if(_pIntelligence->getFireFlg())
+		_pTankTop->fire();
 }
 
 void CTank::calcMove()
@@ -294,9 +298,9 @@ void CTank::calcMove()
 
 
 /***********************************************************************/
-/*! @brief 
+/*! @brief 戦車とのあたり判定
  * 
- *  @param[in,out] pTank 
+ *  @param[in] pTank 
  *  @retval void
  */
 /***********************************************************************/
@@ -348,141 +352,31 @@ void CTank::hitTestTank( CTank* pTank)
 //		v1 = v2;
 //		v2 = vBak;
 	}
-*/
+	*/
 	_pTankBottom->setMoveVec(v1ref[0]);
 	pTank->setMoveVec(v1ref[1]);
 }
 
+
+/***********************************************************************/
+/*! @brief 弾とのあたり判定
+ * 
+ *  @param[in] pShell	弾 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTank::hitTestShell(CShell* pShell)
 {
-	_DeleteFlg = TRUE;
+	//	ライフ減算
+	_life -= pShell->getPower();
+
+	//	耐久切れで破壊
+	if(_life <= 0)
+		_DeleteFlg = TRUE;
 }
 
 void CTank::hitTestWall()
 {
-
-	//	立っている場所を知る
-	uint x;
-	uint y;
-	uint x2;
-	uint y2;
-	float tx = _pTankBottom->getWMat()->_41;
-	float ty = _pTankBottom->getWMat()->_43;
-	float tx2 = tx + _pTankBottom->getMoveVec()->x;
-	float ty2 = ty + _pTankBottom->getMoveVec()->z;
-	_StageData->step(&x,&y,tx,ty);
-
-	_StageData->step(&x2,&y2,tx,ty);
-
-
-	//	壁の情報を取得
-	RECT WallFlg;
-	_StageData->wallFlg(&WallFlg,x,y);
-
-	const TILE tile[MAX_DATA][MAX_DATA];
-	_StageData->getTile(tile);
-
-	float hitX;
-	float hitY;
-
-	float f = 500.0f / 16.0f * 0.5f;
-
-	const float top		= tile[x][y].posY + f - 1.0f;
-	const float left	= tile[x][y].posX - f + 1.0f;
-	const float bottom	= tile[x][y+1].posY +  f + 1.0f;
-	const float right	= tile[x+1][y].posX -  f - 1.0f;
-
-
-	D3DXVECTOR3 NewV;
-	NewV.x = 0;
-	NewV.y = 0;
-	NewV.z = 0;
-
-	const float ref = 2.0f;
-
-	//	top
-	if(WallFlg.top)
-	{
-		/*
-		flg = LineToLine(
-			&hitX,
-			&hitY,
-			tile[x][y].posX,tile[x][y].posY,
-			tile[x+1][y].posX,tile[x+1][y].posY,
-			tx,ty,
-			tx + _pTankBottom->getMoveVec()->x,
-			ty + _pTankBottom->getMoveVec()->z);
-			*/
-		if(top < ty)
-		{
-			_pTankBottom->setPos(tx,top );
-			NewV.x = _pTankBottom->getMoveVec()->x;
-			NewV.z = -_pTankBottom->getMoveVec()->z;
-			_pTankBottom->setMoveVec(NewV);
-		}
-	}
-	//	left
-	if(WallFlg.left)
-	{
-		/*
-		flg = LineToLine(
-			&hitX,
-			&hitY,
-			tile[x][y].posX,tile[x][y].posY,
-			tile[x][y+1].posX,tile[x][y+1].posY,
-			tx,ty,
-			tx + _pTankBottom->getMoveVec()->x,
-			ty + _pTankBottom->getMoveVec()->z);
-			*/
-		if(left > tx)
-		{
-			_pTankBottom->setPos(left,ty);
-			NewV.x = -_pTankBottom->getMoveVec()->x;
-			NewV.z = _pTankBottom->getMoveVec()->z;
-			_pTankBottom->setMoveVec(NewV);
-		}
-	}
-	//	bottom
-	if(WallFlg.bottom)
-	{
-		/*
-		flg = LineToLine(
-			&hitX,
-			&hitY,
-			tile[x][y+1].posX,tile[x][y+1].posY,
-			tile[x+1][y+1].posX,tile[x+1][y+1].posY,
-			tx,ty,
-			tx + _pTankBottom->getMoveVec()->x,
-			ty + _pTankBottom->getMoveVec()->z);*/
-		if( bottom >= ty2 && bottom <= ty)
-		{
-			_pTankBottom->setPos(tx,bottom);
-			NewV.x = _pTankBottom->getMoveVec()->x;
-			NewV.z = -_pTankBottom->getMoveVec()->z;
-			_pTankBottom->setMoveVec(NewV);
-		}
-	}
-	//	right
-	if(WallFlg.right)
-	{
-		/*
-		flg = LineToLine(
-			&hitX,
-			&hitY,
-			tile[x+1][y].posX,tile[x+1][y].posY,
-			tile[x+1][y+1].posX,tile[x+1][y+1].posY,
-			tx,ty,
-			tx + _pTankBottom->getMoveVec()->x,
-			ty + _pTankBottom->getMoveVec()->z);	
-			*/
-		if( right <= tx2 && right >= tx)
-		{
-			_pTankBottom->setPos(right,ty);
-			NewV.x = -_pTankBottom->getMoveVec()->x;
-			NewV.z = _pTankBottom->getMoveVec()->z;
-			_pTankBottom->setMoveVec(NewV);
-		}
-	}
 }
 
 /***********************************************************************/
@@ -517,16 +411,6 @@ const float CTank::getRadius()
 	return _fRadius;
 }
 
-/***********************************************************************/
-/*! @brief 
- * 
- *  @retval const float 
- */
-/***********************************************************************/
-const float	CTank::getMass()
-{
-	return _fMass;
-}
 
 
 /***********************************************************************/

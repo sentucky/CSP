@@ -34,6 +34,12 @@ typedef struct{
 	float posX;
 	float posY;
 }OUTPUT;
+
+typedef struct{
+	int no;
+	D3DXVECTOR3 pos;
+}OBJ;
+
 #pragma pack (pop)
 
 #define CSTAGEDATA		CStageData::GetInstance()
@@ -60,13 +66,15 @@ struct LINE{
 
 };
 
+
+
 #define FVF_LINE	( D3DFVF_XYZ | D3DFVF_DIFFUSE )
 
 
 
 class CStageData
 {
-	public:
+public:
 		//コンストラクタ
 		CStageData(const char* stageDataPath);
 
@@ -77,7 +85,11 @@ class CStageData
 
 private:
 		void Init();
+
+		void update();
+
 		void Load(const char* stageDataPath);
+
 		void initwall(TILE tile[][16]);
 
 public:
@@ -95,10 +107,15 @@ private:
 		//===========================
 		// メンバ変数 - 非公開
 		//===========================
-		int rot;
-		TILE tile[MAX_DATA][MAX_DATA];
-		BOOL LINE2[2][MAX_DATA+1][MAX_DATA + 1];
+		OUTPUT tile[MAX_DATA][MAX_DATA];
 		int rootNum;
+
+		D3DXVECTOR2 root[512];
+		D3DXVECTOR3 vec;
+		CRect
+
+
+		BOOL LINE2[2][MAX_DATA+1][MAX_DATA + 1];
 		static CSprite*	pSprite[6];
 		D3DXVECTOR2 root[512];
 		TILE* StartTile;
