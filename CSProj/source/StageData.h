@@ -20,6 +20,13 @@
 //================================================================================
 #pragma once
 
+#include "CSingleton.h"
+#include "common.h"
+#include "d3dx9.h"
+#include "d3d9.h"
+#include "Rect.h"
+
+
 typedef struct{
 	int no;
 	int rot;
@@ -49,10 +56,6 @@ typedef struct{
 //================================================================================
 // インクルード
 //================================================================================
-#include "CSingleton.h"
-#include "common.h"
-#include "d3dx9.h"
-#include "d3d9.h"
 
 class CSprite;
 
@@ -60,10 +63,11 @@ class CSprite;
 // クラス定義
 //	要素
 //================================================================================
-struct LINE{
-	D3DXVECTOR3 vtx;
-	D3DCOLOR	color;
 
+struct LINE
+{
+	D3DXVECTOR3 vtx;
+	D3DCOLOR diffuse;
 };
 
 
@@ -86,11 +90,11 @@ public:
 private:
 		void Init();
 
-		void update();
+		void Update();
 
 		void Load(const char* stageDataPath);
 
-		void initwall(TILE tile[][16]);
+		void initwall(OUTPUT tile[MAX_DATA][MAX_DATA]);
 
 public:
 		void wallFlg(RECT* pOutWallFlg,uint TileX,uint TileY)const ;
@@ -99,8 +103,8 @@ public:
 		uint* yOut,
 		const float x,
 		const float z)const ;
-	const TILE* startTile()const;
-	const void getTile(const TILE ary[MAX_DATA][MAX_DATA])const;
+	const OUTPUT* startTile()const;
+	const void getTile(const OUTPUT ary[MAX_DATA][MAX_DATA])const;
 
 
 private:
@@ -112,13 +116,18 @@ private:
 
 		D3DXVECTOR2 root[512];
 		D3DXVECTOR3 vec;
-		CRect
+		CRect draw;
+//		C3DObject* draw2;
 
 
 		BOOL LINE2[2][MAX_DATA+1][MAX_DATA + 1];
+
 		static CSprite*	pSprite[6];
-		D3DXVECTOR2 root[512];
-		TILE* StartTile;
-		LINE line[512];
+		int objNum;
+		int type;
+		OBJ obj[512];
+		int target;
+
+		OUTPUT* StartTile;
 };
 

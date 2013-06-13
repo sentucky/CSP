@@ -61,19 +61,16 @@ CSprite*	CStageData::pSprite[6] = {NULL,NULL,NULL,NULL,NULL,NULL,};
  */
 /***********************************************************************/
 CStageData::CStageData(const char* stageDataPath)
-	:rot(0),
-	rootNum(0)
+	:rootNum(0)
 {
-	ZeroMemory(LINE2,sizeof(LINE2));
-	Init();
-	Load(stageDataPath);
-
 	pSprite[0] = SPRITEFACTORY->create(TEXKEY::TILE01());
 	pSprite[1] = SPRITEFACTORY->create(TEXKEY::TILE02());
 	pSprite[2] = SPRITEFACTORY->create(TEXKEY::TILE03());
 	pSprite[3] = SPRITEFACTORY->create(TEXKEY::TILE04());
 	pSprite[4] = SPRITEFACTORY->create(TEXKEY::TILE05());
 	pSprite[5] = SPRITEFACTORY->create(TEXKEY::TILE06());
+	Init();
+	initwall(tile);
 }
 
 //デストラクタ
@@ -97,6 +94,7 @@ CStageData::~CStageData()
 /***********************************************************************/
 void CStageData::Init()
 {
+	/*
 	int i,j;
 	const float haba = (500.0f / (float)MAX_DATA);
 
@@ -110,15 +108,51 @@ void CStageData::Init()
 			tile[i][j].posY = haba * j - 250.0f;// + haba * 0.5f;
 		}
 	}
-	
-	
-	
 	for (i = 0 ; i < 512 ; i++)
 	{
 		root[i].x = 0.0f;
 		root[i].y = 0.0f;
 	}
+	*/
+	vec = D3DXVECTOR3(0.0f,0.0f,0.0f);
+	
+	FILE* fp;
+	fp = fopen("data/stage/stageData00.dat","rb");
+
+//	draw.SetSize((500.0f / (float)MAX_DATA),(500.0f / (float)MAX_DATA));
+//	draw.SetTexture(CTEXTURE->GetTexture("001"));
+	
+	int a;
+	fread(&a,sizeof(int),1,fp);
+
+	fread(tile,sizeof(OUTPUT),MAX_DATA * MAX_DATA,fp);
+
+	fread(&rootNum,sizeof(int),1,fp);
+	fread(root,sizeof(D3DXVECTOR2),rootNum,fp);
+	
+	fclose(fp);
+
+	for(int i = 0; i< 16; i++)
+		for(int j = 0; j< 16; j++)
+		{
+			if(tile[j][i].no == 3)
+			{
+				StartTile = &(tile[j][i]);
+			}
+		}
+	objNum = 0;
+	type = 0;
+	for (int i = 0 ; i < 512 ; i++){
+		obj[i].no = -1;
+	}
+//	draw2 = C3DOBJECTMANAGER->Get3DObject("オブジェ");
 }
+
+
+void CStageData::Update()
+{
+}
+
 
 /***********************************************************************/
 /*! @brief 
@@ -128,6 +162,7 @@ void CStageData::Init()
 /***********************************************************************/
 void CStageData::Draw()
 {
+	/*
 	int i,j;
 	static float rot;
 	
@@ -168,7 +203,78 @@ void CStageData::Draw()
 
 	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,TRUE);
 	D3DDEVICE->SetRenderState(D3DRS_ZENABLE,TRUE);
+	*/
+	D3DXMATRIXA16 matPos;
+	D3DXMATRIXA16 matRot;
+	int i,j;
 
+	for (i = 0 ; i < MAX_DATA ; i++){
+		for (j = 0 ; j < MAX_DATA ; j++){
+/*
+			if (i % 2 - j % 2)draw.SetTexture(CTEXTURE->GetTexture("001"));
+			else draw.SetTexture(CTEXTURE->GetTexture("002"));
+			
+			if (tile[i][j].no == 1)draw.SetTexture(CTEXTURE->GetTexture("004"));
+			if (tile[i][j].no == 2)draw.SetTexture(CTEXTURE->GetTexture("005"));
+			if (tile[i][j].no == 3)draw.SetTexture(CTEXTURE->GetTexture("006"));
+*/
+			D3DXMatrixRotationYawPitchRoll(&matRot,tile[i][j].rot,-D3DX_PI / 2.0f,0.0f);
+			D3DXMatrixScaling(&matPos,0.12f,0.12f,0.12f);
+			matRot *= matPos;
+			D3DXMatrixTranslation(&matPos,tile[i][j].posX,0.0f,tile[i][j].posY);
+			matRot *= matPos;
+			D3DDEVICE->SetTransform(D3DTS_WORLD,&matRot);
+//			draw.Draw();
+			pSprite[tile[i][j].no]->draw(
+				0,
+				&matRot,
+				CCamera::getMatView());
+		}
+	}
+	
+	LINE line[512];
+
+	for (i = 0 ; i < rootNum ; i++){
+		line[i].vtx.x = root[i].x;
+		line[i].vtx.y = 0.1f;
+		line[i].vtx.z = root[i].y;
+		line[i].diffuse = D3DXCOLOR(1.0f,0.0f,0.0f,1.0f);
+	}
+
+	
+	D3DDEVICE->SetFVF(FVF_LINE);
+	D3DDEVICE->SetTexture(0,NULL);
+	static float size = 5.0f;
+	D3DXMatrixIdentity(&matRot);
+	D3DDEVICE->SetTransform(D3DTS_WORLD,&matRot);
+	D3DDEVICE->SetRenderState(D3DRS_POINTSIZE,*((DWORD*)&size));
+	D3DDEVICE->DrawPrimitiveUP(D3DPT_LINESTRIP,rootNum - 1,&line[0],sizeof(LINE));
+	D3DDEVICE->DrawPrimitiveUP(D3DPT_POINTLIST,rootNum,&line[0],sizeof(LINE));
+/*	
+	//ここからオブジェ
+	if (type == 0)draw2->SetMesh(CMESH->GetMesh("001"));
+	if (type == 1)draw2->SetMesh(CMESH->GetMesh("002"));
+	if (type == 2)draw2->SetMesh(CMESH->GetMesh("003"));
+	
+	D3DDEVICE->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	for (i = 0 ; i < objNum ; i++){
+		draw2->SetPos(obj[i].pos);
+		if (obj[i].no == 0)draw2->SetMesh(CMESH->GetMesh("001"));
+		if (obj[i].no == 1)draw2->SetMesh(CMESH->GetMesh("002"));
+		if (obj[i].no == 2)draw2->SetMesh(CMESH->GetMesh("003"));
+		draw2->Update();
+		if (i == target)
+			draw2->Draw(1);
+		else
+			draw2->Draw(3);
+	}
+	draw2->SetPos(vec);
+	draw2->Update();
+	draw2->Draw(0);
+
+	CDIRECTXDEVICE->SetRenderState(D3DRS_LIGHTING, FALSE);
+	*/
 }
 
 
@@ -181,65 +287,11 @@ void CStageData::Draw()
 /***********************************************************************/
 void CStageData::Load(const char* stageDataPath)
 {
-	FILE* fp;
-	fp = fopen(stageDataPath,"rb");
-	
-	int a;
-	fread(&a,sizeof(int),1,fp);
-
-	OUTPUT out[MAX_DATA][MAX_DATA];
-	fread(out,sizeof(OUTPUT),MAX_DATA * MAX_DATA,fp);
-	int i,j;
-	for (i = 0 ; i < MAX_DATA ; i++)
-	{
-		for (j = 0 ; j < MAX_DATA ; j++)
-		{
-			tile[i][j].posY *= -1;
-
-			tile[i][j].no = out[i][j].no;
-			if(tile[i][j].no == 3)
-			{
-				StartTile = &(tile[i][j]);
-			}
-			if (out[i][j].rot >= (3.14f / 2.0f) * 3.0f)tile[i][j].rot = 3;
-			else if (out[i][j].rot >= (3.14f / 2.0f) * 2.0f)tile[i][j].rot = 2;
-			else if (out[i][j].rot >= (3.14f / 2.0f) * 1.0f)tile[i][j].rot = 1;
-			else tile[i][j].rot = 0;
-		}
-	}
-
-	initwall(tile);
-
-	fread(&rootNum,sizeof(int),1,fp);
-	fread(root,sizeof(D3DXVECTOR2),rootNum,fp);
-	
-	for (i = 0 ; i < 512 ; i++)
-	{
-		root[i].x += 300.0f;
-		root[i].y += 300.0f;
-	}
-	
-	float x;
-	float y;
-	for(i = 0; i < 16; i++)
-	{
-		for(j = 0; j < 8;j++)
-		{
-			/*
-			x = tile[i][j].no;
-			tile[i][j].no = tile[i][16 - j].no;
-			tile[i][16 - j].no = x;
-			//*/
-		}
-	}
-//	*/
-	fclose(fp);
 }
 
-void CStageData::initwall(TILE tile2[][16])
+void CStageData::initwall(OUTPUT tile2[MAX_DATA][MAX_DATA])
 {
 	int i,j;
-	int rot;
 
 	BOOL* top		= NULL;
 	BOOL* left		= NULL;
@@ -247,14 +299,18 @@ void CStageData::initwall(TILE tile2[][16])
 	BOOL* right		= NULL;
 	RECT workRect;
 	BOOL work;
+
 	for (i = 0 ; i < MAX_DATA ; i++)
 	{
 		for (j = 0 ; j < MAX_DATA ; j++)
 		{
+			workRect.top = workRect.left = workRect.bottom = workRect.right = TRUE;
 			top		= &LINE2[1][i][j];	//	トップライン
 			left	= &LINE2[0][i][j];	//	レフトライン	
 			bottom	= &LINE2[1][i][j+1];	//	ボトムライン
 			right	= &LINE2[0][i+1][j];	//	ライトライン
+
+			*top = *left = *bottom = *right = TRUE;
 
 			tile[i][j].rot;
 			//	壁配置
@@ -263,70 +319,69 @@ void CStageData::initwall(TILE tile2[][16])
 			case 1://	縦
 			case 3://	スタート
 				workRect.top = workRect.bottom = FALSE;
-				workRect.left = workRect.right = TRUE;
 				break;
 			case 2://	右カーブ
-				workRect.top = workRect.left = TRUE;
 				workRect.bottom = workRect.right = FALSE;
 				break;
-			default:workRect.top = workRect.left = workRect.bottom = workRect.right = TRUE;break;
 			}
 
 			//	回転
-			switch(tile[i][j].rot)
+			if(tile[i][j].rot / 3.14f >= 1.5f)
 			{
-			case 1://	90
 				work = workRect.top;
-				workRect.top = workRect.left;
-				workRect.left = workRect.bottom;
-				workRect.bottom = workRect.right;
-				workRect.right = work;
-				break;
-			case 2://	180
+				workRect.top = workRect.right;
+				workRect.right = workRect.bottom;
+				workRect.bottom = workRect.left;
+				workRect.left = work;
+			}
+			else if(tile[i][j].rot / 3.14f >= 1.0f)
+			{
 				work			= workRect.bottom;
 				workRect.bottom = workRect.top;
 				workRect.top	= work;
 				work			= workRect.left;
 				workRect.left	= workRect.right;
 				workRect.right	= work;
-				break;
-			case 3://	270
-				work = workRect.top;
-				workRect.top = workRect.right;
-				workRect.right = workRect.bottom;
-				workRect.bottom = workRect.left;
-				workRect.left = work;
-				break;
-			default:;break;
 			}
-			*top	= workRect.top;
-			*left	= workRect.left;
-			*bottom	= workRect.bottom;
-			*right	= workRect.right;
+			else if(tile[i][j].rot / 3.14f >= 0.5f)
+			{
+				work = workRect.top;
+				workRect.top = workRect.left;
+				workRect.left = workRect.bottom;
+				workRect.bottom = workRect.right;
+				workRect.right = work;
+			}
+
+			//	壁の有無フラグ設定
+			if(workRect.top	== FALSE)
+				*top	= workRect.top;
+			if(workRect.left	== FALSE)
+				*left	= workRect.left;
+			if(workRect.bottom	== FALSE)
+				*bottom= workRect.bottom;
+			if(workRect.right	== FALSE)
+				*right	= workRect.right;
 		}
-		LINE2[1][i][j] = TRUE;	
-		LINE2[0][i][j] = TRUE;	
-		LINE2[1][i][j+1] = TRUE;
-		LINE2[0][i+1][j] = TRUE;
 	}
-	for (j = 0 ; j < MAX_DATA ; j++)
-	{
-		LINE2[1][i][j] = TRUE;	
-		LINE2[0][i][j] = TRUE;	
-		LINE2[1][i][j+1] = TRUE;
-		LINE2[0][i+1][j] = TRUE;
+	//	外縁の設定
+	for (j = 0 ; j < MAX_DATA+1 ; j++)
+	{		
+		LINE2[1][j][16] = TRUE;	
+		LINE2[0][j][16] = TRUE;	
+		LINE2[1][16][j] = TRUE;	
+		LINE2[0][16][j] = TRUE;	
 	}
 
 }
 
 
-const TILE* CStageData::startTile()const
+const OUTPUT* CStageData::startTile()const
 {
 	return StartTile;
 }
 
 
-const void CStageData::getTile(const TILE ary[MAX_DATA][MAX_DATA])const
+const void CStageData::getTile(const OUTPUT ary[MAX_DATA][MAX_DATA])const
 {
 	 memcpy((void*)ary,(void*)tile,sizeof(tile));
 }
@@ -352,10 +407,15 @@ void CStageData::step(
 	*zOut = 8;
 
 	float ary[17]={0,};
-	ary[0] = tile[0][0].posX;
-	for(uint Cnt = 0; Cnt < MAX_DATA+1; Cnt+=1)
+
+
+	static const float kankaku = 500.0f / MAX_DATA;
+
+	ary[0] = -250.0f;
+
+	for(uint Cnt = 1; Cnt < MAX_DATA+1; Cnt+=1)
 	{
-		ary[Cnt] = 500.0f / MAX_DATA * Cnt + ary[0] - 500.0f / MAX_DATA * 0.25f;
+		ary[Cnt] = kankaku * Cnt + ary[0];
 	}
 
 
@@ -383,8 +443,20 @@ void CStageData::step(
 	}
 	*xOut = mid;
 
-min = 0;
-max = MAX_DATA;
+	min = 0;
+	max = MAX_DATA;
+
+	ary[0] = -250.0f;
+
+
+	for(uint Cnt = 1; Cnt < MAX_DATA+1; Cnt+=1)
+	{
+		ary[Cnt] = kankaku * Cnt + ary[0];
+	}
+
+
+
+	float fff=0.0;
 	while(min<=max )
 	{
 		//	一致
@@ -403,6 +475,6 @@ max = MAX_DATA;
 			max = mid-1;
 		}
 	}
-	*zOut = 16 - mid;
+	*zOut = 15 - mid;
 
 }

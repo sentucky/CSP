@@ -110,10 +110,11 @@ void CSceneGame::init()
 #ifdef _DEBUG
 	CTank*			pTank2 = NULL;
 //*
-	TILE t[16][16];
+	OUTPUT t[16][16];
 	pStage->getStageData()->getTile(t);
 	CPin* pin = NULL;
 	int n2 = 0;
+	/*
 	for(int n = 0; n < 8; n++)
 	{
 	//	for( = 0; n2 < 8; n2++)
@@ -191,8 +192,14 @@ void CSceneGame::draw()
 //	CTankIntDummy::Debug();
 	
 #ifdef _DEBUG
-//	static RECTEX fpspos(0,0,0,0);
-//	FONT->DrawInt("FPS:",CTIMER->getFPS(),fpspos);
+	static RECTEX fpspos(0,0,0,0);
+	FONT->DrawInt("FPS:",CTIMER->getFPS(),fpspos);
+	static RECTEX ps(0,16,0,0);
+	static D3DXVECTOR3 Mouse3DPos;
+	MOUSE.mousePoint3D(&Mouse3DPos,0);
+	FONT->DrawInt("MOUSEX:",Mouse3DPos.x,RECTEX(0,16,0,0));
+	ps.left = 50;		   
+	FONT->DrawInt("MOUSEZ:",Mouse3DPos.z,RECTEX(150,16,0,0));
    
 #endif
 }
@@ -233,7 +240,7 @@ void CSceneGame::standby(CStage* pStage)
 
 	//	開始位置のタイルを取得したい
 	//....スタート位置タイル取得
-	const TILE* pStTile= pStage->getStageData()->startTile();
+	const OUTPUT* pStTile= pStage->getStageData()->startTile();
 
 	
 	const float moveX = 1.0f;

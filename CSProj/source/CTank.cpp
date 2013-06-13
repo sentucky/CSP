@@ -232,7 +232,8 @@ void CTank::draw()
 		FONT->DrawFloat("TPOS",_pTankBottom->getWMat()->_41,RECTEX(0,48,0,0));
 		FONT->DrawFloat("TPOS",_pTankBottom->getWMat()->_43,RECTEX(0,64,0,0));
 	}
-	TILE tile[16][16];
+
+	OUTPUT tile[16][16];
 	_StageData->getTile(tile);
 
 	RECT a;

@@ -30,6 +30,8 @@
 CTexture::CTexture(const char* pszFilePath)
 {
 	setFilePath(pszFilePath);
+
+
 }
 
 //===================================================================

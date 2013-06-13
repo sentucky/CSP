@@ -44,6 +44,7 @@ void CHitTestTankToWall::disableTask()
 
 void CHitTestTankToWall::hitTest()
 {
+
 	CListItem<CObjBase*>* run = _pTankList->begin();	
 	const CListItem<CObjBase*>* end = _pTankList->end();
 	CTank* pTank = NULL;
@@ -74,7 +75,7 @@ void CHitTestTankToWall::hitTest()
 		RECT WallFlg;
 		_StageData->wallFlg(&WallFlg,x,y);
 
-		const TILE tile[MAX_DATA][MAX_DATA];
+		const OUTPUT tile[MAX_DATA][MAX_DATA];
 		_StageData->getTile(tile);
 
 		/*
@@ -83,10 +84,10 @@ void CHitTestTankToWall::hitTest()
 		//*/
 		const float f = 500.0f / 16.0f * 0.5f;
 
-		const float top		= tile[x][y].posY + f - 1.0f;
-		const float left	= tile[x][y].posX - f + 1.0f;
-		const float bottom	= tile[x][y+1].posY +  f + 1.0f;
-		const float right	= tile[x+1][y].posX -  f - 1.0f;
+		const float top		= tile[x][y].posY + f - 1.0f;		//	上辺位置に合わせる
+		const float left	= tile[x][y].posX - f + 1.0f;		//	左辺位置に合わせる
+		const float bottom	= tile[x][y+1].posY +  f + 1.0f;	//	下辺位置に合わせr
+		const float right	= tile[x+1][y].posX -  f - 1.0f;	//	右辺位置に合わせる
 
 
 
