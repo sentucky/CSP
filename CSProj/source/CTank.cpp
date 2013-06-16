@@ -48,7 +48,7 @@ const CStageData* CTank::_StageData = NULL;
  * 
  *  @param[in] pMeshTop 	タンクの機体上部のモデル
  *  @param[in] pMeshBottom	タンクの機体下部のモデル
- *  @param[in] unIntType	タンクの思考タイプ
+ *  @param[in] unThisType	タンクの思考タイプ
  *  @param[in] fSpeed 		移動速度
  *  @param[in] fTurnSpeed 	旋回速度
  */
@@ -56,7 +56,7 @@ const CStageData* CTank::_StageData = NULL;
 CTank::CTank(
 	CMesh* pMeshTop,
 	CMesh* pMeshBottom,
-	uint   unIntType,
+	uint   unThisType,
 	CShell* pShellProto,
 	const float fMoveSpeed,
 	const float fTurnSpeed,
@@ -69,13 +69,17 @@ CTank::CTank(
 	_pTaskIntelligence	( NULL			),
 	_pTaskFire			( NULL			),
 	_pTaskCalcAM		( NULL			),
+	_pTaskRap			( NULL			),
 	_pTankTop			( NULL			),
 	_pTankBottom		( NULL			),
 	_pIntelligence		( NULL			),
 	_fRadius			( 1.0f			),
-	_unIntType			( unIntType		),
+	_unThisType			( unThisType		),
 	_life				( Life			),
-	_Destroyed			( FALSE			)
+	_radiate			( 0				),
+	_MaxRadiateTime		( 120			),
+	_Destroyed			( FALSE			),
+	_GoalFlg			( FALSE	)
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
 	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
@@ -114,21 +118,25 @@ CTank::CTank(const CTank& src)
 	_pTaskIntelligence	( NULL								),
 	_pTaskFire			( NULL								),
 	_pTaskCalcAM		( NULL								),
+	_pTaskRap			( NULL								),
 	_pTankTop			( new CTankTop(*src._pTankTop)		),
 	_pTankBottom		( new CTankBottom(*src._pTankBottom)),
 	_pIntelligence		( NULL								),
 	_fRadius			( src._fRadius						),
-	_unIntType			( src._unIntType					),
+	_unThisType			( src._unThisType					),
 	_life				( src._life							),
-	_Destroyed			( FALSE								)
+	_radiate			(0),
+	_MaxRadiateTime		(120),
+	_Destroyed			( FALSE	),
+	_GoalFlg			( FALSE	)
 {
 
 	//	思考設定
-	switch(_unIntType)
+	switch(_unThisType)
 	{
-	case  0:_pIntelligence = new CTankIntPlayer(this);	break;
+	case  TYPE_PLAYER:_pIntelligence = new CTankIntPlayer(this);	break;
 #ifdef _DEBUG
-	case -1:_pIntelligence = new CTankIntDummy(this);	break;
+	case TYPE_ENEMY01:_pIntelligence = new CTankIntDummy(this);	break;
 #endif
 	}
 	_pTankTop->setIntelligence(_pIntelligence);
@@ -173,6 +181,12 @@ void CTank::enableTask()
 	CTaskMng::push<CTank>(TASKKEY::INTELLIGENCE(),	this,&CTank::intelligence,	&_pTaskIntelligence	);
 	CTaskMng::push<CTank>(TASKKEY::FIRE(),			this,&CTank::fire,	&_pTaskFire);
 	CTaskMng::push<CTank>(TASKKEY::CALCACTIVEMOVE(),this,&CTank::calcMove,&_pTaskCalcAM);
+
+	switch(_unThisType)
+	{
+	case TYPE_ENEMY01:CTaskMng::push<CTank>(TASKKEY::RAP(),this,&CTank::eRap, &_pTaskRap);break;
+	case TYPE_PLAYER:CTaskMng::push<CTank>(TASKKEY::RAP(),this,&CTank::pRap, &_pTaskRap);break;
+	}
 }
 
 /***********************************************************************/
@@ -189,6 +203,7 @@ void CTank::disableTask()
 	CTaskMng::erase(&_pTaskIntelligence);
 	CTaskMng::erase(&_pTaskFire);
 	CTaskMng::erase(&_pTaskCalcAM);
+	CTaskMng::erase(&_pTaskRap);
 }
 
 /***********************************************************************/
@@ -245,6 +260,7 @@ void CTank::draw()
 	flg ^= TRUE;
 	FONT->DrawFloat("VecX",_pTankBottom->getMoveVec()->x,RECTEX(0,80,0,0));
 	FONT->DrawFloat("VecZ",_pTankBottom->getMoveVec()->z,RECTEX(0,96,0,0));
+	FONT->DrawInt("RadiateTime",_radiate,RECTEX(0,112+16,0,0));
 #endif
 }
 
@@ -288,13 +304,64 @@ void CTank::move()
 /***********************************************************************/
 void CTank::fire()
 {
-	if(_pIntelligence->getFireFlg())
+	//	放熱
+	if(_radiate > 0 )
+	{
+		--_radiate;
+	}
+
+	//	発砲
+	if(_pIntelligence->getFireFlg() && _radiate <= 0)
+	{
 		_pTankTop->fire();
+		_radiate = _MaxRadiateTime;
+	}
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 void CTank::calcMove()
 {
 	_pTankBottom->clacMove();
+}
+
+
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
+void CTank::eRap()				///<	敵ラップ
+{
+	/*
+	 *	ここに処理
+	 */
+	const OUTPUT* StData = _StageData->getStartTile();
+	const OUTPUT* ScData = _StageData->getSecondTile();
+	const OUTPUT* LaData = _StageData->getLastTile();
+	const D3DXVECTOR2* root = _StageData->getRoot();
+}
+
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
+void CTank::pRap()				///<	自機ラップ
+{
+	/*
+	 *	ここに処理
+	 */
+	const OUTPUT* StData = _StageData->getStartTile();
+	const OUTPUT* ScData = _StageData->getSecondTile();
+	const OUTPUT* LaData = _StageData->getLastTile();
+	const D3DXVECTOR2* root = _StageData->getRoot();
 }
 
 
@@ -313,7 +380,7 @@ void CTank::hitTestTank( CTank* pTank)
 	D3DXVECTOR3 v1ref[2];
 	const D3DXVECTOR3* v1 = _pTankBottom->getMoveVec();
 	const D3DXVECTOR3* v2 = pTank->getMoveVec();
-	const D3DXVECTOR3* vBak;
+
 
 	const D3DXMATRIXA16* pmatW1 = _pTankBottom->getWMat();
 	const D3DXMATRIXA16* pmatW2 = pTank->getMatBottom();
@@ -376,6 +443,12 @@ void CTank::hitTestShell(CShell* pShell)
 		_DeleteFlg = TRUE;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 void CTank::hitTestWall()
 {
 }
@@ -440,6 +513,12 @@ void CTank::setMoveVec( const D3DXVECTOR3 *MoveVec )
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 void CTank::setPos(const float x,const float z)
 {
 	_pTankBottom->setPos(x,z);

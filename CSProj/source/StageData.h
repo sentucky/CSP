@@ -71,7 +71,6 @@ struct LINE
 };
 
 
-
 #define FVF_LINE	( D3DFVF_XYZ | D3DFVF_DIFFUSE )
 
 
@@ -97,37 +96,49 @@ private:
 		void initwall(OUTPUT tile[MAX_DATA][MAX_DATA]);
 
 public:
-		void wallFlg(RECT* pOutWallFlg,uint TileX,uint TileY)const ;
-		void step(
+	void wallFlg(RECT* pOutWallFlg,uint TileX,uint TileY)const ;
+	void step(
 		uint* xOut,
 		uint* yOut,
 		const float x,
 		const float z)const ;
-	const OUTPUT* startTile()const;
+
+	const OUTPUT* getStartTile()const;
+	const OUTPUT* getSecondTile()const;
+	const OUTPUT* getLastTile()const;
+	const D3DXVECTOR2* getRoot()const{return root;}
 	const void getTile(const OUTPUT ary[MAX_DATA][MAX_DATA])const;
 
 
+	static const int STARTPANEL = 3;
+
+
 private:
-		//===========================
-		// メンバ変数 - 非公開
-		//===========================
-		OUTPUT tile[MAX_DATA][MAX_DATA];
-		int rootNum;
+	//===========================
+	// メンバ変数 - 非公開
+	//===========================
+	OUTPUT tile[MAX_DATA][MAX_DATA];
+	int rootNum;
 
-		D3DXVECTOR2 root[512];
-		D3DXVECTOR3 vec;
-		CRect draw;
-//		C3DObject* draw2;
+	D3DXVECTOR2 root[512];
+	D3DXVECTOR3 vec;
+	CRect draw;
 
 
-		BOOL LINE2[2][MAX_DATA+1][MAX_DATA + 1];
 
-		static CSprite*	pSprite[6];
-		int objNum;
-		int type;
-		OBJ obj[512];
-		int target;
+	BOOL LINE2[2][MAX_DATA+1][MAX_DATA + 1];
+	static CSprite*	pSprite[6];
+	int objNum;
+	int type;
+	OBJ obj[512];
+	int target;
 
-		OUTPUT* StartTile;
+	OUTPUT* _StartTile;
+	OUTPUT* _SecondTile;
+	OUTPUT* _LastTile;
+
+	CSprite*	_pSprite[6];
+
 };
+
 

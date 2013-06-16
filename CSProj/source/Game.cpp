@@ -75,7 +75,7 @@ void gameInit()
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
 	ps = new CSceneGame;
-//	ps = new CSceneTitle;
+//	ps = new CSceneTestSpace;
 	pScene = ps;
 
 
@@ -92,6 +92,7 @@ void gameInit()
 	SPRITEFACTORY->registTexture(TEXKEY::TILE04(),TEXPATH::TILE04());
 	SPRITEFACTORY->registTexture(TEXKEY::TILE05(),TEXPATH::TILE05());
 	SPRITEFACTORY->registTexture(TEXKEY::TILE06(),TEXPATH::TILE06());
+	SPRITEFACTORY->registTexture(TEXKEY::ANIMETEST(),TEXPATH::ANIMETEST());
 
 
 	//	ƒƒbƒVƒ…‰Šú‰»

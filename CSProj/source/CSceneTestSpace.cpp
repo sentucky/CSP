@@ -18,6 +18,10 @@
 #include"CEffectToon.h"
 #include"CFactory.h"
 #include"CFont.h"
+
+#include"CAnimeParam.h"
+#include"CSprite.h"
+
 CMesh *TestMesh[2] = {NULL,};
 CLight* pLight;
 CCamera* pCamera;
@@ -54,6 +58,11 @@ CSceneTestSpace::~CSceneTestSpace()
  */
 /***********************************************************************/
 D3DXVECTOR4 v4lD(1.0f,1.0f,1.0f,1.0f);
+namespace stest
+{
+CAnimeParam* aparam = NULL;
+CSprite *pSprite = NULL;
+}
 /***********************************************************************/
 /*! @brief 
  * 
@@ -62,7 +71,9 @@ D3DXVECTOR4 v4lD(1.0f,1.0f,1.0f,1.0f);
 /***********************************************************************/
 void CSceneTestSpace::init()
 {
+
 	release();
+	/*
 	MESHFACTORY->registMesh(MESHKEY::YUKA(),MESHPATH::YUKA());
 	TestMesh[0] = MESHFACTORY->create(MESHKEY::YUKA());
 	TestMesh[1] = MESHFACTORY->create(MESHKEY::YUKA());
@@ -94,8 +105,12 @@ void CSceneTestSpace::init()
 	TestMesh[1]->setEffect(pEffect2);
 
 	pLight->lightON();
+	*/
 
 
+	stest::aparam = new CAnimeParam("data/animeparam/data2.dat");
+	stest::aparam->setState(PLAY_LOOP);
+	stest::pSprite = SPRITEFACTORY->create(TEXKEY::ANIMETEST());
 }
 
 /***********************************************************************/
@@ -107,7 +122,7 @@ void CSceneTestSpace::init()
 void CSceneTestSpace::update()
 {
 	CHECK_UPDATE;
-
+	/*
 	D3DXVECTOR3 Eye = pCamera->getEye();
 	if(GetAsyncKeyState('S'))
 	{
@@ -126,9 +141,11 @@ void CSceneTestSpace::update()
 		pCamera->setEyeY(Eye.y + 0.5f);
 	}
 
-
-
-	pCamera->update();
+	
+	*/
+	stest::aparam->update();
+	stest::pSprite->setUV(stest::aparam->getUV());
+	//pCamera->update();
 }
 
 
@@ -141,7 +158,12 @@ void CSceneTestSpace::update()
 void CSceneTestSpace::draw()
 {
 	CHECK_DRAW;
-
+	stest::pSprite->draw(
+		0,
+		&D3DXVECTOR3(400,320,0),
+		&D3DXVECTOR3(0,0,0),
+		&D3DXVECTOR3(1,1,0));
+	/*
 	D3DXVECTOR3 vec(0,0,-1);
 
 	static D3DXMATRIXA16 mat[2];
@@ -163,7 +185,7 @@ void CSceneTestSpace::draw()
 
 	CSCREEN->update();
 	D3DXVec3TransformCoord(&vec,&vec,&mat[0]);
-
+	
 
 	FONT->DrawFloat("x",vec.x,RECTEX(0,0,0,0));
 	FONT->DrawFloat("y",vec.y,RECTEX(0,16,0,0));
@@ -175,7 +197,7 @@ void CSceneTestSpace::draw()
 	TestMesh[1]->draw(
 		&mat[1]
 		);
-		
+		*/
 }
 
 /***********************************************************************/
@@ -186,6 +208,9 @@ void CSceneTestSpace::draw()
 /***********************************************************************/
 void CSceneTestSpace::release()
 {
+	SAFE_DELETE(stest::aparam);
+	SAFE_DELETE(stest::pSprite);
+	/*
 	SAFE_DELETE(TestMesh[0]);
 	SAFE_DELETE(TestMesh[1]);
 	SAFE_DELETE(pCamera);
@@ -193,6 +218,7 @@ void CSceneTestSpace::release()
 	SAFE_DELETE(pSprite);
 	SAFE_DELETE(pEffect);
 	SAFE_DELETE(pEffect2);
+	*/
 }
 
 /***********************************************************************/

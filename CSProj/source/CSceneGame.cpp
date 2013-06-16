@@ -197,9 +197,9 @@ void CSceneGame::draw()
 	static RECTEX ps(0,16,0,0);
 	static D3DXVECTOR3 Mouse3DPos;
 	MOUSE.mousePoint3D(&Mouse3DPos,0);
-	FONT->DrawInt("MOUSEX:",Mouse3DPos.x,RECTEX(0,16,0,0));
+	FONT->DrawFloat("MOUSEX:",Mouse3DPos.x,RECTEX(0,16,0,0));
 	ps.left = 50;		   
-	FONT->DrawInt("MOUSEZ:",Mouse3DPos.z,RECTEX(150,16,0,0));
+	FONT->DrawFloat("MOUSEZ:",Mouse3DPos.z,RECTEX(150,16,0,0));
    
 #endif
 }
@@ -240,7 +240,7 @@ void CSceneGame::standby(CStage* pStage)
 
 	//	開始位置のタイルを取得したい
 	//....スタート位置タイル取得
-	const OUTPUT* pStTile= pStage->getStageData()->startTile();
+	const OUTPUT* pStTile= pStage->getStageData()->getStartTile();
 
 	
 	const float moveX = 1.0f;

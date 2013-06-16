@@ -50,6 +50,7 @@ public:
 	static const char* TILE04();
 	static const char* TILE05();
 	static const char* TILE06();
+	static const char* ANIMETEST();
 };
 
 class TEXKEY
@@ -66,6 +67,7 @@ public:
 	static const uint TILE04();
 	static const uint TILE05();
 	static const uint TILE06();
+	static const uint ANIMETEST();
 	static const uint SUM();
 };
 
@@ -101,6 +103,7 @@ public:
 class TASKKEY
 {
 public:
+	static const uint RAP();
 	static const uint HITTEST_TANKADNTANK();
 	static const uint HITTEST_TANKTOSHELL();
 	static const uint HITTEST_TANKTOWALL();
@@ -152,5 +155,6 @@ public:
 	static const uint PIN();
 	static const uint SUM();
 };
+
 
 #endif

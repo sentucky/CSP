@@ -38,6 +38,7 @@ const char* TEXPATH::TILE03(){return "data/Stage/005.jpg";}
 const char* TEXPATH::TILE04(){return "data/Stage/006.jpg";}
 const char* TEXPATH::TILE05(){return "data/Stage/002.jpg";}
 const char* TEXPATH::TILE06(){return "data/Stage/003.jpg";}
+const char* TEXPATH::ANIMETEST(){return "data/texture/animeTextTex.png";}
 
 enum eTEXKEY{
 	TEX_FADEMASK,	//
@@ -51,6 +52,7 @@ enum eTEXKEY{
 	TEX_TILE04,
 	TEX_TILE05,
 	TEX_TILE06,
+	TEX_ANIMETEST,
 	TEX_SUM,		//
 };
 const uint TEXKEY::FADEMASK()		{	return TEX_FADEMASK;}
@@ -64,6 +66,7 @@ const uint TEXKEY::TILE03()			{	return TEX_TILE03;	}
 const uint TEXKEY::TILE04()			{	return TEX_TILE04;	}
 const uint TEXKEY::TILE05()			{	return TEX_TILE05;	}
 const uint TEXKEY::TILE06()			{	return TEX_TILE06;	}
+const uint TEXKEY::ANIMETEST()		{	return TEX_ANIMETEST;	}
 const uint TEXKEY::SUM()			{	return TEX_SUM;		}
 
 
@@ -109,9 +112,10 @@ const char* EFFECTPATH::TOON(){return "A";}
 enum eTID
 {
 	TID_INTELLIGENCE,			//
+	TID_RAP,					//
 	TID_FIRE,					//
 	TID_PAUSE,					//
-	TID_CALCACTIVEMOVE,
+	TID_CALCACTIVEMOVE,			//
 	TID_HITTEST_TANK_AND_TANK,	//
 	TID_HITTEST_TANK_TO_SHELL,	//0
 	TID_HITTEST_WALL,			//
@@ -123,6 +127,7 @@ enum eTID
 	TID_DRAW,					//
 };
 
+const uint TASKKEY::RAP(){return TID_RAP;}
 const uint TASKKEY::HITTEST_TANKADNTANK(){return TID_HITTEST_TANK_AND_TANK;}
 const uint TASKKEY::HITTEST_TANKTOSHELL(){return TID_HITTEST_TANK_TO_SHELL;}
 const uint TASKKEY::HITTEST_TANKTOWALL(){return TID_HITTEST_WALL;}

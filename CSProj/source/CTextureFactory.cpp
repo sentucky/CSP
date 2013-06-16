@@ -82,7 +82,7 @@ void CTextureFactory::reserve(const uint unReserveSize)
  *  @retval BOOL 
  */
 /***********************************************************************/
-BOOL CTextureFactory::registTexture(const int nId,const char* pszTextureFilePath)
+BOOL CTextureFactory::registTexture(const uint nId,const char* pszTextureFilePath)
 {
 	/////////////////////////
 	//	変数宣言
@@ -138,7 +138,7 @@ BOOL CTextureFactory::registTexture(const int nId,const char* pszTextureFilePath
  *  @retval BOOL 
  */
 /***********************************************************************/
-BOOL CTextureFactory::releaseTexture(const int nId)
+BOOL CTextureFactory::releaseTexture(const uint nId)
 {
 	if(_vecTexture[nId] == NULL)
 	{
@@ -177,7 +177,7 @@ BOOL CTextureFactory::releaseTexture(const int nId)
  *  @retval CTexture* 
  */
 /***********************************************************************/
-CTexture* CTextureFactory::getTexture(const int nId)
+CTexture* CTextureFactory::getTexture(const uint nId)
 {
 	/////////////////////////
 	//	確認処理
@@ -186,7 +186,7 @@ CTexture* CTextureFactory::getTexture(const int nId)
 	{
 #ifdef _DEBUG
 		char szErrorMessage[MAX_PATH];
-		sprintf(szErrorMessage,"テクスチャファクトリーキー\"%d\"が見つかりません",nId);
+		sprintf_s(szErrorMessage,"テクスチャファクトリーキー\"%d\"が見つかりません",nId);
 		MessageAlert(szErrorMessage,"error from CTextureFatory::getTexture");
 #endif
 		return NULL;

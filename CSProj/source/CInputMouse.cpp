@@ -187,8 +187,8 @@ void CInputMouse::release()
 /***********************************************************************/
 void CInputMouse::calcMouseRay()
 {
-	D3DXVECTOR3 p0(_MousePosWindow.x,_MousePosWindow.y, 0);
-	D3DXVECTOR3 p1(_MousePosWindow.x,_MousePosWindow.y, 1.0f);
+	D3DXVECTOR3 p0((float)_MousePosWindow.x,(float)_MousePosWindow.y, 0);
+	D3DXVECTOR3 p1((float)_MousePosWindow.x,(float)_MousePosWindow.y, 1.0f);
 
 	D3DVIEWPORT9 vp;
 	D3DDEVICE->GetViewport(&vp);

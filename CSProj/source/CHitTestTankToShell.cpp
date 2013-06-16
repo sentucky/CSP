@@ -44,9 +44,9 @@ void CHitTestTankToShell::disableTask()
 void CHitTestTankToShell::hitTest()
 {
 	CListItem<CObjBase*>* pRunTank = _pTankList->begin();
-	const CListItem<CObjBase*>const * pEndTank = _pTankList->end();
+	const CListItem<CObjBase*>* pEndTank = _pTankList->end();
 	CListItem<CObjBase*>* pRunShell = NULL;
-	const CListItem<CObjBase*>const * pEndShell = _pShellList->end();
+	const CListItem<CObjBase*>* pEndShell = _pShellList->end();
 
 
 	

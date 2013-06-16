@@ -32,28 +32,9 @@
 #include"const.h"
 #include"CFont.h"
 
-//================================================================================
-// クラス定義
-//================================================================================
 
-const float rotY(int nDir)
-{
-	float retval = 0;
 
-	switch(nDir)
-	{
-	case 0:				break;
-	case 1:retval = 0.5f;break;
-	case 2:retval = 1.0f;break;
-	case 3:retval = 1.5f;break;
-	}
 
-	return retval;
-}
-
-CSprite*	CStageData::pSprite[6] = {NULL,NULL,NULL,NULL,NULL,NULL,};
-
-//コンストラクタ
 /***********************************************************************/
 /*! @brief 
  * 
@@ -61,14 +42,18 @@ CSprite*	CStageData::pSprite[6] = {NULL,NULL,NULL,NULL,NULL,NULL,};
  */
 /***********************************************************************/
 CStageData::CStageData(const char* stageDataPath)
-	:rootNum(0)
+	:rootNum(0),
+	_StartTile(NULL),
+	_SecondTile(NULL),
+	_LastTile(NULL),
+	_pSprite()
 {
-	pSprite[0] = SPRITEFACTORY->create(TEXKEY::TILE01());
-	pSprite[1] = SPRITEFACTORY->create(TEXKEY::TILE02());
-	pSprite[2] = SPRITEFACTORY->create(TEXKEY::TILE03());
-	pSprite[3] = SPRITEFACTORY->create(TEXKEY::TILE04());
-	pSprite[4] = SPRITEFACTORY->create(TEXKEY::TILE05());
-	pSprite[5] = SPRITEFACTORY->create(TEXKEY::TILE06());
+	_pSprite[0] = SPRITEFACTORY->create(TEXKEY::TILE01());
+	_pSprite[1] = SPRITEFACTORY->create(TEXKEY::TILE02());
+	_pSprite[2] = SPRITEFACTORY->create(TEXKEY::TILE03());
+	_pSprite[3] = SPRITEFACTORY->create(TEXKEY::TILE04());
+	_pSprite[4] = SPRITEFACTORY->create(TEXKEY::TILE05());
+	_pSprite[5] = SPRITEFACTORY->create(TEXKEY::TILE06());
 	Init();
 	initwall(tile);
 }
@@ -83,7 +68,7 @@ CStageData::CStageData(const char* stageDataPath)
 CStageData::~CStageData()
 {
 	for(int i =0;i < 6; i++)
-		SAFE_DELETE(pSprite[i]);
+		SAFE_DELETE(_pSprite[i]);
 }
 
 /***********************************************************************/
@@ -130,14 +115,21 @@ void CStageData::Init()
 	fread(&rootNum,sizeof(int),1,fp);
 	fread(root,sizeof(D3DXVECTOR2),rootNum,fp);
 	
+	float strot;
+	int stx;
+	int sty;
+
 	fclose(fp);
 
 	for(int i = 0; i< 16; i++)
 		for(int j = 0; j< 16; j++)
 		{
-			if(tile[j][i].no == 3)
+			if(tile[j][i].no == STARTPANEL)
 			{
-				StartTile = &(tile[j][i]);
+				stx = j;
+				sty = i;
+				strot = tile[j][i].rot;
+				_StartTile = &(tile[j][i]);
 			}
 		}
 	objNum = 0;
@@ -145,10 +137,45 @@ void CStageData::Init()
 	for (int i = 0 ; i < 512 ; i++){
 		obj[i].no = -1;
 	}
+	int scx,scy,lsx,lsy;
+	if(strot >= 1.5){
+		scx = stx - 1;
+		lsx = stx + 1; 
+		scy = lsy = sty;
+	}
+	else if(strot >= 1.0f)
+	{
+		scy = sty + 1;
+		lsy = sty - 1;
+		scx = lsx = stx;
+	}
+	else if(strot >= 0.5f)
+	{
+		scx = stx + 1;
+		lsx = stx - 1; 
+		scy = lsy = sty;
+	}
+	else
+	{
+		scy = sty - 1;
+		lsy = sty + 1;
+		scx = lsx = stx;
+	}
+
+	_SecondTile = &tile[scx][scy];
+	_LastTile = &tile[lsx][lsy];
+
+
 //	draw2 = C3DOBJECTMANAGER->Get3DObject("オブジェ");
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CStageData::Update()
 {
 }
@@ -162,48 +189,6 @@ void CStageData::Update()
 /***********************************************************************/
 void CStageData::Draw()
 {
-	/*
-	int i,j;
-	static float rot;
-	
-
-	D3DXMATRIXA16 matW;
-	D3DXMATRIXA16 matRot;
-	D3DXMATRIXA16 matScale;
-	D3DXMatrixIdentity(&matRot);
-	D3DXMatrixIdentity(&matScale);
-	D3DXMatrixScaling(&matScale,0.12f,0.12f,0.12f);
-
-	
-	FONT->DrawFloat("rot",rot,RECTEX(0,300,0,0));
-
-	for (i = 0 ; i < MAX_DATA ; i++)
-	{
-		for (j = 0 ; j < MAX_DATA ; j++)
-		{
-			D3DXMatrixRotationX(&matRot,-0.5 * 3.14f);
-			matW = matRot;
-			D3DXMatrixRotationY(&matRot,rotY(tile[i][j].rot) *3.14f);
-			matW *= matRot * matScale;
-			matW._41 = tile[i][j].posX;
-			matW._42 = 0.0f;
-			matW._43 = tile[i][j].posY;
-			pSprite[tile[i][j].no]->draw(0 ,&matW,CCamera::getMatView());
-		}
-	}
-
-	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,FALSE);
-	D3DDEVICE->SetRenderState(D3DRS_ZENABLE,FALSE);
-	D3DDEVICE->SetFVF(FVF_LINE);
-	static float size = 10.0f;
-	D3DDEVICE->SetRenderState(D3DRS_POINTSIZE,*((DWORD*)&size));
-
-	D3DDEVICE->DrawPrimitiveUP(D3DPT_LINESTRIP,rootNum - 1, &line[0],sizeof(LINE));
-	D3DDEVICE->DrawPrimitiveUP(D3DPT_POINTLIST,rootNum , &line[0],sizeof(LINE));
-
-	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,TRUE);
-	D3DDEVICE->SetRenderState(D3DRS_ZENABLE,TRUE);
-	*/
 	D3DXMATRIXA16 matPos;
 	D3DXMATRIXA16 matRot;
 	int i,j;
@@ -225,7 +210,7 @@ void CStageData::Draw()
 			matRot *= matPos;
 			D3DDEVICE->SetTransform(D3DTS_WORLD,&matRot);
 //			draw.Draw();
-			pSprite[tile[i][j].no]->draw(
+			_pSprite[tile[i][j].no]->draw(
 				0,
 				&matRot,
 				CCamera::getMatView());
@@ -289,6 +274,12 @@ void CStageData::Load(const char* stageDataPath)
 {
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CStageData::initwall(OUTPUT tile2[MAX_DATA][MAX_DATA])
 {
 	int i,j;
@@ -297,8 +288,8 @@ void CStageData::initwall(OUTPUT tile2[MAX_DATA][MAX_DATA])
 	BOOL* left		= NULL;
 	BOOL* bottom	= NULL;
 	BOOL* right		= NULL;
-	RECT workRect;
-	BOOL work;
+	RECT workRect	= {0,0,0,0};
+	BOOL work		= FALSE;
 
 	for (i = 0 ; i < MAX_DATA ; i++)
 	{
@@ -312,7 +303,6 @@ void CStageData::initwall(OUTPUT tile2[MAX_DATA][MAX_DATA])
 
 			*top = *left = *bottom = *right = TRUE;
 
-			tile[i][j].rot;
 			//	壁配置
 			switch(tile[i][j].no)
 			{
@@ -371,21 +361,59 @@ void CStageData::initwall(OUTPUT tile2[MAX_DATA][MAX_DATA])
 		LINE2[1][16][j] = TRUE;	
 		LINE2[0][16][j] = TRUE;	
 	}
-
 }
 
 
-const OUTPUT* CStageData::startTile()const
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
+const OUTPUT* CStageData::getStartTile()const
 {
-	return StartTile;
+	return _StartTile;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
+const OUTPUT* CStageData::getSecondTile()const
+{
+	return _SecondTile;
+}
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
+const OUTPUT* CStageData::getLastTile()const
+{
+	return _LastTile;
+}
+
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 const void CStageData::getTile(const OUTPUT ary[MAX_DATA][MAX_DATA])const
 {
 	 memcpy((void*)ary,(void*)tile,sizeof(tile));
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CStageData::wallFlg(RECT* pOutWallFlg,uint TileX,uint TileY)const 
 {
 	pOutWallFlg->top	= LINE2[1][TileX][TileY];
@@ -394,6 +422,12 @@ void CStageData::wallFlg(RECT* pOutWallFlg,uint TileX,uint TileY)const
 	pOutWallFlg->right	= LINE2[0][TileX+1][TileY];
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CStageData::step(
 	uint* xOut,
 	uint* zOut,
@@ -401,24 +435,22 @@ void CStageData::step(
 	const float tZ
 	)const 
 {
-		//....二分探索で自分が立っている場所を探す
-
+	//....二分探索で自分が立っている場所を探す
 	*xOut = 8;
 	*zOut = 8;
-
-	float ary[17]={0,};
 
 
 	static const float kankaku = 500.0f / MAX_DATA;
 
-	ary[0] = -250.0f;
-
-	for(uint Cnt = 1; Cnt < MAX_DATA+1; Cnt+=1)
+	static float ary[17]={0,};
+	if(ary[0] == 0)
 	{
-		ary[Cnt] = kankaku * Cnt + ary[0];
+		ary[0] = -250.0f;
+		for(uint Cnt = 1; Cnt < MAX_DATA+1; Cnt+=1)
+		{
+			ary[Cnt] = kankaku * Cnt + ary[0];
+		}
 	}
-
-
 
 	int min = 0;
 	int max = MAX_DATA;
@@ -446,17 +478,6 @@ void CStageData::step(
 	min = 0;
 	max = MAX_DATA;
 
-	ary[0] = -250.0f;
-
-
-	for(uint Cnt = 1; Cnt < MAX_DATA+1; Cnt+=1)
-	{
-		ary[Cnt] = kankaku * Cnt + ary[0];
-	}
-
-
-
-	float fff=0.0;
 	while(min<=max )
 	{
 		//	一致

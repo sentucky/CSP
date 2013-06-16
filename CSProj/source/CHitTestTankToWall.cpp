@@ -75,7 +75,7 @@ void CHitTestTankToWall::hitTest()
 		RECT WallFlg;
 		_StageData->wallFlg(&WallFlg,x,y);
 
-		const OUTPUT tile[MAX_DATA][MAX_DATA];
+		OUTPUT tile[MAX_DATA][MAX_DATA];
 		_StageData->getTile(tile);
 
 		/*

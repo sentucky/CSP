@@ -15,6 +15,7 @@
 #include"CObjBase.h"
 
 
+
 /***********************************************************************/
 //	先行宣言
 /***********************************************************************/
@@ -40,7 +41,7 @@ public:
 	CTank(
 		CMesh* pMeshTop,		///<	トップメッシュ
 		CMesh* pMeshBottom,		///<	ボトムメッシュ
-		uint   unIntType,		///<	インテリジェンス
+		uint   unThisType,		///<	インテリジェンス
 		CShell* pShellProto,
 		const float fMoveSpeed,	///<	速度
 		const float fTurnSpeed,	///<	旋回速度
@@ -59,6 +60,8 @@ public:
 	void move();				///<	移動処理
 	void fire();				///<	発砲
 	void calcMove();			///<	移動量計算
+	void eRap();				///<	敵ラップ
+	void pRap();				///<	自機ラップ
 
 	//	呼出し
 	void hitTestTank(CTank* pTank);		///<	あたり判定
@@ -88,17 +91,29 @@ private:
 	CTaskList*		_pTaskIntelligence;
 	CTaskList*		_pTaskFire;
 	CTaskList*		_pTaskCalcAM;
+	CTaskList*		_pTaskRap;
+
 	CTankTop*		_pTankTop;			///<	戦車の上部
 	CTankBottom*	_pTankBottom;		///<	戦車の下部
 
 	CTankIntInter*	_pIntelligence;		///<	思考
 
 	float			_fRadius;			///<	半径
-	uint			_unIntType;			///<	思考タイプ
+	uint			_unThisType;			///<	タイプ
 
 	int				_life;				///<	耐久力
 
+	int				_radiate;			///<	放熱状況
+	int				_MaxRadiateTime;	///<	放熱時間の最大値
+
 	BOOL			_Destroyed;			///<	破壊判定フラグ
+	BOOL			_GoalFlg;			///<	ゴールフラグ
+
+	uint			_TankType;			///<	タンクの型
+
+	static const uint TYPE_PLAYER = 0;
+	static const uint TYPE_ENEMY01 = -1;
+
 #ifdef _DEBUG
 LPD3DXMESH debugMesh;;
 #endif

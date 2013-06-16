@@ -58,9 +58,9 @@ private:
 	//===========================================
 public:
 	void reserve(const uint uReserveSize);
-	BOOL registTexture(const int nId,const char* pszTextureFilePath);
-	BOOL releaseTexture(const int nId);
-	CTexture* getTexture(const int nId);
+	BOOL registTexture(const uint nId,const char* pszTextureFilePath);
+	BOOL releaseTexture(const uint nId);
+	CTexture* getTexture(const uint nId);
 
 
 	//===========================================

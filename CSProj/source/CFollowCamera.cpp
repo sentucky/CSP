@@ -12,6 +12,10 @@
 #include"CTank.h"
 #include"CTaskMng.h"
 
+#ifdef _DEBUG
+#include"CInputCommon.h"
+#endif
+
 /***********************************************************************/
 /*! @brief 
  * 
@@ -49,10 +53,10 @@ CFollowCamera::~CFollowCamera()
 /***********************************************************************/
 CFollowCamera::CFollowCamera(
 	const CFollowCamera& src
-	):_fDistance(	src._fDistance					),	
+	):_fDistance(	src._fDistance	),	
 	_NAtToEye	(	src._NAtToEye	),
-	  _pTank	(	NULL),
-	  _pUpdate	(	NULL					)
+	  _pTank	(	NULL			),
+	  _pUpdate	(	NULL			)
 {
 	D3DXVec3Normalize(&_NAtToEye,&_NAtToEye);
 	enableTask();
@@ -94,6 +98,17 @@ void CFollowCamera::update()
 	const float x = _pTank->getMatBottom()->_41;
 	const float y = _pTank->getMatBottom()->_42;
 	const float z = _pTank->getMatBottom()->_43;
+
+#ifdef _DEBUG
+	if(KEYBOARD.getTrgKey(DIK_P))
+	{
+		_NAtToEye.z += 1.0f;
+	}
+	else if(KEYBOARD.getTrgKey(DIK_O))
+	{
+
+	}
+#endif
 
 	D3DXVECTOR3 eye;
 	eye.x = x + _NAtToEye.x * _fDistance;
