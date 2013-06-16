@@ -33,6 +33,8 @@
 #include"CPin.h"
 #include"CShell.h"
 
+#include"CSound.h"
+
 #include"CHItTestTAndT.h"
 #include"CHitTestTankToWall.h"
 #include"CHitTestTankToShell.h"
@@ -74,8 +76,8 @@ void gameInit()
 	INPUTCOMMON->createKeyboard();
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
-	ps = new CSceneGame;
-//	ps = new CSceneTestSpace;
+//	ps = new CSceneGame;
+	ps = new CSceneTestSpace;
 	pScene = ps;
 
 
@@ -151,6 +153,8 @@ void gameInit()
 	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOT(),pHTTAT);
 	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOS(),new CHitTestTankToShell);
 
+
+	CSOUND->reserve(1);
 }
 
 

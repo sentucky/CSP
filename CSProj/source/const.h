@@ -156,5 +156,18 @@ public:
 	static const uint SUM();
 };
 
+class SOUNDKEY
+{
+public:
+	static const uint TEST();
+	static const uint SUM();
+};
+
+class SOUNDPATH
+{
+public:
+	static char* TEST();
+};
+
 
 #endif

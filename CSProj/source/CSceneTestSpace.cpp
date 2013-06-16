@@ -19,8 +19,13 @@
 #include"CFactory.h"
 #include"CFont.h"
 
+#include"CSound.h"
+
 #include"CAnimeParam.h"
+#include"AnimeKey.h"
 #include"CSprite.h"
+
+
 
 CMesh *TestMesh[2] = {NULL,};
 CLight* pLight;
@@ -107,8 +112,12 @@ void CSceneTestSpace::init()
 	pLight->lightON();
 	*/
 
+//	CSOUND->LoadSoundFile()
 
-	stest::aparam = new CAnimeParam("data/animeparam/data2.dat");
+	CSOUND->Init();
+	CSOUND->LoadSoundFile(SOUNDKEY::TEST(),SOUNDPATH::TEST());
+	CSOUND->GetSound(SOUNDKEY::TEST())->Play(0,0,DSBPLAY_LOOPING);
+	stest::aparam = new CAnimeParam(ANIMEPATH::TEST());
 	stest::aparam->setState(PLAY_LOOP);
 	stest::pSprite = SPRITEFACTORY->create(TEXKEY::ANIMETEST());
 }

@@ -200,3 +200,16 @@ const uint OBJGROUPKEY::STAGE(){return OGK_STAGE;};
 const uint OBJGROUPKEY::FOLLOW(){return OGK_FOLLOW;};
 const uint OBJGROUPKEY::PIN(){return OGK_PIN;}
 const uint OBJGROUPKEY::SUM(){return OGK_SUM;}
+
+
+enum eSOUNDKEY
+{
+	SOUND_TEST,
+	SOUND_SUM,
+};
+
+const uint SOUNDKEY::TEST(){return SOUND_TEST;}
+const uint SOUNDKEY::SUM(){return SOUND_SUM;}
+
+char* SOUNDPATH::TEST(){return "data/sound/test.wav";}
+

@@ -1,6 +1,7 @@
 #include"CAnimeParam.h"
+#include"AnimeKey.h"
 
-CAnimeParam::CAnimeParam(const char* FilePath)
+CAnimeParam::CAnimeParam(ANIMEPATH& key)
 	:_frameData(NULL),
 	_Cat(0),
 	_Cnt(0),
@@ -8,7 +9,8 @@ CAnimeParam::CAnimeParam(const char* FilePath)
 	_MaxCat(0)
 {
 	FILE* fp;
-	fp = fopen(FilePath,"rb");
+	const char* szkey = key.getPath();
+	fp = fopen(szkey,"rb");
 
 	const uint MAXCAT = 256;
 

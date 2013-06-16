@@ -3,6 +3,7 @@
 
 #include"common.h"
 
+class ANIMEPATH;
 
 struct FrameData
 {
@@ -20,7 +21,7 @@ enum ANIME_STATE
 class CAnimeParam
 {
 public:
-	CAnimeParam(const char* FilePath);
+	CAnimeParam(ANIMEPATH& APath);
 	~CAnimeParam();
 	void update();
 
