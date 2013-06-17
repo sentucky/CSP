@@ -36,41 +36,6 @@ public:
 	static const char* TANK04_BOTTOM();
 };
 
-class TEXPATH
-{
-public:
-	static const char* FADEMASK();
-	static const char* TITLE_BG();
-	static const char* TITLE_BUTTON01();
-	static const char* TITLE_BUTTON02();
-	static const char* TITLE_BUTTON03();
-	static const char* TILE01();
-	static const char* TILE02();
-	static const char* TILE03();
-	static const char* TILE04();
-	static const char* TILE05();
-	static const char* TILE06();
-	static const char* ANIMETEST();
-};
-
-class TEXKEY
-{
-public:
-	static const uint FADEMASK();
-	static const uint TITLE_BG();
-	static const uint TITLE_BUTTON01();
-	static const uint TITLE_BUTTON02();
-	static const uint TITLE_BUTTON03();
-	static const uint TILE01();
-	static const uint TILE02();
-	static const uint TILE03();
-	static const uint TILE04();
-	static const uint TILE05();
-	static const uint TILE06();
-	static const uint ANIMETEST();
-	static const uint SUM();
-};
-
 class MESHKEY
 {
 public:
@@ -141,6 +106,7 @@ public:
 	static const uint TANK04();
 	static const uint STAGE01();
 	static const uint FOLLOW();
+	static const uint NUM();
 	static const uint SUM();
 };
 
@@ -153,21 +119,10 @@ public:
 	static const uint STAGE();
 	static const uint FOLLOW();
 	static const uint PIN();
+	static const uint NUM();
 	static const uint SUM();
 };
 
-class SOUNDKEY
-{
-public:
-	static const uint TEST();
-	static const uint SUM();
-};
-
-class SOUNDPATH
-{
-public:
-	static char* TEST();
-};
 
 
 #endif

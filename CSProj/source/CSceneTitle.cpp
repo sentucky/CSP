@@ -12,6 +12,7 @@
 #include"CSprite.h"
 #include"CSpriteFactory.h"
 #include"const.h"
+#include"TextureKey.h"
 #include"CInputCommon.h"
 
 /*

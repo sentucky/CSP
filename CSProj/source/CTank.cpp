@@ -29,6 +29,9 @@
 
 #include"StageData.h"
 
+#include"CSound.h"
+#include"CSoundKey.h"
+
 #ifdef _DEBUG
 #include"CCamera.h"
 #include"CScreen.h"
@@ -42,7 +45,7 @@ LPD3DXMESH debugMesh = NULL;
 #endif
 
 const CStageData* CTank::_StageData = NULL;
-
+LPDIRECTSOUNDBUFFER CTank::_SoundFire	= NULL;
 /***********************************************************************/
 /*! @brief コンストラクタ
  * 
@@ -74,12 +77,12 @@ CTank::CTank(
 	_pTankBottom		( NULL			),
 	_pIntelligence		( NULL			),
 	_fRadius			( 1.0f			),
-	_unThisType			( unThisType		),
+	_unThisType			( unThisType	),
 	_life				( Life			),
 	_radiate			( 0				),
 	_MaxRadiateTime		( 120			),
 	_Destroyed			( FALSE			),
-	_GoalFlg			( FALSE	)
+	_GoalFlg			( FALSE			)
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
 	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
@@ -315,6 +318,7 @@ void CTank::fire()
 	{
 		_pTankTop->fire();
 		_radiate = _MaxRadiateTime;
+		_SoundFire->Play(0,0,0);
 	}
 }
 

@@ -13,6 +13,7 @@
 //	インクルード
 /***********************************************************************/
 #include"CObjBase.h"
+#include <dsound.h>
 
 
 
@@ -80,10 +81,14 @@ public:
 	const D3DXVECTOR3*		getMoveVec();	///<	移動ベクトル
 	const float				getRadius();	///<	半径の取得
 	const BOOL				getDestroyed(){return _Destroyed;}	///<	被破壊フラグ取得
+
 	void setMoveVec( D3DXVECTOR3& MoveVec );
 	void setMoveVec( const D3DXVECTOR3 *MoveVec );
 	void setPos(const float x,const float z);
+
 	static void setStageData(const CStageData* pStageData){	_StageData = pStageData;}
+	static void setSoundFire(const LPDIRECTSOUNDBUFFER SoundFire){ _SoundFire = SoundFire;}
+
 private:
 	CTaskList*		_pTaskDraw;
 	CTaskList*		_pTaskPause;
@@ -99,7 +104,7 @@ private:
 	CTankIntInter*	_pIntelligence;		///<	思考
 
 	float			_fRadius;			///<	半径
-	uint			_unThisType;			///<	タイプ
+	uint			_unThisType;		///<	タイプ
 
 	int				_life;				///<	耐久力
 
@@ -113,6 +118,8 @@ private:
 
 	static const uint TYPE_PLAYER = 0;
 	static const uint TYPE_ENEMY01 = -1;
+
+	static LPDIRECTSOUNDBUFFER _SoundFire;
 
 #ifdef _DEBUG
 LPD3DXMESH debugMesh;;

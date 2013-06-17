@@ -19,7 +19,6 @@
 #include"CSceneTestSpace.h"
 #include"CScreen.h"
 #include"CFadeInOut.h"
-#include"const.h"
 #include"CMeshFactory.h"
 #include"CDevice.h"			//デバイスクラスヘッダ
 #include"CTaskMng.h"
@@ -34,6 +33,12 @@
 #include"CShell.h"
 
 #include"CSound.h"
+
+#include"CNum.h"
+
+#include"const.h"
+#include"TextureKey.h"
+#include"CSoundKey.h"
 
 #include"CHItTestTAndT.h"
 #include"CHitTestTankToWall.h"
@@ -82,19 +87,28 @@ void gameInit()
 
 
 	TEXTUREFACTORY->reserve(TEXKEY::SUM());
-	SPRITEFACTORY->registTexture(TEXKEY::FADEMASK(),TEXPATH::FADEMASK());
-
-	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BG(),TEXPATH::TITLE_BG());
-	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON01(),TEXPATH::TITLE_BUTTON01());
-	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON02(),TEXPATH::TITLE_BUTTON02());
-	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON03(),TEXPATH::TITLE_BUTTON03());
-	SPRITEFACTORY->registTexture(TEXKEY::TILE01(),TEXPATH::TILE01());
-	SPRITEFACTORY->registTexture(TEXKEY::TILE02(),TEXPATH::TILE02());
-	SPRITEFACTORY->registTexture(TEXKEY::TILE03(),TEXPATH::TILE03());
-	SPRITEFACTORY->registTexture(TEXKEY::TILE04(),TEXPATH::TILE04());
-	SPRITEFACTORY->registTexture(TEXKEY::TILE05(),TEXPATH::TILE05());
-	SPRITEFACTORY->registTexture(TEXKEY::TILE06(),TEXPATH::TILE06());
-	SPRITEFACTORY->registTexture(TEXKEY::ANIMETEST(),TEXPATH::ANIMETEST());
+	SPRITEFACTORY->registTexture(TEXKEY::FADEMASK(),		TEXPATH::FADEMASK()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BG(),		TEXPATH::TITLE_BG()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON01(),	TEXPATH::TITLE_BUTTON01()	);
+	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON02(),	TEXPATH::TITLE_BUTTON02()	);
+	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON03(),	TEXPATH::TITLE_BUTTON03()	);
+	SPRITEFACTORY->registTexture(TEXKEY::TILE01(),			TEXPATH::TILE01()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TILE02(),			TEXPATH::TILE02()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TILE03(),			TEXPATH::TILE03()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TILE04(),			TEXPATH::TILE04()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TILE05(),			TEXPATH::TILE05()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TILE06(),			TEXPATH::TILE06()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM0(),			TEXPATH::NUM0()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM1(),			TEXPATH::NUM1()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM2(),			TEXPATH::NUM2()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM3(),			TEXPATH::NUM3()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM4(),			TEXPATH::NUM4()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM5(),			TEXPATH::NUM5()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM6(),			TEXPATH::NUM6()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM7(),			TEXPATH::NUM7()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM8(),			TEXPATH::NUM8()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM9(),			TEXPATH::NUM9()				);
+	SPRITEFACTORY->registTexture(TEXKEY::ANIMETEST(),		TEXPATH::ANIMETEST()		);
 
 
 	//	メッシュ初期化
@@ -143,9 +157,10 @@ void gameInit()
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANKDUMMY(),pObj2);
 #endif
 	OBJFACTORY->registPrototype(OBJKEY::STAGE01(),pStage);
-	OBJFACTORY->registPrototype(OBJKEY::FOLLOW(),new CFollowCamera);
-	OBJFACTORY->registPrototype(OBJKEY::PIN(),new CPin(MESHFACTORY->create(MESHKEY::PIN())));
-	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOW(),new CHitTestTankToWall);
+	OBJFACTORY->registPrototype(OBJKEY::NUM(),	new CNum);
+	OBJFACTORY->registPrototype(OBJKEY::FOLLOW(),		new CFollowCamera								);
+	OBJFACTORY->registPrototype(OBJKEY::PIN(),			new CPin(MESHFACTORY->create(MESHKEY::PIN()))	);
+	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOW(),	new CHitTestTankToWall							);
 
 	CHitTestTAndT* pHTTAT;
 	pHTTAT = new CHitTestTAndT;
@@ -154,7 +169,17 @@ void gameInit()
 	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOS(),new CHitTestTankToShell);
 
 
-	CSOUND->reserve(1);
+	CSound* pSound = CSOUND;
+	pSound->reserve(SOUNDKEY::SUM());
+	pSound->Init();
+	pSound->LoadSoundFile(SOUNDKEY::COLLITANKTOTANK(),	SOUNDPATH::COLLITANKTOTANK()	);
+	pSound->LoadSoundFile(SOUNDKEY::ENGILE(),			SOUNDPATH::ENGILE()				);
+	pSound->LoadSoundFile(SOUNDKEY::FANFARE(),			SOUNDPATH::FANFARE()			);
+	pSound->LoadSoundFile(SOUNDKEY::FIRE(),				SOUNDPATH::FIRE()				);
+	pSound->LoadSoundFile(SOUNDKEY::HITSHELL(),			SOUNDPATH::HITSHELL()			);
+	pSound->LoadSoundFile(SOUNDKEY::START(),			SOUNDPATH::START()				);
+
+	CTank::setSoundFire(pSound->GetSound(SOUNDKEY::FIRE()));
 }
 
 

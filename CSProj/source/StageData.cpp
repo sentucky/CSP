@@ -30,6 +30,7 @@
 #include"CSpriteFactory.h"
 #include"CCamera.h"
 #include"const.h"
+#include"TextureKey.h"
 #include"CFont.h"
 
 

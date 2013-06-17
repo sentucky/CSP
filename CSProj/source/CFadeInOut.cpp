@@ -12,6 +12,7 @@
 #include"CFadeInOut.h"
 #include"CWindow.h"
 #include"const.h"
+#include"TextureKey.h"
 #include"CSpriteFactory.h"
 #include"CSprite.h"
 #include"common.h"

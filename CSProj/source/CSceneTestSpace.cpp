@@ -20,12 +20,14 @@
 #include"CFont.h"
 
 #include"CSound.h"
+#include"TextureKey.h"
+#include"CSoundKey.h"
 
 #include"CAnimeParam.h"
 #include"AnimeKey.h"
 #include"CSprite.h"
 
-
+#include"CNum.h"
 
 CMesh *TestMesh[2] = {NULL,};
 CLight* pLight;
@@ -67,6 +69,8 @@ namespace stest
 {
 CAnimeParam* aparam = NULL;
 CSprite *pSprite = NULL;
+CNum* pNum;
+CNum* pNum2;
 }
 /***********************************************************************/
 /*! @brief 
@@ -115,8 +119,11 @@ void CSceneTestSpace::init()
 //	CSOUND->LoadSoundFile()
 
 	CSOUND->Init();
-	CSOUND->LoadSoundFile(SOUNDKEY::TEST(),SOUNDPATH::TEST());
-	CSOUND->GetSound(SOUNDKEY::TEST())->Play(0,0,DSBPLAY_LOOPING);
+	stest::pNum = static_cast<CNum*>(OBJFACTORY->create(OBJKEY::NUM()));
+	stest::pNum2 = static_cast<CNum*>(OBJFACTORY->create(OBJKEY::NUM()));
+	
+	stest::pNum2->setPos(D3DXVECTOR3(800,64,0));
+	stest::pNum2->setDrawMode(0);
 	stest::aparam = new CAnimeParam(ANIMEPATH::TEST());
 	stest::aparam->setState(PLAY_LOOP);
 	stest::pSprite = SPRITEFACTORY->create(TEXKEY::ANIMETEST());
@@ -154,6 +161,19 @@ void CSceneTestSpace::update()
 	*/
 	stest::aparam->update();
 	stest::pSprite->setUV(stest::aparam->getUV());
+
+	
+	if(GetAsyncKeyState('Y'))
+	{
+		stest::pNum->addNum(10);
+		stest::pNum2->addNum(10);
+	}
+	else if(GetAsyncKeyState('U'))
+	{
+		stest::pNum->addNum(10);
+		stest::pNum2->addNum(10);
+	}
+
 	//pCamera->update();
 }
 
@@ -172,6 +192,9 @@ void CSceneTestSpace::draw()
 		&D3DXVECTOR3(400,320,0),
 		&D3DXVECTOR3(0,0,0),
 		&D3DXVECTOR3(1,1,0));
+
+	stest::pNum->draw();
+	stest::pNum2->draw();
 	/*
 	D3DXVECTOR3 vec(0,0,-1);
 
@@ -219,6 +242,8 @@ void CSceneTestSpace::release()
 {
 	SAFE_DELETE(stest::aparam);
 	SAFE_DELETE(stest::pSprite);
+	SAFE_DELETE(stest::pNum);
+	SAFE_DELETE(stest::pNum2);
 	/*
 	SAFE_DELETE(TestMesh[0]);
 	SAFE_DELETE(TestMesh[1]);

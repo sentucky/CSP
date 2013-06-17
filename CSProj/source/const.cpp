@@ -27,49 +27,6 @@ const char* MESHPATH::TANK04_BOTTOM(){	return "data/model/tank04_bottom.x";	}
 
 
 
-const char* TEXPATH::FADEMASK(){return "data/texture/fademask.jpg";			}
-const char* TEXPATH::TITLE_BG(){return "data/texture/title_bg.jpg";}
-const char* TEXPATH::TITLE_BUTTON01(){return "data/texture/title_button01.jpg";}
-const char* TEXPATH::TITLE_BUTTON02(){return "data/texture/title_button02.jpg";}
-const char* TEXPATH::TITLE_BUTTON03(){return "data/texture/title_button03.jpg";}
-const char* TEXPATH::TILE01(){return "data/Stage/001.jpg";}
-const char* TEXPATH::TILE02(){return "data/Stage/004.jpg";}
-const char* TEXPATH::TILE03(){return "data/Stage/005.jpg";}
-const char* TEXPATH::TILE04(){return "data/Stage/006.jpg";}
-const char* TEXPATH::TILE05(){return "data/Stage/002.jpg";}
-const char* TEXPATH::TILE06(){return "data/Stage/003.jpg";}
-const char* TEXPATH::ANIMETEST(){return "data/texture/animeTextTex.png";}
-
-enum eTEXKEY{
-	TEX_FADEMASK,	//
-	TEX_TITLE_BG,
-	TEX_TITLE_BUTTON01,
-	TEX_TITLE_BUTTON02,
-	TEX_TITLE_BUTTON03,
-	TEX_TILE01,
-	TEX_TILE02,
-	TEX_TILE03,
-	TEX_TILE04,
-	TEX_TILE05,
-	TEX_TILE06,
-	TEX_ANIMETEST,
-	TEX_SUM,		//
-};
-const uint TEXKEY::FADEMASK()		{	return TEX_FADEMASK;}
-const uint TEXKEY::TITLE_BG()		{	return TEX_TITLE_BG;	}
-const uint TEXKEY::TITLE_BUTTON01()	{	return TEX_TITLE_BUTTON01;	}
-const uint TEXKEY::TITLE_BUTTON02()	{	return TEX_TITLE_BUTTON02;	}
-const uint TEXKEY::TITLE_BUTTON03()	{	return TEX_TITLE_BUTTON03;	}
-const uint TEXKEY::TILE01()			{	return TEX_TILE01;	}
-const uint TEXKEY::TILE02()			{	return TEX_TILE02;	}
-const uint TEXKEY::TILE03()			{	return TEX_TILE03;	}
-const uint TEXKEY::TILE04()			{	return TEX_TILE04;	}
-const uint TEXKEY::TILE05()			{	return TEX_TILE05;	}
-const uint TEXKEY::TILE06()			{	return TEX_TILE06;	}
-const uint TEXKEY::ANIMETEST()		{	return TEX_ANIMETEST;	}
-const uint TEXKEY::SUM()			{	return TEX_SUM;		}
-
-
 
 enum eMESHKEY
 {
@@ -158,6 +115,7 @@ enum eOBJID
 	OID_TANK03,		//
 	OID_TANK04,		//
 	OID_FOLLOW,		//
+	OID_NUM,
 #ifdef _DEBUG
 	OID_TANKDUMMY,
 #endif
@@ -180,36 +138,26 @@ const uint OBJKEY::TANK03()	{return OID_TANK03;	}	///<	@brift	タンク03オブジェキ
 const uint OBJKEY::TANK04()	{return OID_TANK04;	}	///<	@brift	タンク04オブジェキー
 const uint OBJKEY::STAGE01(){return OID_STAGE01;}	///<	@brift	ステージオブジェキー
 const uint OBJKEY::FOLLOW()	{return OID_FOLLOW;	}	///<	@brift	追尾カメラオブジェキー
+const uint OBJKEY::NUM()	{return OID_NUM;	}	///<	@brift	数字
 const uint OBJKEY::SUM()	{return OID_SUM;	}	///<	@brift	オブジェキー最大数
 
 enum eOBJGROUPKEY
 {
-	OGK_HITTEST,
+	OGK_HITTEST,//
 	OGK_SHELL,	//
-	OGK_PIN,		//
+	OGK_PIN,	//
 	OGK_STAGE,	//
-	OGK_TANK,		//
-	OGK_FOLLOW,		//
-	OGK_SUM,		//
+	OGK_TANK,	//
+	OGK_FOLLOW,	//
+	OGK_NUM,	//
+	OGK_SUM,	//
 };
 
-const uint OBJGROUPKEY::TANK(){return OGK_TANK;}
-const uint OBJGROUPKEY::HITTEST(){return OGK_HITTEST;}
-const uint OBJGROUPKEY::SHELL(){return OGK_SHELL;}
-const uint OBJGROUPKEY::STAGE(){return OGK_STAGE;};
-const uint OBJGROUPKEY::FOLLOW(){return OGK_FOLLOW;};
-const uint OBJGROUPKEY::PIN(){return OGK_PIN;}
-const uint OBJGROUPKEY::SUM(){return OGK_SUM;}
-
-
-enum eSOUNDKEY
-{
-	SOUND_TEST,
-	SOUND_SUM,
-};
-
-const uint SOUNDKEY::TEST(){return SOUND_TEST;}
-const uint SOUNDKEY::SUM(){return SOUND_SUM;}
-
-char* SOUNDPATH::TEST(){return "data/sound/test.wav";}
-
+const uint OBJGROUPKEY::TANK()		{return OGK_TANK;	}
+const uint OBJGROUPKEY::HITTEST()	{return OGK_HITTEST;}
+const uint OBJGROUPKEY::SHELL()		{return OGK_SHELL;	}
+const uint OBJGROUPKEY::STAGE()		{return OGK_STAGE;	}
+const uint OBJGROUPKEY::FOLLOW()	{return OGK_FOLLOW;	}
+const uint OBJGROUPKEY::PIN()		{return OGK_PIN;	}
+const uint OBJGROUPKEY::NUM()		{return OGK_NUM;	}
+const uint OBJGROUPKEY::SUM()		{return OGK_SUM;	}
