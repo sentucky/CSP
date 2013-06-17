@@ -25,7 +25,7 @@ private:
 	void root();
 
 private:
-	int _point;		// 現在目的としてるナビポイント
+	int _point;		///< 現在目的としてるナビポイント
 
 
 };

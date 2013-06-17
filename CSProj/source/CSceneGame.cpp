@@ -229,6 +229,13 @@ CSceneBase * CSceneGame::nextScene()
 	return this;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pStage 
+ *  @retval void
+ */
+/***********************************************************************/
 void CSceneGame::standby(CStage* pStage)
 {
 	//	óvëfíäèo

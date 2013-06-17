@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CHitTestTankToWall.h
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #ifndef ___CHITTESTTANKANDWALL___
 #define ___CHITTESTTANKANDWALL___
 
@@ -18,7 +26,21 @@ public:
 	void disableTask();
 	void hitTest();
 
+	/***********************************************************************/
+	/*! @brief 
+	 * 
+	 *  @param[in,out] pTankList 
+	 *  @retval void
+	 */
+	/***********************************************************************/
 	static void setTankList(CListMng<CObjBase*>* pTankList){_pTankList = pTankList;}
+	/***********************************************************************/
+	/*! @brief 
+	 * 
+	 *  @param[in,out] pStageData 
+	 *  @retval void
+	 */
+	/***********************************************************************/
 	static void setStageData(const CStageData* pStageData){_StageData = pStageData;}
 private:
 

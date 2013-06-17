@@ -124,6 +124,12 @@ void CTankIntDummy::root(){
 }
 
 // デバッグ出力
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTankIntDummy::Debug(){
 	FONT->DrawFloat("navipointNormalize:",debug,RECTEX(0,16,0,0));
 	FONT->DrawFloat("navipointX:",debug2,RECTEX(0,32,0,0));

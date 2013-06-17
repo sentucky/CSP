@@ -40,14 +40,14 @@ enum eTANK_MOVE
 
 const float Rad[8] =
 {
-	0.0f,	//
-	0.25f,	//
-	0.5f,	//	
-	0.75f,	//
-	1.0f,	//
-	1.25f,	//
-	1.5f,	//
-	1.75f,	//
+	0.0f,	///<
+	0.25f,	///<
+	0.5f,	///<	
+	0.75f,	///<
+	1.0f,	///<
+	1.25f,	///<
+	1.5f,	///<
+	1.75f,	///<
 };
 /***********************************************************************/
 /*!	@class CTankIntInter
@@ -63,13 +63,19 @@ public:
 	virtual void update() = 0;				///<	更新関数
 
 protected:
-	void myStep();						//	足下確認
+	void myStep();						///<	足下確認
 public:
 
 	const BOOL getFireFlg();				///<	発砲フラグの取得
+	/***********************************************************************/
+	/*! @brief 
+	 * 
+	 *  @retval const D3DXVECTOR2* 
+	 */
+	/***********************************************************************/
 	const D3DXVECTOR2* getModeDir(){return &_MoveDir;}				///<	移動方向の取得
 	const D3DXVECTOR3* getTargetPoint();	///<	砲塔を向ける先を取得
-	static void setStageData(const CStageData* StageData);	//	ステージデータの設定
+	static void setStageData(const CStageData* StageData);	///<	ステージデータの設定
 protected:
 	BOOL	_FireFlg;					///<	発砲フラグ
 	D3DXVECTOR2	_MoveDir;				///<	移動方向

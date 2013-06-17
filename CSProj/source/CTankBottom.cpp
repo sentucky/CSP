@@ -96,6 +96,12 @@ void CTankBottom::move()
 	_WMat._43 += _MoveVec.z;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTankBottom::clacMove()
 {
 	const D3DXVECTOR2* pMoveVec = _pIntelligence->getModeDir();
@@ -280,6 +286,14 @@ void CTankBottom::setMoveVec( const D3DXVECTOR3 *MoveVec )
 
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] x 
+ *  @param[in,out] z 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTankBottom::setPos(const float x,const float z)
 {
 	_WMat._41 = x;

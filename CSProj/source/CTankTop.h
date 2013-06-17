@@ -37,7 +37,21 @@ public:
 	void draw();					///<	•`‰æ
 	void cooldown();				///<	•ú”M(—Dæ“x’á
 
+	/***********************************************************************/
+	/*! @brief 
+	 * 
+	 *  @param[in,out] pTankBottom 
+	 *  @retval void
+	 */
+	/***********************************************************************/
 	void setTankBottom(CTankBottom* pTankBottom){_Bottom = pTankBottom;}
+	/***********************************************************************/
+	/*! @brief 
+	 * 
+	 *  @param[in,out] pTank 
+	 *  @retval void
+	 */
+	/***********************************************************************/
 	void setOwner(CTank* pTank){_Owner = pTank;}
 	void setPos(const float x, const float y,const float z);
 	void setIntelligence(CTankIntInter* pIntelligence);

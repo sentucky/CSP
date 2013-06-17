@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CHitTestTankToWall.cpp
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #include"CHitTestTankToWall.h"
 
 #include"CTank.h"
@@ -12,22 +20,47 @@
 
 CListMng<CObjBase*>* CHitTestTankToWall::_pTankList = NULL;
 const CStageData*			 CHitTestTankToWall::_StageData = NULL;
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 CHitTestTankToWall::CHitTestTankToWall()
 	:_pHitTestTask(NULL)
 {
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 CHitTestTankToWall::~CHitTestTankToWall()
 {
 	disableTask();
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] src 
+ *  @retval  
+ */
+/***********************************************************************/
 CHitTestTankToWall::CHitTestTankToWall(const CHitTestTankToWall& src)
 	:_pHitTestTask(NULL)
 {
 	enableTask();
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CHitTestTankToWall::enableTask()
 {
 	CTaskMng::push<CHitTestTankToWall>(
@@ -37,11 +70,23 @@ void CHitTestTankToWall::enableTask()
 		&_pHitTestTask);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CHitTestTankToWall::disableTask()
 {
 	CTaskMng::erase(&_pHitTestTask);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CHitTestTankToWall::hitTest()
 {
 

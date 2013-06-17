@@ -106,6 +106,12 @@ public:
 	const OUTPUT* getStartTile()const;
 	const OUTPUT* getSecondTile()const;
 	const OUTPUT* getLastTile()const;
+	/***********************************************************************/
+	/*! @brief 
+	 * 
+	 *  @retval const D3DXVECTOR2* 
+	 */
+	/***********************************************************************/
 	const D3DXVECTOR2* getRoot()const{return root;}
 	const void getTile(const OUTPUT ary[MAX_DATA][MAX_DATA])const;
 

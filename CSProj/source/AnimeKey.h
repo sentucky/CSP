@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  AnimeKey.h
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #ifndef ___ANIMEKEY___
 #define ___ANIMEKEY___
 
@@ -23,6 +31,12 @@ public:
 	ANIMEPATH(const char* path);
 	static ANIMEPATH& TEST();
 
+	/***********************************************************************/
+	/*! @brief 
+	 * 
+	 *  @retval const char* 
+	 */
+	/***********************************************************************/
 	const char* getPath(){return Path;}
 private:
 	const char* Path;

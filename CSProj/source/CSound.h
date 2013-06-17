@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CSound.h
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 //================================================================================
 // CSound.h
 //
@@ -69,9 +77,9 @@ private:
 	//===========================
 	// メンバ変数 - 非公開
 	//===========================
-	LPDIRECTSOUND8		_pDSound;			//サウンドデバイス
-	LPDIRECTSOUNDBUFFER _pDSoundPrimary;	//プライマリバッファ
-	CSOUNDVECTOR		_soundVector;			//セカンダリバッファのベクタ
+	LPDIRECTSOUND8		_pDSound;			///<サウンドデバイス
+	LPDIRECTSOUNDBUFFER _pDSoundPrimary;	///<プライマリバッファ
+	CSOUNDVECTOR		_soundVector;			///<セカンダリバッファのベクタ
 };
 
 #endif		//__CSOUND_H

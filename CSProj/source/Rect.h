@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  Rect.h
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 //================================================================================
 // Rect.h
 //
@@ -54,29 +62,137 @@ class CRect
 		void Draw(void);
 
 		//テクスチャセット
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] p 
+		 *  @retval CRect* 
+		 */
+		/***********************************************************************/
 		CRect* SetTexture(LPDIRECT3DTEXTURE9 p)					{mTexture_pr = p; return this;}
 
 		//サイズの取得/格納
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] size 
+		 *  @retval CRect* 
+		 */
+		/***********************************************************************/
 		CRect* SetSize(D3DXVECTOR2 size)						{mSize = size; mIsUpdate = true; return this;}
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] sizeX 
+		 *  @param[in,out] sizeY 
+		 *  @retval CRect* 
+		 */
+		/***********************************************************************/
 		CRect* SetSize(float sizeX,float sizeY)					{mSize.x = sizeX;mSize.y = sizeY; mIsUpdate = true; return this;}
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] sizeX 
+		 *  @retval CRect* 
+		 */
+		/***********************************************************************/
 		CRect* SetSizeX(float sizeX)							{mSize.x = sizeX; mIsUpdate = true; return this;}
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] sizeY 
+		 *  @retval CRect* 
+		 */
+		/***********************************************************************/
 		CRect* SetSizeY(float sizeY)							{mSize.y = sizeY; mIsUpdate = true; return this;}
 
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @retval D3DXVECTOR2 
+		 */
+		/***********************************************************************/
 		D3DXVECTOR2 GetSize()									{return mSize;}
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @retval float 
+		 */
+		/***********************************************************************/
 		float GetSizeX()										{return mSize.x;}
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @retval float 
+		 */
+		/***********************************************************************/
 		float GetSizeY()										{return mSize.y;}
 
 		//カラーの取得/格納
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] no 
+		 *  @param[in,out] r 
+		 *  @param[in,out] g 
+		 *  @param[in,out] b 
+		 *  @retval CRect* 
+		 */
+		/***********************************************************************/
 		CRect* SetColor(int no,float r,float g,float b)			{mDeffuse[no].r = r;mDeffuse[no].g = g;mDeffuse[no].b = b; mIsUpdate = true; return this;}
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] r 
+		 *  @param[in,out] g 
+		 *  @param[in,out] b 
+		 *  @retval CRect* 
+		 */
+		/***********************************************************************/
 		CRect* SetColor(float r,float g,float b)				{SetColor(0,r,g,b); SetColor(1,r,g,b); SetColor(2,r,g,b); SetColor(3,r,g,b); mIsUpdate = true; return this;}
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] no 
+		 *  @retval D3DXCOLOR 
+		 */
+		/***********************************************************************/
 		D3DXCOLOR GetColor(int no)								{return mDeffuse[no];}
 
 		//アルファ値の取得/格納
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] a 
+		 *  @retval CRect* 
+		 */
+		/***********************************************************************/
 		CRect* SetAlpha(float a)								{mDeffuse[0].a = mDeffuse[1].a = mDeffuse[2].a = mDeffuse[3].a = a; mIsUpdate = true; return this;}
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @retval float 
+		 */
+		/***********************************************************************/
 		float GetAlpha()										{return mDeffuse[0].a;}
 
 		//UVの取得/格納
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] no 
+		 *  @param[in,out] uv 
+		 *  @retval CRect* 
+		 */
+		/***********************************************************************/
 		CRect* SetUV(int no,D3DXVECTOR2 uv)						{mVtx[no].uv = uv; return this;}
+		/***********************************************************************/
+		/*! @brief 
+		 * 
+		 *  @param[in,out] no 
+		 *  @retval D3DXVECTOR2 
+		 */
+		/***********************************************************************/
 		D3DXVECTOR2 GetUV(int no)								{return mVtx[no].uv;}
 	private:
 		//===========================
@@ -89,11 +205,11 @@ class CRect
 		// メンバ変数 - 非公開
 		//===========================
 		//描画情報
-		VERTEX_RECT				 mVtx[SQUARE_VTX];		//頂点配列
-		LPDIRECT3DTEXTURE9		 mTexture_pr;			//テクスチャポインタ
-		LPDIRECT3DDEVICE9		 mDevice_pr;			//DirectXデバイス
+		VERTEX_RECT				 mVtx[SQUARE_VTX];		///<頂点配列
+		LPDIRECT3DTEXTURE9		 mTexture_pr;			///<テクスチャポインタ
+		LPDIRECT3DDEVICE9		 mDevice_pr;			///<DirectXデバイス
 
-		bool					 mIsUpdate;				//更新の可否
-		D3DXVECTOR2				 mSize;					//サイズ
-		D3DXCOLOR				 mDeffuse[SQUARE_VTX];	//カラー
+		bool					 mIsUpdate;				///<更新の可否
+		D3DXVECTOR2				 mSize;					///<サイズ
+		D3DXCOLOR				 mDeffuse[SQUARE_VTX];	///<カラー
 };

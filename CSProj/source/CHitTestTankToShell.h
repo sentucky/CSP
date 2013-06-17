@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CHitTestTankToShell.h
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #ifndef ___CHITTESTANKTOSHELL___
 #define ___CHITTESTANKTOSHELL___
 

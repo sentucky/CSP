@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CHitTestTankToShell.cpp
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #include"CHitTestTankToShell.h"
 
 #include"CListMng.h"
@@ -10,22 +18,47 @@
 CListMng<CObjBase*>* CHitTestTankToShell::_pTankList	= NULL;
 CListMng<CObjBase*>* CHitTestTankToShell::_pShellList	= NULL;
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 CHitTestTankToShell::CHitTestTankToShell()
 	:_HitTestTToS(NULL)
 {
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 CHitTestTankToShell::~CHitTestTankToShell()
 {
 	disableTask();
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] src 
+ *  @retval  
+ */
+/***********************************************************************/
 CHitTestTankToShell::CHitTestTankToShell(const CHitTestTankToShell& src)
 	:_HitTestTToS(NULL)
 {
 	enableTask();
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CHitTestTankToShell::enableTask()
 {
 	CTaskMng::push<CHitTestTankToShell>(
@@ -36,11 +69,23 @@ void CHitTestTankToShell::enableTask()
 		);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CHitTestTankToShell::disableTask()
 {
 	CTaskMng::erase(&_HitTestTToS);
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CHitTestTankToShell::hitTest()
 {
 	CListItem<CObjBase*>* pRunTank = _pTankList->begin();
@@ -90,11 +135,25 @@ void CHitTestTankToShell::hitTest()
 	}
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pTankList 
+ *  @retval void
+ */
+/***********************************************************************/
 void CHitTestTankToShell::setTankList(CListMng<CObjBase*>* pTankList)
 {
 	_pTankList = pTankList;
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pShellList 
+ *  @retval void
+ */
+/***********************************************************************/
 void CHitTestTankToShell::setShellList(CListMng<CObjBase*>* pShellList)
 {
 	_pShellList = pShellList;

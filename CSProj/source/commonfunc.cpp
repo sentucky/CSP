@@ -280,6 +280,22 @@ void commonfunc::repulsion(
 }
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pColliPos_A 
+ *  @param[in,out] pColliPos_B 
+ *  @param[in,out] pVelo_A 
+ *  @param[in,out] pVelo_B 
+ *  @param[in,out] weight_A 
+ *  @param[in,out] weight_B 
+ *  @param[in,out] res_A 
+ *  @param[in,out] res_B 
+ *  @param[in,out] pOut_velo_A 
+ *  @param[in,out] pOut_velo_B 
+ *  @retval void
+ */
+/***********************************************************************/
 void CalcParticleColliAfterPos(
    const D3DXVECTOR3 *pColliPos_A,
    const D3DXVECTOR3 *pColliPos_B,
@@ -311,6 +327,22 @@ typedef struct{
 	float y;
 }Vector;
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] hitX 
+ *  @param[in,out] hitY 
+ *  @param[in,out] x1 
+ *  @param[in,out] y1 
+ *  @param[in,out] x2 
+ *  @param[in,out] y2 
+ *  @param[in,out] centerX 
+ *  @param[in,out] centerY 
+ *  @param[in,out] radius 
+ *  @retval true 
+ *  @retval false 
+ */
+/***********************************************************************/
 bool LineToCircle(
 	float* hitX,	//	交点
 	float* hitY,	//	交点
@@ -363,6 +395,23 @@ bool LineToCircle(
 }
 
 //線と線
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] hitX 
+ *  @param[in,out] hitY 
+ *  @param[in,out] x1 
+ *  @param[in,out] y1 
+ *  @param[in,out] x2 
+ *  @param[in,out] y2 
+ *  @param[in,out] x3 
+ *  @param[in,out] y3 
+ *  @param[in,out] x4 
+ *  @param[in,out] y4 
+ *  @retval true 
+ *  @retval false 
+ */
+/***********************************************************************/
 bool LineToLine(
 	float* hitX,//	交点
 	float* hitY,//	交点
