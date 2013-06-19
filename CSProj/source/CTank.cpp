@@ -234,13 +234,16 @@ void CTank::draw()
 	_pTankBottom->draw();
 
 #ifdef _DEBUG
+	/*
 	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
 	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatView());			//カメラ座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());	//ワールド座標変換
 
-	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
+//	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
 
 	debugMesh->DrawSubset(0);
+	*/
+
 	static BOOL flg = TRUE;
 	uint x;
 	uint y;
@@ -262,6 +265,8 @@ void CTank::draw()
 	FONT->DrawFloat("VecX",_pTankBottom->getMoveVec()->x,RECTEX(0,80,0,0));
 	FONT->DrawFloat("VecZ",_pTankBottom->getMoveVec()->z,RECTEX(0,96,0,0));
 	FONT->DrawInt("RadiateTime",_radiate,RECTEX(0,112+16,0,0));
+	FONT->DrawInt("roottile",_StageData->step2(_pTankBottom->getWMat()->_41,_pTankBottom->getWMat()->_43)->root,RECTEX(0,500,0,0));
+
 #endif
 }
 

@@ -28,16 +28,11 @@
 
 #include"CSprite.h"
 #include"CSpriteFactory.h"
+#include"CTextureFactory.h"
 #include"CCamera.h"
 #include"const.h"
 #include"TextureKey.h"
 #include"CFont.h"
-
-//================================================================================
-// クラス定義
-//================================================================================
-
-
 
 /***********************************************************************/
 /*! @brief 
@@ -49,15 +44,9 @@ CStageData::CStageData(const char* stageDataPath)
 	:rootNum(0),
 	_StartTile(NULL),
 	_SecondTile(NULL),
-	_LastTile(NULL),
-	_pSprite()
+	_LastTile(NULL)
 {
-	_pSprite[0] = SPRITEFACTORY->create(TEXKEY::TILE01());
-	_pSprite[1] = SPRITEFACTORY->create(TEXKEY::TILE02());
-	_pSprite[2] = SPRITEFACTORY->create(TEXKEY::TILE03());
-	_pSprite[3] = SPRITEFACTORY->create(TEXKEY::TILE04());
 	Init();
-	initwall(tile);
 }
 
 //デストラクタ
@@ -69,10 +58,6 @@ CStageData::CStageData(const char* stageDataPath)
 /***********************************************************************/
 CStageData::~CStageData()
 {
-	for(int i =0;i < 6; i++)
-	{
-		SAFE_DELETE(_pSprite[i]);
-	}
 }
 
 /***********************************************************************/
@@ -83,94 +68,15 @@ CStageData::~CStageData()
 /***********************************************************************/
 void CStageData::Init()
 {
-	/*
-	int i,j;
-	const float haba = (500.0f / (float)MAX_DATA);
+	draw.SetSize(500.0f / (float)MAX_DATA,500.0f / (float)MAX_DATA);
+	draw.SetTexture(NULL);
 
-	for (i = 0 ; i < MAX_DATA ; i++)
-	{
-		for (j = 0 ; j < MAX_DATA ; j++)
-		{
-			tile[i][j].no = 0;
-			tile[i][j].rot = 0;
-			tile[i][j].posX = haba * i - 250.0f;// + haba * 0.5f;
-			tile[i][j].posY = haba * j - 250.0f;// + haba * 0.5f;
-		}
-	}
-	for (i = 0 ; i < 512 ; i++)
-	{
-		root[i].x = 0.0f;
-		root[i].y = 0.0f;
-	}
-	*/
-	vec = D3DXVECTOR3(0.0f,0.0f,0.0f);
-	
-	FILE* fp;
-	fp = fopen("data/stage/stageData00.dat","rb");
+	_pTex[0] = NULL;
+	_pTex[1] = (TEXTUREFACTORY->getTexture(TEXKEY::TILE02()))->getTexture();
+	_pTex[2] = (TEXTUREFACTORY->getTexture(TEXKEY::TILE03()))->getTexture();
+	_pTex[3] = (TEXTUREFACTORY->getTexture(TEXKEY::TILE04()))->getTexture();
 
-//	draw.SetSize((500.0f / (float)MAX_DATA),(500.0f / (float)MAX_DATA));
-//	draw.SetTexture(CTEXTURE->GetTexture("001"));
-	
-	int a;
-	fread(&a,sizeof(int),1,fp);
-
-	fread(tile,sizeof(OUTPUT),MAX_DATA * MAX_DATA,fp);
-
-	fread(&rootNum,sizeof(int),1,fp);
-	fread(root,sizeof(D3DXVECTOR2),rootNum,fp);
-	
-	float strot;
-	int stx;
-	int sty;
-
-	fclose(fp);
-
-	for(int i = 0; i< 16; i++)
-		for(int j = 0; j< 16; j++)
-		{
-			if(tile[j][i].no == STARTPANEL)
-			{
-				stx = j;
-				sty = i;
-				strot = tile[j][i].rot;
-				_StartTile = &(tile[j][i]);
-			}
-		}
-	objNum = 0;
-	type = 0;
-	for (int i = 0 ; i < 512 ; i++){
-		obj[i].no = -1;
-	}
-	int scx,scy,lsx,lsy;
-	if(strot >= 1.5){
-		scx = stx - 1;
-		lsx = stx + 1; 
-		scy = lsy = sty;
-	}
-	else if(strot >= 1.0f)
-	{
-		scy = sty + 1;
-		lsy = sty - 1;
-		scx = lsx = stx;
-	}
-	else if(strot >= 0.5f)
-	{
-		scx = stx + 1;
-		lsx = stx - 1; 
-		scy = lsy = sty;
-	}
-	else
-	{
-		scy = sty - 1;
-		lsy = sty + 1;
-		scx = lsx = stx;
-	}
-
-	_SecondTile = &tile[scx][scy];
-	_LastTile = &tile[lsx][lsy];
-
-
-//	draw2 = C3DOBJECTMANAGER->Get3DObject("オブジェ");
+	Load("data/stage/stageData00.dat");	//暫定
 }
 
 
@@ -197,30 +103,23 @@ void CStageData::Draw()
 	D3DXMATRIXA16 matRot;
 	int i,j;
 
+	D3DDEVICE->SetFVF(FVF_VERTEX_RECT);
 	for (i = 0 ; i < MAX_DATA ; i++){
 		for (j = 0 ; j < MAX_DATA ; j++){
-/*
-			if (i % 2 - j % 2)draw.SetTexture(CTEXTURE->GetTexture("001"));
-			else draw.SetTexture(CTEXTURE->GetTexture("002"));
-			
-			if (tile[i][j].no == 1)draw.SetTexture(CTEXTURE->GetTexture("004"));
-			if (tile[i][j].no == 2)draw.SetTexture(CTEXTURE->GetTexture("005"));
-			if (tile[i][j].no == 3)draw.SetTexture(CTEXTURE->GetTexture("006"));
-*/
+
 			D3DXMatrixRotationYawPitchRoll(&matRot,tile[i][j].rot,-D3DX_PI / 2.0f,0.0f);
-			D3DXMatrixScaling(&matPos,0.12f,0.12f,0.12f);
-			matRot *= matPos;
 			D3DXMatrixTranslation(&matPos,tile[i][j].posX,0.0f,tile[i][j].posY);
 			matRot *= matPos;
 			D3DDEVICE->SetTransform(D3DTS_WORLD,&matRot);
-//			draw.Draw();
-			_pSprite[tile[i][j].no]->draw(
-				0,
-				&matRot,
-				CCamera::getMatView());
+			if (tile[i][j].no != 0){
+				draw.SetTexture(_pTex[tile[i][j].no]);
+				draw.Draw();
+			}
 		}
 	}
-	
+
+	//ライン描画
+#ifdef _DEBUG
 	LINE line[512];
 
 	for (i = 0 ; i < rootNum ; i++){
@@ -229,8 +128,8 @@ void CStageData::Draw()
 		line[i].vtx.z = root[i].y;
 		line[i].diffuse = D3DXCOLOR(1.0f,0.0f,0.0f,1.0f);
 	}
-
 	
+	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,FALSE);
 	D3DDEVICE->SetFVF(FVF_LINE);
 	D3DDEVICE->SetTexture(0,NULL);
 	static float size = 5.0f;
@@ -239,34 +138,10 @@ void CStageData::Draw()
 	D3DDEVICE->SetRenderState(D3DRS_POINTSIZE,*((DWORD*)&size));
 	D3DDEVICE->DrawPrimitiveUP(D3DPT_LINESTRIP,rootNum - 1,&line[0],sizeof(LINE));
 	D3DDEVICE->DrawPrimitiveUP(D3DPT_POINTLIST,rootNum,&line[0],sizeof(LINE));
-/*	
-	//ここからオブジェ
-	if (type == 0)draw2->SetMesh(CMESH->GetMesh("001"));
-	if (type == 1)draw2->SetMesh(CMESH->GetMesh("002"));
-	if (type == 2)draw2->SetMesh(CMESH->GetMesh("003"));
-	
-	D3DDEVICE->SetRenderState(D3DRS_LIGHTING, TRUE);
+	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,TRUE);
+#endif
 
-	for (i = 0 ; i < objNum ; i++){
-		draw2->SetPos(obj[i].pos);
-		if (obj[i].no == 0)draw2->SetMesh(CMESH->GetMesh("001"));
-		if (obj[i].no == 1)draw2->SetMesh(CMESH->GetMesh("002"));
-		if (obj[i].no == 2)draw2->SetMesh(CMESH->GetMesh("003"));
-		draw2->Update();
-		if (i == target)
-			draw2->Draw(1);
-		else
-			draw2->Draw(3);
-	}
-	draw2->SetPos(vec);
-	draw2->Update();
-	draw2->Draw(0);
-
-	CDIRECTXDEVICE->SetRenderState(D3DRS_LIGHTING, FALSE);
-	*/
 }
-
-
 
 /***********************************************************************/
 /*! @brief 
@@ -276,6 +151,183 @@ void CStageData::Draw()
 /***********************************************************************/
 void CStageData::Load(const char* stageDataPath)
 {
+	FILE* fp;
+	fp = fopen(stageDataPath,"rb");
+	
+	int a;
+	fread(&a,sizeof(int),1,fp);
+
+	INPUTDATA tileIn[MAX_DATA][MAX_DATA];
+
+	fread(tileIn,sizeof(INPUTDATA),MAX_DATA * MAX_DATA,fp);
+
+	fread(&rootNum,sizeof(int),1,fp);
+	fread(root,sizeof(D3DXVECTOR2),rootNum,fp);
+	
+	float strot;
+	int i;
+	int j;
+
+	int stx;
+	int sty;
+
+	fclose(fp);
+
+	for(i = 0; i< 16; i++)
+	{
+		for(j = 0; j< 16; j++)
+		{
+			tile[j][i].posX = tileIn[j][i].posX;
+			tile[j][i].posY = tileIn[j][i].posY;
+			tile[j][i].no	= tileIn[j][i].no;
+			tile[j][i].rot  = tileIn[j][i].rot;
+
+			if(tileIn[j][i].no == STARTPANEL)
+			{
+				stx = j;
+				sty = i;
+				strot = tile[j][i].rot * 3.14f;
+				_StartTile = &(tile[j][i]);
+			}
+		}
+	}
+
+
+	for (i = 0 ; i < 512 ; i++){
+		obj[i].no = -1;
+	}
+
+
+	int scx,scy,lsx,lsy;
+	if(strot >= 1.5){
+		scx = stx - 1;
+		lsx = stx + 1; 
+		scy = lsy = sty;
+	}
+	else if(strot >= 1.0f)
+	{
+		scy = sty + 1;
+		lsy = sty - 1;
+		scx = lsx = stx;
+	}
+	else if(strot >= 0.5f)
+	{
+		scx = stx + 1;
+		lsx = stx - 1; 
+		scy = lsy = sty;
+	}
+	else
+	{
+		scy = sty - 1;
+		lsy = sty + 1;
+		scx = lsx = stx;
+	}
+
+
+
+	_SecondTile = &tile[scx][scy];
+	_LastTile = &tile[lsx][lsy];
+
+	initwall(tile);
+
+
+	//	以下がルートタイル情報初期化処理
+	i = sty;
+	j = stx;
+
+
+	tile[j][i].root = 0;
+
+	int prev = 0;
+	const int left		= 0;
+	const int top		= 1;
+	const int right		= 2;
+	const int bottom	= 3;
+
+	const float pi = 3.14159265359f;
+
+	//	開始タイルの情報
+	if(tile[j][i].rot >= 1.5 * pi){
+		prev = left;
+		j -= 1;
+	}
+	else if(tile[j][i].rot >= 1.0f * pi){
+		prev = bottom;
+		i += 1;
+	}
+	else if(tile[j][i].rot >= 0.5f * pi){
+		prev = right;
+		j += 1;
+	}
+	else{
+		prev = top;
+		i -= 1;
+	}
+
+	int next[2]={0,};
+	rootTileNum = 1;	//	総ルートタイル数
+
+	//	第二タイル以降を初期化
+	while(1 )
+	{
+
+		tile[j][i].root = rootTileNum;
+		rootTileNum += 1;
+
+		switch(tile[j][i].no)
+		{
+		case 1:	//	ストレート
+		case 3:	//	スタート
+			if(tile[j][i].rot >= 1.5 * pi || tile[j][i].rot < 1.0f * pi &&tile[j][i].rot >= 0.5f * pi){
+				next[0] = left;
+				next[1] = right;
+			}
+			else{
+				next[0] = top;
+				next[1] = bottom;
+			}
+			break;
+		case 2:	//	カーブ
+			if(tile[j][i].rot >= 1.5 * pi){
+				next[0] = top;
+				next[1] = right;
+			}
+			else if(tile[j][i].rot >= 1.0f * pi){
+				next[0] = top;
+				next[1] = left;
+			}
+			else if(tile[j][i].rot >= 0.5f * pi){
+				next[0] = bottom;
+				next[1] = left;
+			}
+			else{
+				next[0] = bottom;
+				next[1] = right;
+			}
+			break;
+		}
+
+
+		//	次のタイルへ対応する形へ変換
+		prev = (prev + 2) % 4;
+
+		//	前と不一致の連結点が次の連結点
+		prev = prev == next[0] ? next[1] : next[0];
+
+
+		switch(prev)
+		{
+		case left:	j-=1;break;
+		case top:	i-=1;break;
+		case right:	j+=1;break;
+		case bottom:i+=1;break;
+		}
+
+		if(&(tile[j][i]) == _StartTile)
+		{
+			break;
+		}
+	}
 }
 
 /***********************************************************************/
@@ -502,4 +554,13 @@ void CStageData::step(
 	}
 	*zOut = 15 - mid;
 
+}
+
+
+OUTPUT* CStageData::step2(float x,float z)const
+{
+	if (x < -250.0f || z < -250.0f || x > 250.0f || z > 250.0f)
+		return NULL;
+
+	return const_cast<OUTPUT*>(&tile[(int)((x + 250.0f) / (500.0f / 16.0f))][15 - (int)((z + 250.0f) / (500.0f / 16.0f))]);
 }

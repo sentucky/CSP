@@ -48,6 +48,5 @@ protected:
 	char						 _FXFilePath[MAX_PATH];	//!<	fxファイルパス
 	LPD3DXEFFECT				 _Effect;				//!<	エフェクト
 	LPDIRECT3DVERTEXDECLARATION9 _Decl;					//!<	
-
 };
 #endif

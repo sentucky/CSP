@@ -27,13 +27,6 @@
 #include "Rect.h"
 
 
-typedef struct{
-	int no;
-	int rot;
-	float posX;
-	float posY;
-}TILE;
-
 #pragma pack(push,1)
 typedef struct{
 	int no;
@@ -50,7 +43,7 @@ typedef struct
 	float rot;
 	float posX;
 	float posY;
-}INPUT;
+}INPUTDATA;
 
 typedef struct{
 	int no;
@@ -83,74 +76,53 @@ struct LINE
 
 #define FVF_LINE	( D3DFVF_XYZ | D3DFVF_DIFFUSE )
 
-
-
 class CStageData
 {
 public:
-		//コンストラクタ
-		CStageData(const char* stageDataPath);
+		CStageData(const char* stageDataPath);	//コンストラクタ
+		~CStageData();							//デストラクタ
 
-		//デストラクタ
-		~CStageData();
+		void Init();							//初期化
+		void Update();							//更新
+		void Draw();							//描画
 
-		void Draw();
+		void Load(const char* stageDataPath);	//ロード
 
 private:
-		void Init();
-
-		void Update();
-
-		void Load(const char* stageDataPath);
-
-		void initwall(OUTPUT tile[MAX_DATA][MAX_DATA]);
+		void initwall(OUTPUT tile[MAX_DATA][MAX_DATA]);	//壁判定作成
 
 public:
 	void wallFlg(RECT* pOutWallFlg,uint TileX,uint TileY)const ;
-	void step(
-		uint* xOut,
-		uint* yOut,
-		const float x,
-		const float z)const ;
+	void step(uint* xOut,uint* yOut,const float x,const float z)const ;
+	OUTPUT* step2(float x,float z)const;
 
 	const OUTPUT* getStartTile()const;
 	const OUTPUT* getSecondTile()const;
 	const OUTPUT* getLastTile()const;
 	const D3DXVECTOR2* getRoot()const{return root;}
-	const int getRootNum()const{return rootNum;}			// 追加
+	const int getRootNum()const{return rootNum;};
 	const void getTile(const OUTPUT ary[MAX_DATA][MAX_DATA])const;
 
-
 	static const int STARTPANEL = 3;
-
-
 private:
 	//===========================
 	// メンバ変数 - 非公開
 	//===========================
 	OUTPUT tile[MAX_DATA][MAX_DATA];
 	int rootNum;
+	int rootTileNum;
 
 	D3DXVECTOR2 root[512];
-	D3DXVECTOR3 vec;
-	CRect draw;
-
-
 
 	BOOL LINE2[2][MAX_DATA+1][MAX_DATA + 1];
-	static CSprite*	pSprite[6];
-	int objNum;
-	int type;
 	OBJ obj[512];
-	int target;
 
 	OUTPUT* _StartTile;
 	OUTPUT* _SecondTile;
 	OUTPUT* _LastTile;
 
-	CSprite*	_pSprite[6];
-
-
+	LPDIRECT3DTEXTURE9 _pTex[4];
+	CRect draw;
 };
 
 

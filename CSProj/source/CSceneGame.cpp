@@ -126,9 +126,9 @@ void CSceneGame::init()
 	pStage->getStageData()->getTile(t);
 	CPin* pin = NULL;
 	int n2 = 0;
-	//	/*
-	for(int n = 0; n < 8; n++)
-	{
+	
+//	for(int n = 0; n < 100; n++)
+/*	{
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
 		pTank2->setPos(
 			pTank->getMatBottom()->_41 + n * 0.1, 
