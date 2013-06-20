@@ -23,11 +23,14 @@
 CStage::CStage(
 	const char* StageFilePath,
 	CMesh* pMesh
-	):_pTaskDraw(NULL),
+	):CObjBase(OBJGROUPKEY::STAGE()),
+	_pTaskDraw(NULL),
 	_StageDataPath(StageFilePath),
-	_StageData(NULL),
-	_Mesh(pMesh)
+	_StageData(new CStageData(_StageDataPath)),
+	_Mesh(pMesh),
+	_InstCnt(new int(0))
 {
+	++*_InstCnt;
 	D3DXMatrixIdentity(&_matW);
 }
 
@@ -49,13 +52,15 @@ CStage::~CStage()
  */
 /***********************************************************************/
 CStage::CStage(const CStage& src)
-	:_pTaskDraw(NULL),
+	:CObjBase			(src._GroupID						),
+	_pTaskDraw(NULL),
 	_StageDataPath(src._StageDataPath),
-	_StageData(NULL),
-	_Mesh(new CMesh(*src._Mesh))
+	_StageData(src._StageData),
+	_Mesh(new CMesh(*src._Mesh)),
+	_InstCnt(src._InstCnt)
 {
+	++*_InstCnt;
 	D3DXMatrixIdentity(&_matW);
-	_StageData = new CStageData(_StageDataPath);
 	enableTask();
 }
 
@@ -68,7 +73,12 @@ CStage::CStage(const CStage& src)
 void CStage::release()
 {
 	SAFE_DELETE(_Mesh);
-	SAFE_DELETE(_StageData);
+	--*_InstCnt;
+	if(*_InstCnt <= 0)
+	{
+		SAFE_DELETE(_StageData);
+		SAFE_DELETE(_InstCnt);
+	}
 }
 
 /***********************************************************************/
@@ -112,6 +122,12 @@ void CStage::draw()
 
 
 
+/***********************************************************************/
+/*! @brief •`‰æˆ—
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 const CStageData* CStage::getStageData()
 {
 	return _StageData;

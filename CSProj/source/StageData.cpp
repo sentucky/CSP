@@ -53,8 +53,6 @@ CStageData::CStageData(const char* stageDataPath)
 	_pSprite[1] = SPRITEFACTORY->create(TEXKEY::TILE02());
 	_pSprite[2] = SPRITEFACTORY->create(TEXKEY::TILE03());
 	_pSprite[3] = SPRITEFACTORY->create(TEXKEY::TILE04());
-	_pSprite[4] = SPRITEFACTORY->create(TEXKEY::TILE05());
-	_pSprite[5] = SPRITEFACTORY->create(TEXKEY::TILE06());
 	Init();
 	initwall(tile);
 }
@@ -69,7 +67,9 @@ CStageData::CStageData(const char* stageDataPath)
 CStageData::~CStageData()
 {
 	for(int i =0;i < 6; i++)
+	{
 		SAFE_DELETE(_pSprite[i]);
+	}
 }
 
 /***********************************************************************/

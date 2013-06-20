@@ -32,6 +32,9 @@ public:
 
 	void setTank(CTank* pTank);
 
+	const float getDistance(){return _fDistance;}
+	const D3DXVECTOR3* getNAtToEye(){return &_NAtToEye;}
+
 private:
 	float		_fDistance;		///<	距離
 	D3DXVECTOR3	_NAtToEye;		///<	注視点から視点の単位ベクトル

@@ -24,10 +24,12 @@
  */
 /***********************************************************************/
 CFollowCamera::CFollowCamera(
-	):_fDistance(	250.0f),	
-	  _NAtToEye	(	D3DXVECTOR3(0,1.0f,-1.0)),
-	  _pTank	(	NULL),
-	  _pUpdate	(	NULL)
+	)
+	:CObjBase(OBJGROUPKEY::CAMERA()),
+	_fDistance(	20.0f),	
+	_NAtToEye	(	D3DXVECTOR3(0,1.0f,-1.0)),
+	_pTank	(	NULL),
+	_pUpdate	(	NULL)
 {
 	D3DXVec3Normalize(&_NAtToEye,&_NAtToEye);
 }
@@ -53,7 +55,9 @@ CFollowCamera::~CFollowCamera()
 /***********************************************************************/
 CFollowCamera::CFollowCamera(
 	const CFollowCamera& src
-	):_fDistance(	src._fDistance	),	
+	)
+	:CObjBase(src._GroupID),
+	_fDistance(	src._fDistance	),	
 	_NAtToEye	(	src._NAtToEye	),
 	  _pTank	(	NULL			),
 	  _pUpdate	(	NULL			)

@@ -23,7 +23,7 @@ private:
 public:
 
 	virtual void run() = 0;		//!<	ˆ—ŠÖ”
-	const uint getTaskID();
+	const uint getID();
 private:
 	const	uint			_unTaskID;		//!<	ƒ^ƒXƒN”Ô†
 };

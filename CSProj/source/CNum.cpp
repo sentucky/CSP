@@ -27,7 +27,8 @@ CSprite* CNum::_NumSprite[10] = {0,};
  */
 /***********************************************************************/
 CNum::CNum()
-	:_TaskDraw(NULL),
+	:CObjBase(OBJGROUPKEY::NUM()),
+	_TaskDraw(NULL),
 	_Num(0),
 	_xlen(0),
 	_Pos(0,0,0),
@@ -85,7 +86,8 @@ CNum::~CNum()
  */
 /***********************************************************************/
 CNum::CNum(const CNum& src)
-	:_TaskDraw(NULL),
+	:CObjBase			(src._GroupID						),
+_TaskDraw(NULL),
 	_Num(0),
 	_xlen(src._xlen),
 	_Pos(0,0,0),

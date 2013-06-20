@@ -105,7 +105,8 @@ public:
 	static const uint TANK03();
 	static const uint TANK04();
 	static const uint STAGE01();
-	static const uint FOLLOW();
+	static const uint STARTCAMERA();
+	static const uint FOLLOWCAMERA();
 	static const uint NUM();
 	static const uint SUM();
 };
@@ -117,7 +118,7 @@ public:
 	static const uint HITTEST();
 	static const uint SHELL();
 	static const uint STAGE();
-	static const uint FOLLOW();
+	static const uint CAMERA();
 	static const uint PIN();
 	static const uint NUM();
 	static const uint SUM();

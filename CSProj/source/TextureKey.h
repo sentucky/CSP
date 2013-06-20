@@ -23,8 +23,6 @@ public:
 	static const char* TILE02();
 	static const char* TILE03();
 	static const char* TILE04();
-	static const char* TILE05();
-	static const char* TILE06();
 	static const char* NUM0();
 	static const char* NUM1();
 	static const char* NUM2();
@@ -50,8 +48,6 @@ public:
 	static const uint TILE02();
 	static const uint TILE03();
 	static const uint TILE04();
-	static const uint TILE05();
-	static const uint TILE06();
 	static const uint NUM0();
 	static const uint NUM1();
 	static const uint NUM2();

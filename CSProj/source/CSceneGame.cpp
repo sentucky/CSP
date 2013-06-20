@@ -11,6 +11,7 @@
 /***********************************************************************/
 #include"CSceneGame.h"
 #include"CCamera.h"
+#include"CStartCamWork.h"
 
 #include"CTask.h"
 #include"CTaskMng.h"
@@ -43,17 +44,28 @@
 
 #include"CLight.h"
 #include"StageData.h"
-
+#include"CListItem.h"
+#include"CObjBase.h"
 #include "CTankIntDummy.h"
 
-	CLight* GLight;
+CLight* GLight;
+
+enum SCENEGAMEPHASE
+{
+	GP_START,
+	GP_MAIN,
+	GP_END,
+};
 
 /***********************************************************************/
 /*! @brief コンストラクタ
  */
 /***********************************************************************/
 CSceneGame::CSceneGame()
-	:_pCamera(NULL)
+	:_pCamera(NULL),
+	Phase(NULL),
+	_FollowCamera(NULL),
+	_CamStart(NULL)
 {
 }
 
@@ -129,9 +141,15 @@ void CSceneGame::init()
 #endif
 
 	//...追跡カメラ
-	CFollowCamera*	pFCam = NULL;
-	OBJMNG->push(OBJGROUPKEY::FOLLOW(),pFCam = static_cast<CFollowCamera*>(OBJFACTORY->create(OBJKEY::FOLLOW())),NULL);
-	pFCam->setTank(pTank);
+	OBJMNG->push(OBJGROUPKEY::CAMERA(),_FollowCamera = static_cast<CFollowCamera*>(OBJFACTORY->create(OBJKEY::FOLLOWCAMERA())),NULL);
+	_FollowCamera->disableTask();
+	_FollowCamera->setTank(pTank);
+
+	CStartCamWork* pSTCam = NULL;
+	OBJMNG->push(OBJGROUPKEY::CAMERA(),pSTCam = static_cast<CStartCamWork*>(OBJFACTORY->create(OBJKEY::STARTCAMERA())),&_CamStart);
+	pSTCam->reset();
+	pSTCam->camMove();
+
 
 	//...ピン
 	OBJMNG->push(OBJGROUPKEY::PIN(),OBJFACTORY->create(OBJKEY::PIN()),NULL);
@@ -154,8 +172,13 @@ void CSceneGame::init()
 
 	//	スタート位置に配置
 	standby(pStage);
-	pFCam->update();
 	_DrawFlg = TRUE;
+
+	pSTCam->lastPoint(
+		pTank->getMatBottom()->_41 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->x,
+		pTank->getMatBottom()->_42 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->y,
+		pTank->getMatBottom()->_43 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->z
+		);
 }
 
 /***********************************************************************/
@@ -170,6 +193,14 @@ void CSceneGame::update()
 
 
 	CTaskMng::run();
+
+	if(_CamStart != 0)
+	{
+		if(_CamStart->getInst()->getDeleteFlg() == TRUE)
+		{
+			switchGMain();
+		}
+	}
 
 	//	オブジェクトの更新
 	_pCamera->update();
@@ -199,7 +230,10 @@ void CSceneGame::draw()
 	MOUSE.mousePoint3D(&Mouse3DPos,0);
 	FONT->DrawFloat("MOUSEX:",Mouse3DPos.x,RECTEX(0,16,0,0));
 	ps.left = 50;		   
-	FONT->DrawFloat("MOUSEZ:",Mouse3DPos.z,RECTEX(150,16,0,0));
+	FONT->DrawFloat("MOUSEZ:",Mouse3DPos.z,RECTEX(200,16,0,0));
+	FONT->DrawFloat("CAMX:",CCamera::getEye().x,RECTEX(0,400,0,0));
+	FONT->DrawFloat("CAMY:",CCamera::getEye().y,RECTEX(0,416,0,0));
+	FONT->DrawFloat("CAMZ:",CCamera::getEye().z,RECTEX(0,432,0,0));
    
 #endif
 }
@@ -273,4 +307,71 @@ void CSceneGame::standby(CStage* pStage)
 		++cnt;
 	}
 	CCamera::update();
+}
+
+
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
+void CSceneGame::switchGMain()
+{
+	//	CAMERA切り替え
+	OBJMNG->erase(
+		OBJGROUPKEY::CAMERA(),
+		&_CamStart
+		);
+	_FollowCamera->enableTask();
+	_FollowCamera->update();
+
+	//	戦車を動かせるようにする
+	CListMng<CObjBase*>*TankList =  OBJMNG->getList(OBJGROUPKEY::TANK());
+	CListItem<CObjBase*>* pItem = TankList->begin();
+	CListItem<CObjBase*>* pEnd = TankList->end();
+	CTank* pTank;
+	while(1)
+	{
+		pTank = static_cast<CTank*>(pItem->getInst());
+		pTank->enableTask();
+		pItem = pItem->next();
+		if(pItem == pEnd)
+		{
+			break;
+		}
+	}
+}
+
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
+void CSceneGame::switchGEnd()
+{
+	CListMng<CObjBase*>*TankList =  OBJMNG->getList(OBJGROUPKEY::TANK());
+	CListItem<CObjBase*>* pItem = TankList->begin();
+	CListItem<CObjBase*>* pEnd = TankList->end();
+	CTank* pTank;
+	CTank* pTankWin;
+	
+	
+	while(1)
+	{
+		pTank = static_cast<CTank*>(pItem->getInst());
+		if(pTank->getFlgGoal() == TRUE )
+		{
+			break;
+		}
+		else if( pItem == pEnd)
+		{
+			return;
+		}
+		pItem = pItem->next();
+	}
+
+	////////////////ここに終了時処理
+
 }

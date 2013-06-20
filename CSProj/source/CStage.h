@@ -49,6 +49,7 @@ private:
 	CTaskList*		_pTaskDraw;			///<	描画関数
 	CMesh*			_Mesh;				///<	メッシュ
 	D3DXMATRIXA16	_matW;				///<	マトリクス
+	int*			_InstCnt;
 };
 
 #endif

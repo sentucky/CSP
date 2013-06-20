@@ -26,7 +26,8 @@
  */
 /***********************************************************************/
 CPin::CPin(CMesh* pMesh)
-	:_pTaskDraw(NULL),
+	:CObjBase(OBJGROUPKEY::PIN()),
+	_pTaskDraw(NULL),
 	_pTaskUpdate(NULL),
 	_pMesh(pMesh)
 {
@@ -53,7 +54,8 @@ CPin::~CPin()
  */
 /***********************************************************************/
 CPin::CPin(const CPin& src)
-	:_pTaskDraw(NULL),
+	:CObjBase			(src._GroupID						),
+_pTaskDraw(NULL),
 	_pTaskUpdate(NULL),
 	_pMesh(new CMesh(*src._pMesh))
 {

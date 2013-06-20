@@ -49,7 +49,7 @@ void CTaskBase::operator =(const CTaskBase& src)
  *  @retval const uint É^ÉXÉNID
  */
 /***********************************************************************/
-const uint CTaskBase::getTaskID()
+const uint CTaskBase::getID()
 {
 	return _unTaskID;
 }

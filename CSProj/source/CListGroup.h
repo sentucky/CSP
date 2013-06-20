@@ -76,14 +76,14 @@ void CListGroup<T>::erase(
 	{
 		return;
 	}
-	const uint unTaskID = (*deletedItem)->getInst()->getTaskID();
+	const uint unTaskID = (*deletedItem)->getInst()->getID();
 
 	if( _ListGroup.size() == 0)
 		return;
 
 	delete ((*deletedItem)->getInst());
 	_ListGroup[unTaskID].erase(*deletedItem);
-	*deletedList = NULL;
+	*deletedItem = NULL;
 }
 
 

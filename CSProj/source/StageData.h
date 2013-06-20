@@ -143,6 +143,7 @@ private:
 	OUTPUT* _SecondTile;
 	OUTPUT* _LastTile;
 
+
 	CSprite*	_pSprite[6];
 
 };

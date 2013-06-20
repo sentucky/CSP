@@ -36,8 +36,6 @@ const uint TEXKEY::TILE01()			{	return TEX_TILE01;			}
 const uint TEXKEY::TILE02()			{	return TEX_TILE02;			}
 const uint TEXKEY::TILE03()			{	return TEX_TILE03;			}
 const uint TEXKEY::TILE04()			{	return TEX_TILE04;			}
-const uint TEXKEY::TILE05()			{	return TEX_TILE05;			}
-const uint TEXKEY::TILE06()			{	return TEX_TILE06;			}
 const uint TEXKEY::NUM0()			{	return TEX_NUM0;			}
 const uint TEXKEY::NUM1()			{	return TEX_NUM1;			}
 const uint TEXKEY::NUM2()			{	return TEX_NUM2;			}
@@ -61,16 +59,14 @@ const char* TEXPATH::TILE01()			{return "data/Stage/001.jpg";				}
 const char* TEXPATH::TILE02()			{return "data/Stage/004.jpg";				}
 const char* TEXPATH::TILE03()			{return "data/Stage/005.jpg";				}
 const char* TEXPATH::TILE04()			{return "data/Stage/006.jpg";				}
-const char* TEXPATH::TILE05()			{return "data/Stage/002.jpg";				}
-const char* TEXPATH::TILE06()			{return "data/Stage/003.jpg";				}
-const char* TEXPATH::NUM0()				{return "data/texture/num0.png";			}
-const char* TEXPATH::NUM1()				{return "data/texture/num1.png";			}
-const char* TEXPATH::NUM2()				{return "data/texture/num2.png";			}
-const char* TEXPATH::NUM3()				{return "data/texture/num3.png";			}
-const char* TEXPATH::NUM4()				{return "data/texture/num4.png";			}
-const char* TEXPATH::NUM5()				{return "data/texture/num5.png";			}
-const char* TEXPATH::NUM6()				{return "data/texture/num6.png";			}
-const char* TEXPATH::NUM7()				{return "data/texture/num7.png";			}
-const char* TEXPATH::NUM8()				{return "data/texture/num8.png";			}
-const char* TEXPATH::NUM9()				{return "data/texture/num9.png";			}
+const char* TEXPATH::NUM0()				{return "data/texture/num/num0.png";			}
+const char* TEXPATH::NUM1()				{return "data/texture/num/num1.png";			}
+const char* TEXPATH::NUM2()				{return "data/texture/num/num2.png";			}
+const char* TEXPATH::NUM3()				{return "data/texture/num/num3.png";			}
+const char* TEXPATH::NUM4()				{return "data/texture/num/num4.png";			}
+const char* TEXPATH::NUM5()				{return "data/texture/num/num5.png";			}
+const char* TEXPATH::NUM6()				{return "data/texture/num/num6.png";			}
+const char* TEXPATH::NUM7()				{return "data/texture/num/num7.png";			}
+const char* TEXPATH::NUM8()				{return "data/texture/num/num8.png";			}
+const char* TEXPATH::NUM9()				{return "data/texture/num/num9.png";			}
 const char* TEXPATH::ANIMETEST()		{return "data/texture/animeTextTex.png";	}

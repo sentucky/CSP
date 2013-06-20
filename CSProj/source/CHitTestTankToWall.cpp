@@ -27,7 +27,8 @@ const CStageData*			 CHitTestTankToWall::_StageData = NULL;
  */
 /***********************************************************************/
 CHitTestTankToWall::CHitTestTankToWall()
-	:_pHitTestTask(NULL)
+	:CObjBase(OBJGROUPKEY::HITTEST()),
+	_pHitTestTask(NULL)
 {
 }
 
@@ -50,7 +51,8 @@ CHitTestTankToWall::~CHitTestTankToWall()
  */
 /***********************************************************************/
 CHitTestTankToWall::CHitTestTankToWall(const CHitTestTankToWall& src)
-	:_pHitTestTask(NULL)
+	:CObjBase			(src._GroupID						),
+	_pHitTestTask(NULL)
 {
 	enableTask();
 }

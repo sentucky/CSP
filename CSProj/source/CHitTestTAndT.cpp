@@ -1,10 +1,10 @@
 /***********************************************************************/
 /*! @file  CHitTestTAndT.cpp
- *  @brief
- *  
- *  @author 
- *  @date 
- */
+*  @brief
+*  
+*  @author 
+*  @date 
+*/
 /***********************************************************************/
 #include"CHitTestTAndT.h"
 
@@ -21,20 +21,21 @@ CListMng<CObjBase*>* CHitTestTAndT::_pTankList = NULL;
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval  
- */
+* 
+*  @retval  
+*/
 /***********************************************************************/
 CHitTestTAndT::CHitTestTAndT()
-	:_HitTestTask(NULL)
+	:CObjBase(OBJGROUPKEY::HITTEST()),
+	_HitTestTask(NULL)
 {
 }
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval  
- */
+* 
+*  @retval  
+*/
 /***********************************************************************/
 CHitTestTAndT::~CHitTestTAndT()
 {
@@ -43,13 +44,14 @@ CHitTestTAndT::~CHitTestTAndT()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @param[in,out] src 
- *  @retval  
- */
+* 
+*  @param[in,out] src 
+*  @retval  
+*/
 /***********************************************************************/
 CHitTestTAndT::CHitTestTAndT(const CHitTestTAndT& src)
-	:_HitTestTask(NULL)
+	:CObjBase			(src._GroupID						),
+	_HitTestTask(NULL)
 {
 	if(_pTankList == NULL)
 	{
@@ -60,9 +62,9 @@ CHitTestTAndT::CHitTestTAndT(const CHitTestTAndT& src)
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CHitTestTAndT::enableTask()
 {
@@ -75,9 +77,9 @@ void CHitTestTAndT::enableTask()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CHitTestTAndT::disableTask()
 {
@@ -86,9 +88,9 @@ void CHitTestTAndT::disableTask()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CHitTestTAndT::hitTest()
 {
@@ -154,10 +156,10 @@ void CHitTestTAndT::hitTest()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @param[in,out] pTankList 
- *  @retval void
- */
+* 
+*  @param[in,out] pTankList 
+*  @retval void
+*/
 /***********************************************************************/
 void CHitTestTAndT::setTankList(CListMng<CObjBase*>* pTankList)
 {

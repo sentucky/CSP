@@ -146,7 +146,7 @@ void CTaskMng::erase(CTaskList** deletedList)
 	}
 
 
-	const uint unTaskID = (*deletedList)->getInst()->getTaskID();
+	const uint unTaskID = (*deletedList)->getInst()->getID();
 
 	if(unTaskID == TASKKEY::DRAW())
 	{

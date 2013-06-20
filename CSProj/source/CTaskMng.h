@@ -85,6 +85,11 @@ void CTaskMng::push(
 		CTaskList** pRef
 		)
 {
+	if(*pRef != NULL)
+	{
+		return;
+	}
+
 	CTask<T>* pTask = new CTask<T>(unTaskID, pInst, func);
 	if(TASKKEY::DRAW() == unTaskID)
 	{

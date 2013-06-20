@@ -25,7 +25,8 @@ CListMng<CObjBase*>* CHitTestTankToShell::_pShellList	= NULL;
  */
 /***********************************************************************/
 CHitTestTankToShell::CHitTestTankToShell()
-	:_HitTestTToS(NULL)
+	:CObjBase(OBJGROUPKEY::HITTEST()),
+	_HitTestTToS(NULL)
 {
 }
 
@@ -48,7 +49,8 @@ CHitTestTankToShell::~CHitTestTankToShell()
  */
 /***********************************************************************/
 CHitTestTankToShell::CHitTestTankToShell(const CHitTestTankToShell& src)
-	:_HitTestTToS(NULL)
+	:CObjBase			(src._GroupID						),
+_HitTestTToS(NULL)
 {
 	enableTask();
 }

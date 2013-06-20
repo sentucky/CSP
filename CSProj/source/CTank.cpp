@@ -66,7 +66,8 @@ CTank::CTank(
 	const int	Life
 
 	)
-	:_pTaskDraw			( NULL			),
+	:CObjBase			( OBJGROUPKEY::TANK()),
+	_pTaskDraw			( NULL			),
 	_pTaskPause			( NULL			),
 	_pTaskMove			( NULL			),
 	_pTaskIntelligence	( NULL			),
@@ -80,9 +81,9 @@ CTank::CTank(
 	_unThisType			( unThisType	),
 	_life				( Life			),
 	_radiate			( 0				),
-	_MaxRadiateTime		( 120			),
+	_MaxRadiateTime		( 30			),
 	_Destroyed			( FALSE			),
-	_GoalFlg			( FALSE			)
+	_FlgGoal			( FALSE			)
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
 	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
@@ -115,7 +116,8 @@ CTank::~CTank()
  */
 /***********************************************************************/
 CTank::CTank(const CTank& src)
-	:_pTaskDraw			( NULL								),
+	:CObjBase			(src._GroupID						),
+	_pTaskDraw			( NULL								),
 	_pTaskPause			( NULL								),
 	_pTaskMove			( NULL								),
 	_pTaskIntelligence	( NULL								),
@@ -128,10 +130,10 @@ CTank::CTank(const CTank& src)
 	_fRadius			( src._fRadius						),
 	_unThisType			( src._unThisType					),
 	_life				( src._life							),
-	_radiate			(0),
-	_MaxRadiateTime		(120),
+	_radiate			(0									),
+	_MaxRadiateTime		(src._MaxRadiateTime),
 	_Destroyed			( FALSE	),
-	_GoalFlg			( FALSE	)
+	_FlgGoal			( FALSE	)
 {
 
 	//	思考設定
@@ -149,7 +151,8 @@ CTank::CTank(const CTank& src)
 	_pTankTop->setTankBottom(_pTankBottom);
 
 	//	タスク有効化
-	enableTask();
+//	enableTask();
+	CTaskMng::push<CTank>(TASKKEY::DRAW(),			this,&CTank::draw,	&_pTaskDraw			);
 
 #ifdef _DEBUG
 	debugMesh = NULL;
@@ -178,7 +181,6 @@ void CTank::release()
 /***********************************************************************/
 void CTank::enableTask()
 {
-	CTaskMng::push<CTank>(TASKKEY::DRAW(),			this,&CTank::draw,	&_pTaskDraw			);
 	CTaskMng::push<CTank>(TASKKEY::PAUSE(),			this,&CTank::pause,	&_pTaskPause		);
 	CTaskMng::push<CTank>(TASKKEY::MOVE(),			this,&CTank::move,	&_pTaskMove			);
 	CTaskMng::push<CTank>(TASKKEY::INTELLIGENCE(),	this,&CTank::intelligence,	&_pTaskIntelligence	);
@@ -532,4 +534,10 @@ void CTank::setMoveVec( const D3DXVECTOR3 *MoveVec )
 void CTank::setPos(const float x,const float z)
 {
 	_pTankBottom->setPos(x,z);
+	const D3DXMATRIXA16* pMatTank = _pTankBottom->getWMat();
+	_pTankTop->setPos(
+		pMatTank->_41,
+		pMatTank->_42 + 0.5f,
+		pMatTank->_43
+		);
 }

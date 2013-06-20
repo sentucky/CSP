@@ -25,6 +25,7 @@
 #include"CFactory.h"
 
 #include"CCamera.h"
+#include"CStartCamWork.h"
 
 #include"CTank.h"
 #include"CStage.h"
@@ -81,8 +82,8 @@ void gameInit()
 	INPUTCOMMON->createKeyboard();
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
-//	ps = new CSceneGame;
-	ps = new CSceneTestSpace;
+	ps = new CSceneGame;
+//	ps = new CSceneTestSpace;
 	pScene = ps;
 
 
@@ -96,8 +97,6 @@ void gameInit()
 	SPRITEFACTORY->registTexture(TEXKEY::TILE02(),			TEXPATH::TILE02()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TILE03(),			TEXPATH::TILE03()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TILE04(),			TEXPATH::TILE04()			);
-	SPRITEFACTORY->registTexture(TEXKEY::TILE05(),			TEXPATH::TILE05()			);
-	SPRITEFACTORY->registTexture(TEXKEY::TILE06(),			TEXPATH::TILE06()			);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM0(),			TEXPATH::NUM0()				);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM1(),			TEXPATH::NUM1()				);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM2(),			TEXPATH::NUM2()				);
@@ -157,10 +156,11 @@ void gameInit()
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANKDUMMY(),pObj2);
 #endif
 	OBJFACTORY->registPrototype(OBJKEY::STAGE01(),pStage);
-	OBJFACTORY->registPrototype(OBJKEY::NUM(),	new CNum);
-	OBJFACTORY->registPrototype(OBJKEY::FOLLOW(),		new CFollowCamera								);
+	OBJFACTORY->registPrototype(OBJKEY::NUM(),			new CNum);
+	OBJFACTORY->registPrototype(OBJKEY::FOLLOWCAMERA(),	new CFollowCamera								);
 	OBJFACTORY->registPrototype(OBJKEY::PIN(),			new CPin(MESHFACTORY->create(MESHKEY::PIN()))	);
 	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOW(),	new CHitTestTankToWall							);
+	OBJFACTORY->registPrototype(OBJKEY::STARTCAMERA(),	new CStartCamWork(pStage->getStageData())		);
 
 	CHitTestTAndT* pHTTAT;
 	pHTTAT = new CHitTestTAndT;

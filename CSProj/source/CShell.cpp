@@ -32,7 +32,8 @@ CShell::CShell(
 			CMesh*	pMesh,
 			const int power
 	)
-	:_OldPos(0,0,0),
+	:CObjBase(OBJGROUPKEY::SHELL()),
+	_OldPos(0,0,0),
 	_Trajectory(0,0,0),
 	_MoveVector(0,0,0),
 	_pMesh(pMesh),
@@ -71,7 +72,8 @@ CShell::~CShell()
 CShell::CShell(
 	const CShell& src
 	)
-	:_Owner(src._Owner),
+	:CObjBase(src._GroupID						),
+	_Owner(src._Owner),
 	_OldPos(0,0,0),
 	_Trajectory(0,0,0),
 	_MoveVector(0,0,0),
