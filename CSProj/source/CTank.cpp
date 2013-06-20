@@ -81,7 +81,7 @@ CTank::CTank(
 	_unThisType			( unThisType	),
 	_life				( Life			),
 	_radiate			( 0				),
-	_MaxRadiateTime		( 30			),
+	_MaxRadiateTime		( 15			),
 	_Destroyed			( FALSE			),
 	_FlgGoal			( FALSE			)
 {
@@ -247,11 +247,7 @@ void CTank::draw()
 	_StageData->step(&x,&y,_pTankBottom->getWMat()->_41,_pTankBottom->getWMat()->_43);
 	FONT->DrawInt("step",x,RECTEX(0,32,0,0));
 	FONT->DrawInt("step",y,RECTEX(100,32,0,0));
-//	if(flg)
-	{
-		FONT->DrawFloat("TPOS",_pTankBottom->getWMat()->_41,RECTEX(0,48,0,0));
-		FONT->DrawFloat("TPOS",_pTankBottom->getWMat()->_43,RECTEX(0,64,0,0));
-	}
+
 
 	OUTPUT tile[16][16];
 	_StageData->getTile(tile);
@@ -386,7 +382,7 @@ void CTank::hitTestTank( CTank* pTank)
 	D3DXVECTOR3 v1ref[2];
 	const D3DXVECTOR3* v1 = _pTankBottom->getMoveVec();
 	const D3DXVECTOR3* v2 = pTank->getMoveVec();
-
+	const D3DXVECTOR3* vBak;
 
 	const D3DXMATRIXA16* pmatW1 = _pTankBottom->getWMat();
 	const D3DXMATRIXA16* pmatW2 = pTank->getMatBottom();
@@ -402,31 +398,6 @@ void CTank::hitTestTank( CTank* pTank)
 	v1ref[0] = v3 * f;
 	v1ref[1] = -v3 * f;
 
-	/*
-	//for(uint Cnt = 0; Cnt < 2; ++Cnt)
-	{
-//		commonfunc::repulsion(&v1ref[Cnt].x,v1->x,v2->x,100,100,1.0F,1.0F);
-//		commonfunc::repulsion(&v1ref[Cnt].z,v1->z,v2->z,100,100,1.0F,1.0F);
-//*
-		CalcParticleColliAfterPos(
-			&pos1,
-			&pos2,
-			v1,
-			v2,
-			1.0f,
-			1.0f,
-			1.0f,
-			1.0f,
-			&v1ref[0],
-			&v1ref[1]
-		);
-//	
-//		v1ref[Cnt].y = 0;
-//		vBak = v1;
-//		v1 = v2;
-//		v2 = vBak;
-	}
-	*/
 	_pTankBottom->setMoveVec(v1ref[0]);
 	pTank->setMoveVec(v1ref[1]);
 }
@@ -462,12 +433,6 @@ void CTank::hitTestWall()
 /***********************************************************************/
 /*!	@brift	ボトムのマトリクス取得
  *	@retval	D3DXMATRIXA16* マトリクス
- */
-/***********************************************************************/
-/***********************************************************************/
-/*! @brief 
- * 
- *  @retval const D3DXMATRIXA16* 
  */
 /***********************************************************************/
 const D3DXMATRIXA16* CTank::getMatBottom()

@@ -40,7 +40,17 @@ typedef struct{
 	float rot;
 	float posX;
 	float posY;
+	int	  root;
 }OUTPUT;
+
+
+typedef struct
+{
+	int no;
+	float rot;
+	float posX;
+	float posY;
+}INPUT;
 
 typedef struct{
 	int no;
@@ -106,13 +116,8 @@ public:
 	const OUTPUT* getStartTile()const;
 	const OUTPUT* getSecondTile()const;
 	const OUTPUT* getLastTile()const;
-	/***********************************************************************/
-	/*! @brief 
-	 * 
-	 *  @retval const D3DXVECTOR2* 
-	 */
-	/***********************************************************************/
 	const D3DXVECTOR2* getRoot()const{return root;}
+	const int getRootNum()const{return rootNum;}			// ’Ç‰Á
 	const void getTile(const OUTPUT ary[MAX_DATA][MAX_DATA])const;
 
 
@@ -143,8 +148,8 @@ private:
 	OUTPUT* _SecondTile;
 	OUTPUT* _LastTile;
 
-
 	CSprite*	_pSprite[6];
+
 
 };
 

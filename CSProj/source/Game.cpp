@@ -20,7 +20,7 @@
 #include"CScreen.h"
 #include"CFadeInOut.h"
 #include"CMeshFactory.h"
-#include"CDevice.h"			//デバイスクラスヘッダ
+#include"CDevice.h"	
 #include"CTaskMng.h"
 #include"CFactory.h"
 
@@ -82,8 +82,8 @@ void gameInit()
 	INPUTCOMMON->createKeyboard();
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
-	ps = new CSceneGame;
-//	ps = new CSceneTestSpace;
+//	ps = new CSceneGame;
+	ps = new CSceneTitle;
 	pScene = ps;
 
 

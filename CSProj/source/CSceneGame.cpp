@@ -1,10 +1,10 @@
 /***********************************************************************/
 /*! @file  CSceneGame.cpp
- *  @brief ゲーム部分の処理
- *  
- *  @author 
- *  @date 
- */
+*  @brief ゲーム部分の処理
+*  
+*  @author 
+*  @date 
+*/
 /***********************************************************************/
 /***********************************************************************/
 //	インクルード
@@ -59,7 +59,7 @@ enum SCENEGAMEPHASE
 
 /***********************************************************************/
 /*! @brief コンストラクタ
- */
+*/
 /***********************************************************************/
 CSceneGame::CSceneGame()
 	:_pCamera(NULL),
@@ -71,7 +71,7 @@ CSceneGame::CSceneGame()
 
 /***********************************************************************/
 /*! @brief デストラクタ
- */
+*/
 /***********************************************************************/
 CSceneGame::~CSceneGame()
 {
@@ -82,9 +82,9 @@ CSceneGame::~CSceneGame()
 
 /***********************************************************************/
 /*! @brief 初期化処理
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CSceneGame::init()
 {
@@ -106,7 +106,7 @@ void CSceneGame::init()
 	_pCamera = new CCamera;
 	_pCamera->setEyeY(50);
 	_pCamera->update();
-	
+
 	//	リストサイズ設定
 	OBJMNG->resize(OBJGROUPKEY::SUM());
 
@@ -121,23 +121,21 @@ void CSceneGame::init()
 
 #ifdef _DEBUG
 	CTank*			pTank2 = NULL;
-//*
+	//*
 	OUTPUT t[16][16];
 	pStage->getStageData()->getTile(t);
 	CPin* pin = NULL;
 	int n2 = 0;
-	/*
+	//	/*
 	for(int n = 0; n < 8; n++)
 	{
-	//	for( = 0; n2 < 8; n2++)
-		{
-			OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
-			pTank2->setPos(
-				pTank->getMatBottom()->_41 + n * 0.1, 
-				pTank->getMatBottom()->_43 + n2 * 0.1);
-		}
+		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
+		pTank2->setPos(
+			pTank->getMatBottom()->_41 + n * 0.1, 
+			pTank->getMatBottom()->_43 + n2 * 0.1
+			);
 	}
-//*/
+	//*/
 #endif
 
 	//...追跡カメラ
@@ -162,7 +160,7 @@ void CSceneGame::init()
 	OBJMNG->push(OBJGROUPKEY::HITTEST(),(OBJFACTORY->create(OBJKEY::HITTESTTTOW())),NULL);
 	OBJMNG->push(OBJGROUPKEY::HITTEST(),(OBJFACTORY->create(OBJKEY::HITTESTTTOS())),NULL);
 
-	
+
 	CTankIntInter::setStageData(pStage->getStageData());
 	CTank::setStageData(pStage->getStageData());
 	CHitTestTankToWall::setStageData(pStage->getStageData());
@@ -183,9 +181,9 @@ void CSceneGame::init()
 
 /***********************************************************************/
 /*! @brief 更新処理
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CSceneGame::update()
 {
@@ -211,17 +209,17 @@ void CSceneGame::update()
 
 /***********************************************************************/
 /*! @brief 描画処理
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CSceneGame::draw()
 {
 	CHECK_DRAW;
 	CTaskMng::draw();
 
-//	CTankIntDummy::Debug();
-	
+	//	CTankIntDummy::Debug();
+
 #ifdef _DEBUG
 	static RECTEX fpspos(0,0,0,0);
 	FONT->DrawInt("FPS:",CTIMER->getFPS(),fpspos);
@@ -234,15 +232,15 @@ void CSceneGame::draw()
 	FONT->DrawFloat("CAMX:",CCamera::getEye().x,RECTEX(0,400,0,0));
 	FONT->DrawFloat("CAMY:",CCamera::getEye().y,RECTEX(0,416,0,0));
 	FONT->DrawFloat("CAMZ:",CCamera::getEye().z,RECTEX(0,432,0,0));
-   
+
 #endif
 }
 
 /***********************************************************************/
 /*! @brief 解放処理
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CSceneGame::release()
 {
@@ -254,9 +252,9 @@ void CSceneGame::release()
 
 /***********************************************************************/
 /*! @brief シーン切り替え
- * 
- *  @retval CSceneBase * 
- */
+* 
+*  @retval CSceneBase * 
+*/
 /***********************************************************************/
 CSceneBase * CSceneGame::nextScene()
 {
@@ -265,10 +263,10 @@ CSceneBase * CSceneGame::nextScene()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @param[in,out] pStage 
- *  @retval void
- */
+* 
+*  @param[in,out] pStage 
+*  @retval void
+*/
 /***********************************************************************/
 void CSceneGame::standby(CStage* pStage)
 {
@@ -283,7 +281,7 @@ void CSceneGame::standby(CStage* pStage)
 	//....スタート位置タイル取得
 	const OUTPUT* pStTile= pStage->getStageData()->getStartTile();
 
-	
+
 	const float moveX = 1.0f;
 	const float moveY = 1.0f;
 
@@ -296,8 +294,8 @@ void CSceneGame::standby(CStage* pStage)
 
 	while(pListTank !=  pEnd)
 	{
-	//	本来の型でポインタ取得
-		
+		//	本来の型でポインタ取得
+
 		pTank = static_cast<CTank*>(pListTank->getInst());
 		pTank->setPos(
 			pointX + moveX * static_cast<float>(cnt % 10),
@@ -312,9 +310,9 @@ void CSceneGame::standby(CStage* pStage)
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CSceneGame::switchGMain()
 {
@@ -345,9 +343,9 @@ void CSceneGame::switchGMain()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CSceneGame::switchGEnd()
 {
@@ -356,8 +354,8 @@ void CSceneGame::switchGEnd()
 	CListItem<CObjBase*>* pEnd = TankList->end();
 	CTank* pTank;
 	CTank* pTankWin;
-	
-	
+
+
 	while(1)
 	{
 		pTank = static_cast<CTank*>(pItem->getInst());
