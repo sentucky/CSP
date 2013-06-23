@@ -96,7 +96,7 @@ BOOL CTextureFactory::registTexture(const uint nId,const char* pszTextureFilePat
 
 	if(SUMTEXTURE <= nId)
 	{
-#ifdef DEBUG
+#ifdef _DEBUG
 		char szErrorMessage[MAX_PATH];
 		sprintf(szErrorMessage,"テクスチャ格納配列の容量不足です。\n容量を追加します",pszTextureFilePath);
 		MessageAlert(szErrorMessage,"error from CTextureFatory::registTexture");
@@ -104,7 +104,7 @@ BOOL CTextureFactory::registTexture(const uint nId,const char* pszTextureFilePat
 		reserve(nId);
 	}
 
-#ifdef DEBUG
+#ifdef _DEBUG
 	for(uint unCnt = 0; unCnt < SUMTEXTURE; ++unCnt)
 	{
 		if(_vecTexture[unCnt] == NULL)
@@ -142,7 +142,7 @@ BOOL CTextureFactory::releaseTexture(const uint nId)
 {
 	if(_vecTexture[nId] == NULL)
 	{
-#ifdef DEBUG
+#ifdef _DEBUG
 		MessageAlert("指定されたテクスチャは登録されていません","error from releaseTexture");
 #endif
 		return FALSE;
@@ -152,7 +152,7 @@ BOOL CTextureFactory::releaseTexture(const uint nId)
 
 	if(nId >= SUMTEXTURE)
 	{
-#ifdef DEBUG
+#ifdef _DEBUG
 		MessageAlert("容量を超えています","error from releaseTexture");
 		return FALSE;
 #endif
@@ -184,7 +184,7 @@ CTexture* CTextureFactory::getTexture(const uint nId)
 	//----キーネームの有無
 	if(_vecTexture[nId] == NULL)
 	{
-#ifdef DEBUG
+#ifdef _DEBUG
 		char szErrorMessage[MAX_PATH];
 		sprintf_s(szErrorMessage,"テクスチャファクトリーキー\"%d\"が見つかりません",nId);
 		MessageAlert(szErrorMessage,"error from CTextureFatory::getTexture");

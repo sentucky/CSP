@@ -138,7 +138,7 @@ private:
 
 	static LPDIRECTSOUNDBUFFER _SoundFire;
 
-#ifdef DEBUG
+#ifdef _DEBUG
 LPD3DXMESH debugMesh;;
 #endif
 

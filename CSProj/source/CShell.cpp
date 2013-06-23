@@ -46,7 +46,8 @@ CShell::CShell(
 	_nMaxLife(nMaxLife),
 	_nLife(-1),
 	_Owner(NULL),
-	_Power(power)
+	_Power(power),
+	_fRad(1.0f)
 {
 	D3DXMatrixIdentity(&_matW);
 }
@@ -86,11 +87,13 @@ CShell::CShell(
 	_TaskListExplosion(NULL),
 	_nMaxLife(src._nMaxLife),
 	_nLife(src._nMaxLife),
-	_Power(src._Power)
+	_Power(src._Power),
+	_fRad(src._fRad)
+
 {
 	D3DXMatrixIdentity(&_matW);
 	enableTask();
-#ifdef DEBUG
+#ifdef _DEBUG
 	_fRad = 1.0f;
 #endif
 

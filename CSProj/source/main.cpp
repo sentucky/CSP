@@ -52,7 +52,7 @@ void	release();
 /***********************************************************************/
 int WINAPI WinMain( HINSTANCE hInst , HINSTANCE hPrevinst , LPSTR nCmdLine , int nCmdShow )
 {
-#ifdef DEBUG
+#ifdef _DEBUG
    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );	//メモリリークチェッカーの適用
 #endif
 	//===変数宣言===//

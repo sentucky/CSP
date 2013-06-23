@@ -35,7 +35,7 @@ CMeshFactory::~CMeshFactory(){
 CMesh* CMeshFactory::create(const uint unMeshKeyName)
 {
 	//	未登録時処理
-#ifdef DEBUG
+#ifdef _DEBUG
 	if(_vectorMesh[unMeshKeyName] == NULL)
 	{
 		MessageAlert("そんな名前のメッシュないです","error from CModelFactory::create");
@@ -72,7 +72,7 @@ void CMeshFactory::registMesh(const uint unKeyName,const char*pszMeshFilePath)
 	//----キーネームの重複チェック
 	if(_vectorMesh[unKeyName] != NULL)
 	{
-#ifdef DEBUG
+#ifdef _DEBUG
 		MessageAlert("登録済み番号","error from CMeshFactory::registMesh");
 #endif
 		return;
@@ -86,7 +86,7 @@ void CMeshFactory::registMesh(const uint unKeyName,const char*pszMeshFilePath)
 		}
 		if(_vectorMesh[unCnt]->_szMeshFileName == pszMeshFilePath)
 		{
-#ifdef DEBUG
+#ifdef _DEBUG
 		MessageAlert("ファイルパスが重複しています","error from CMeshFactory::registMesh");
 #endif
 			return;

@@ -93,7 +93,7 @@ template<class InheriT>
 /***********************************************************************/
 void CFactory<T>::registPrototype(const uint unKey,InheriT* pPrototype)
 {
-//#ifdef DEBUG
+//#ifdef _DEBUG
 	if(_prototypes.size() < unKey)
 	{
 		MessageAlert("ƒTƒCƒY‚ª‘«‚è‚Ü‚¹‚ñ","error from CFactory<T>::reserve");

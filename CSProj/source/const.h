@@ -20,7 +20,7 @@ public:
 class MESHPATH
 {
 public:
-#ifdef DEBUG
+#ifdef _DEBUG
 	static const char* RING();
 #endif
 	static const char* SHELL01();
@@ -42,7 +42,7 @@ public:
 class MESHKEY
 {
 public:
-#ifdef DEBUG
+#ifdef _DEBUG
 	static const uint RING();
 #endif
 	static const uint YUKA();

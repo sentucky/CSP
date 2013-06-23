@@ -119,7 +119,7 @@ void CStageData::Draw()
 	}
 
 	//ƒ‰ƒCƒ“•`‰æ
-#ifdef DEBUG
+#ifdef _DEBUG
 	LINE line[512];
 
 	for (i = 0 ; i < rootNum ; i++){

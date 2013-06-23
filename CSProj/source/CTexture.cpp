@@ -87,7 +87,7 @@ void CTexture::setFilePath(const char* pszFilePath)
 
 	////////////////////////////
 	//	—áŠOˆ—
-#ifdef DEBUG
+#ifdef _DEBUG
 	if(FAILED(hr))
 	{
 	}

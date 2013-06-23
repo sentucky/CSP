@@ -17,7 +17,7 @@
 #include"const.h"
 #include"ObjKey.h"
 
-#ifdef DEBUG
+#ifdef _DEBUG
 #include"CFont.h"
 #endif
 
@@ -103,7 +103,7 @@ void CPin::disableTask()
 void CPin::draw()
 {
 	_pMesh->draw(&_matW);
-#ifdef DEBUG
+#ifdef _DEBUG
 #endif
 }
 

@@ -10,7 +10,7 @@
 
 const char* STAGEPATH::NO_01(){return "data/stage/stageData00.dat";}
 
-#ifdef DEBUG
+#ifdef _DEBUG
 const char* MESHPATH::RING(){			return "data/model/donuts.x";		}
 #endif
 const char* MESHPATH::SHELL01(){		return "data/model/pin.x";		}
@@ -38,7 +38,7 @@ enum eMESHKEY
 	MESH_SHELL02,		//
 	MESH_SHELL03,		//
 	MESH_YUKA,			//
-#ifdef DEBUG
+#ifdef _DEBUG
 	MESH_RING,			//
 #endif
 	MESH_STAGE01,		//
@@ -53,7 +53,7 @@ enum eMESHKEY
 	MESH_SUM,			//
 };
 
-#ifdef DEBUG
+#ifdef _DEBUG
 const uint MESHKEY::RING(){			return MESH_RING;			}
 #endif
 const uint MESHKEY::SHELL01(){		return MESH_SHELL01;		}

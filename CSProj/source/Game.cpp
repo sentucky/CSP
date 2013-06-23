@@ -116,7 +116,7 @@ void gameInit()
 
 	//	ƒƒbƒVƒ…‰Šú‰»
 	MESHFACTORY->reserve(MESHKEY::SUM());
-#ifdef DEBUG
+#ifdef _DEBUG
 	MESHFACTORY->registMesh(MESHKEY::RING(),	MESHPATH::RING()	);
 #endif
 	MESHFACTORY->registMesh(MESHKEY::TANK01_BOTTOM(),	MESHPATH::TANK01_BOTTOM()	);

@@ -40,7 +40,7 @@ CNum::CNum()
 {
 	ZeroMemory(_NumSprite,sizeof(_NumSprite));
 
-#ifdef DEBUG
+#ifdef _DEBUG
 	static int checker = 0;
 	if(checker > 0 )
 		MessageAlert("ŠÔˆá‚Á‚½Žg‚¢•û‚µ‚Ä‚Ü‚·","warning from CNum::CNum");

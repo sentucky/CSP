@@ -37,7 +37,7 @@
 
 #include"ObjKey.h"
 
-#ifdef DEBUG
+#ifdef _DEBUG
 #include"CPin.h"
 #include"CTankIntDummy.h"
 
@@ -164,7 +164,7 @@ void CSceneGame::init()
 
 	//...ƒsƒ“
 	OBJMNG->push(OBJGROUPKEY::PIN(),OBJFACTORY->create(OBJKEY::PIN()),NULL);
-#ifdef DEBUG
+#ifdef _DEBUG
 
 #endif
 	OBJMNG->push(OBJGROUPKEY::COCKPIT(),OBJFACTORY->create(OBJKEY::RANK()),NULL);
@@ -242,7 +242,7 @@ void CSceneGame::draw()
 
 	static RECTEX fpspos(0,0,0,0);
 	FONT->DrawInt("FPS:",CTIMER->getFPS(),fpspos);
-#ifdef DEBUG
+#ifdef _DEBUG
 	static RECTEX ps(0,16,0,0);
 	static D3DXVECTOR3 Mouse3DPos;
 	MOUSE.mousePoint3D(&Mouse3DPos,0);
