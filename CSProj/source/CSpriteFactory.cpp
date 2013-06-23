@@ -54,7 +54,7 @@ CSprite* CSpriteFactory::create(const int nId)
 
 	//	テクスチャキーチェック
 	pTex =  TEXTUREFACTORY->getTexture( nId);
-#ifdef _DEBUG
+#ifdef DEBUG
 	if(NULL == pTex)
 	{
 		MessageAlert("そんな名前のテクスチャないです","erorr from CSpriteFactory::create");

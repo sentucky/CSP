@@ -6,6 +6,7 @@
 class SOUNDKEY
 {
 public:
+	static const uint BGM1();
 	static const uint COLLITANKTOTANK();
 	static const uint ENGILE();
 	static const uint FIRE();
@@ -19,6 +20,7 @@ public:
 class SOUNDPATH
 {
 public:
+	static char* BGM1();
 	static char* COLLITANKTOTANK();
 	static char* ENGILE();
 	static char* FIRE();

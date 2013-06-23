@@ -20,6 +20,9 @@ public:
 class MESHPATH
 {
 public:
+#ifdef DEBUG
+	static const char* RING();
+#endif
 	static const char* SHELL01();
 	static const char* SHELL02();
 	static const char* SHELL03();
@@ -39,7 +42,9 @@ public:
 class MESHKEY
 {
 public:
-	
+#ifdef DEBUG
+	static const uint RING();
+#endif
 	static const uint YUKA();
 	static const uint STAGE01();
 	static const uint TANK01_TOP();
@@ -68,6 +73,8 @@ public:
 class TASKKEY
 {
 public:
+	static const uint COCKPIT();
+	static const uint RANKING();
 	static const uint RAP();
 	static const uint HITTEST_TANKADNTANK();
 	static const uint HITTEST_TANKTOSHELL();
@@ -87,42 +94,6 @@ public:
 
 
 
-class OBJKEY
-{
-public:
-	static const uint HITTESTTTOT();
-	static const uint HITTESTTTOS();
-	static const uint HITTESTTTOW();
-	static const uint SHELL01();
-	static const uint SHELL02();
-	static const uint SHELL03();
-	static const uint PIN();
-#ifdef _DEBUG
-	static const uint TANKDUMMY();
-#endif
-	static const uint TANK01();
-	static const uint TANK02();
-	static const uint TANK03();
-	static const uint TANK04();
-	static const uint STAGE01();
-	static const uint STARTCAMERA();
-	static const uint FOLLOWCAMERA();
-	static const uint NUM();
-	static const uint SUM();
-};
-
-class OBJGROUPKEY
-{
-public:
-	static const uint TANK();
-	static const uint HITTEST();
-	static const uint SHELL();
-	static const uint STAGE();
-	static const uint CAMERA();
-	static const uint PIN();
-	static const uint NUM();
-	static const uint SUM();
-};
 
 
 

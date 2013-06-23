@@ -11,8 +11,9 @@
 #include"CTaskList.h"
 #include"CTank.h"
 #include"CTaskMng.h"
+#include"ObjKey.h"
 
-#ifdef _DEBUG
+#ifdef DEBUG
 #include"CInputCommon.h"
 #endif
 
@@ -103,7 +104,7 @@ void CFollowCamera::update()
 	const float y = _pTank->getMatBottom()->_42;
 	const float z = _pTank->getMatBottom()->_43;
 
-#ifdef _DEBUG
+#ifdef DEBUG
 	if(KEYBOARD.getTrgKey(DIK_P))
 	{
 		_NAtToEye.z += 1.0f;

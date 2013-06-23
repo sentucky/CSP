@@ -2,8 +2,11 @@
 #define ___CCOCKPIT___
 
 #include"common.h"
+#include"CObjBase.h"
 
 class CTaskList;
+class CNum;
+class CTank;
 
 class CCockpit:public CObjBase
 {
@@ -12,38 +15,18 @@ public:
 	~CCockpit();
 	CCockpit::CCockpit(const CCockpit& src);
 
+	void enableTask();
+	void disableTask();
+
 	void draw();
 	void update();
-
+	void setTank(CTank* Tank){ _Tank = Tank;}
 
 private:
-	CTaskList* _TaskDraw;
-	CTaskList* _TaskUpdate;
+	CTaskList*	_TaskDraw;
+	CTaskList*	_TaskUpdate;
+	CTank*		_Tank;
+	CNum*		_Num;
 };
-
-CCockpit::CCockpit()
-	:_TaskDraw(NULL),
-	_TaskUpdate(NULL)
-{
-}
-
-CCockpit::~CCockpit()
-{
-}
-
-CCockpit::CCockpit(const CCockpit& src)
-	:_TaskDraw(NULL),
-	_TaskUpdate(NULL)
-{
-}
-
-
-void CCockpit::draw()
-{
-}
-
-void CCockpit::update()
-{
-}
 
 #endif

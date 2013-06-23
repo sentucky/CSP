@@ -52,6 +52,11 @@ public:
 
 	static void erase(CTaskList** deletedList);		///<	íœ
 
+	static void push(
+		const uint unTaskID,
+		CTaskBase*  task,
+		CTaskList** pRef
+		);
 	template<class T>
 	static void push(
 		const uint unTaskID,

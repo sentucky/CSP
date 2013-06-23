@@ -36,6 +36,8 @@ public:
 	void registPrototype(const uint unKey,InheriT* pPrototype);	///<	Œ´Œ^“o˜^
 	void reserve(const uint unSumKey);						///<	—e—Ê—\–ñ
 	T* create(const uint unKey);							///<	Œ´Œ^‚©‚ç•¡»‚ðì‚é
+	template<class T2>
+	T2* create(const uint unKey);
 	void release();											///<	Œ´Œ^‚ð‚·‚×‚ÄŽè•ú‚·
 private:
 	std::vector<CCreatorInter<T>*> _prototypes;	///<	PrototypeŠi”[ƒxƒNƒ^
@@ -91,7 +93,7 @@ template<class InheriT>
 /***********************************************************************/
 void CFactory<T>::registPrototype(const uint unKey,InheriT* pPrototype)
 {
-//#ifdef _DEBUG
+//#ifdef DEBUG
 	if(_prototypes.size() < unKey)
 	{
 		MessageAlert("ƒTƒCƒY‚ª‘«‚è‚Ü‚¹‚ñ","error from CFactory<T>::reserve");
@@ -133,6 +135,13 @@ template<class T>
 T* CFactory<T>::create(const uint unKey)
 {
 	return _prototypes[unKey]->create();
+}
+
+template<class T>
+template<class T2>
+T2* CFactory<T>::create(const uint unKey)
+{
+	return static_cast<T2*>(_prototypes[unKey]->create());
 }
 
 

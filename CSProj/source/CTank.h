@@ -13,6 +13,7 @@
 //	インクルード
 /***********************************************************************/
 #include"CObjBase.h"
+#include"StageData.h"
 #include <dsound.h>
 
 
@@ -64,6 +65,8 @@ public:
 	void eRap();				///<	敵ラップ
 	void pRap();				///<	自機ラップ
 
+
+
 	//	呼出し
 	void hitTestTank(CTank* pTank);		///<	あたり判定
 	void hitTestShell(CShell* pShell);	///<	弾とのあたり判定後処理
@@ -77,15 +80,22 @@ public:
 	void enableTask();			///<	タスク有効化
 	void disableTask();			///<	タスク無効化
 
+	static const bool lower(const CTank* A,const CTank* B);
+
 	const D3DXMATRIXA16*	getMatBottom();	///<	ボトムのマトリクス取得
 	const D3DXVECTOR3*		getMoveVec();	///<	移動ベクトル
 	const float				getRadius();	///<	半径の取得
 	const BOOL				getDestroyed(){return _Destroyed;}	///<	被破壊フラグ取得
 	const BOOL				getFlgGoal(){return _FlgGoal;}
 
+	const float				getlapVal(){return _lapVal;}
+	const int				getlap(){return _lap;}
+	const uint				getRank(){return _Rank;}
+
 	void setMoveVec( D3DXVECTOR3& MoveVec );
 	void setMoveVec( const D3DXVECTOR3 *MoveVec );
 	void setPos(const float x,const float z);
+	void setRank(const uint Rank){_Rank = Rank;}
 
 	static void setStageData(const CStageData* pStageData		){	_StageData = pStageData;}
 	static void setSoundFire(const LPDIRECTSOUNDBUFFER SoundFire){ _SoundFire = SoundFire;}
@@ -117,12 +127,18 @@ private:
 
 	uint			_TankType;			///<	タンクの型
 
+	uint			_Rank;
+	float			_lapVal;			//	進行状態
+	int				_lap;				//	ラップ数	
+	OUTPUT*         _Panel;				//
+	OUTPUT*         _prevPanel;			//
+
 	static const uint TYPE_PLAYER = 0;
 	static const uint TYPE_ENEMY01 = -1;
 
 	static LPDIRECTSOUNDBUFFER _SoundFire;
 
-#ifdef _DEBUG
+#ifdef DEBUG
 LPD3DXMESH debugMesh;;
 #endif
 

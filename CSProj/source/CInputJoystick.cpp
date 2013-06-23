@@ -68,7 +68,7 @@ void CInputJoystick::init(LPDIRECTINPUT8 pDInput)
 	hr = pDInput->EnumDevices(DI8DEVCLASS_GAMECTRL, EnumJoysticksCallback, NULL, DIEDFL_ATTACHEDONLY);
 	if(FAILED(hr))
 	{
-#ifdef _DEBUG
+#ifdef DEBUG
 		//		MessageBox(NULL, "ジョイスティック","01",MB_OK);
 #endif
 	}
@@ -86,7 +86,7 @@ void CInputJoystick::init(LPDIRECTINPUT8 pDInput)
 		hr = _pDIDJoystick[nLpCnt]->SetDataFormat( &c_dfDIJoystick);
 		if(FAILED(hr))
 		{
-#ifdef _DEBUG
+#ifdef DEBUG
 			MessageBox(NULL, "ジョイスティック","02",MB_OK);
 #endif
 		}
@@ -94,7 +94,7 @@ void CInputJoystick::init(LPDIRECTINPUT8 pDInput)
 		hr = _pDIDJoystick[nLpCnt]->SetCooperativeLevel( hWnd,DISCL_EXCLUSIVE | DISCL_FOREGROUND);
 		if(FAILED(hr))
 		{
-#ifdef _DEBUG
+#ifdef DEBUG
 			MessageBox(NULL, "ジョイスティック","03",MB_OK);
 #endif
 		}
@@ -103,7 +103,7 @@ void CInputJoystick::init(LPDIRECTINPUT8 pDInput)
 		hr = _pDIDJoystick[nLpCnt]->GetCapabilities( &_diDevCaps);
 		if(FAILED(hr))
 		{
-#ifdef _DEBUG
+#ifdef DEBUG
 			MessageBox(NULL, "ジョイスティック","04",MB_OK);
 #endif
 		}
@@ -111,7 +111,7 @@ void CInputJoystick::init(LPDIRECTINPUT8 pDInput)
 		hr = _pDIDJoystick[nLpCnt]->EnumObjects( EnumAxesCallback, (VOID*)hWnd, DIDFT_AXIS);
 		if(FAILED(hr))
 		{
-#ifdef _DEBUG
+#ifdef DEBUG
 			MessageBox(NULL, "ジョイスティック","05",MB_OK);
 #endif
 		}
@@ -130,7 +130,7 @@ void CInputJoystick::init(LPDIRECTINPUT8 pDInput)
 
 		if(FAILED(hr))
 		{
-#ifdef _DEBUG
+#ifdef DEBUG
 			MessageBox(NULL, "ジョイスティック","08",MB_OK);
 #endif
 		}
@@ -177,7 +177,7 @@ void CInputJoystick::update()
 		hr = _pDIDJoystick[nLpCnt]->Poll();
 		if(FAILED(hr))
 		{	
-#ifdef _DEBUG
+#ifdef DEBUG
 			//			MessageBox(NULL, "ジョイスティック","06",MB_OK);
 #endif
 			hr = _pDIDJoystick[nLpCnt]->Acquire();
@@ -187,7 +187,7 @@ void CInputJoystick::update()
 			}
 		}
 		hr = _pDIDJoystick[nLpCnt]->GetDeviceState( sizeof(DIJOYSTATE), &(_PrsJoystick[nLpCnt]));
-#ifdef _DEBUG
+#ifdef DEBUG
 		if(FAILED(hr))
 		{
 		}

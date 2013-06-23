@@ -13,8 +13,11 @@
 #include"CTaskList.h"
 #include"CTaskMng.h"
 
+
 #include"const.h"
-#ifdef _DEBUG
+#include"ObjKey.h"
+
+#ifdef DEBUG
 #include"CFont.h"
 #endif
 
@@ -100,7 +103,7 @@ void CPin::disableTask()
 void CPin::draw()
 {
 	_pMesh->draw(&_matW);
-#ifdef _DEBUG
+#ifdef DEBUG
 #endif
 }
 

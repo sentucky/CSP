@@ -112,7 +112,6 @@ private:
 
 	static CStageData* _StageData;
 
-#ifdef _DEBUG
 public:
 	/***********************************************************************/
 	/*! @brief 
@@ -122,8 +121,6 @@ public:
 	/***********************************************************************/
 	const float getRad(){return _fRad;}
 	float _fRad;
-#endif
-
 };
 
 #endif

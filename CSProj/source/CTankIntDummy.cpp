@@ -75,23 +75,23 @@ void CTankIntDummy::update()
 /***********************************************************************/
 void CTankIntDummy::root(){
 	
-	static D3DXVECTOR2* i = new D3DXVECTOR2;// 現在位置から目的ナビポイントまでのベクトル
-	static D3DXVECTOR2* o = new D3DXVECTOR2;// 前ナビポイントから目的ナビポイントまでのベクトル
-	static D3DXVECTOR2* a = new D3DXVECTOR2;
-	static D3DXVECTOR2* b = new D3DXVECTOR2;
+	static D3DXVECTOR2 i;// 現在位置から目的ナビポイントまでのベクトル
+	static D3DXVECTOR2 o;// 前ナビポイントから目的ナビポイントまでのベクトル
+	static D3DXVECTOR2 a;
+	static D3DXVECTOR2 b;
 	// 現在位置から目的ナビポイントまで
 	
-	i->x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_pMyTank->getMatBottom()->_41;
-	i->y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_pMyTank->getMatBottom()->_43;
+	i.x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_pMyTank->getMatBottom()->_41;
+	i.y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_pMyTank->getMatBottom()->_43;
 	//前ナビポイントから目的ナビポイントまで
-	o->x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_StageData->getRoot()[_point-1].x;
-	o->y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_StageData->getRoot()[_point-1].y;
+	o.x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_StageData->getRoot()[_point-1].x;
+	o.y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_StageData->getRoot()[_point-1].y;
 	
 	// 性器化
-	D3DXVec2Normalize(a,i);
-	D3DXVec2Normalize(b,o);
+	D3DXVec2Normalize(&a,&i);
+	D3DXVec2Normalize(&b,&o);
 
-	float k = D3DXVec2Dot(a,b);
+	float k = D3DXVec2Dot(&a,&b);
 	debug = k;
 	debug2 =  CTankIntDummy::_StageData->getRoot()[_point].x;
 	debug3 =  CTankIntDummy::_StageData->getRoot()[_point].y;
@@ -107,7 +107,7 @@ void CTankIntDummy::root(){
 			_point++;	// 次のポイントへ
 		}
 	}
-	_MoveDir = D3DXVECTOR2(a->x,a->y);	// ナビポイントへ移動
+	_MoveDir = D3DXVECTOR2(a.x,a.y);	// ナビポイントへ移動
 	
 	
 }

@@ -12,7 +12,7 @@
 #include"common.h"
 
 void gameInit();
-void gameLoop();
+bool gameLoop();
 void gameRelease();
 
 #endif

@@ -11,6 +11,10 @@
 #include"CMesh.h"
 #include"CTankIntInter.h"
 
+#include"CObjMng.h"
+
+#include"ObjKey.h"
+
 const	float	CTankBottom::_fDeceleration = 0.900f;
 
 /***********************************************************************/
@@ -102,13 +106,18 @@ void CTankBottom::move()
  *  @retval void
  */
 /***********************************************************************/
-void CTankBottom::clacMove()
+void CTankBottom::clacMove(const uint rank)
 {
+	CListMng<CObjBase*>* pTankList = OBJMNG->getList(OBJGROUPKEY::TANK());
+
+	const uint size = pTankList->size();
+	const float rankPar = static_cast<float>(rank) / static_cast<float>(size) - 0.5f;
+
 	const D3DXVECTOR2* pMoveVec = _pIntelligence->getModeDir();
 	if(abs(pMoveVec->x) + abs(pMoveVec->y) != 0)
 	{
 		D3DXVec3Normalize(&_Dir,&_Dir);
-		_MoveVec += _Dir * _fSpeedMove;
+		_MoveVec += _Dir *( _fSpeedMove  + _fSpeedMove * rankPar);
 	}
 }
 
@@ -137,11 +146,8 @@ void CTankBottom::rotateMatrix(float fTurnSpeed)
 /***********************************************************************/
 void CTankBottom::turn()
 {
-//	uint unMoveDir = _pIntelligence->getMoveDir();
 	_MoveVec.y = 0;
 
-//	if(unMoveDir == 5)
-//		return;
 	const D3DXVECTOR2* pMoveDir = _pIntelligence->getModeDir();
 
 	if(abs(pMoveDir->x) + abs(pMoveDir->y) == 0)
@@ -149,20 +155,7 @@ void CTankBottom::turn()
 		return;
 	}
 
-	/*
-	switch(unMoveDir % 3)
-	{
-	case 1:_MoveDir.x = -1.0f;	break;
-	case 2:_MoveDir.x = 0.0f;	break;
-	case 0:_MoveDir.x = 1.0f;	break;
-	}
-	switch((unMoveDir -1 ) / 3)
-	{
-	case 0:_MoveDir.z = -1.0f;	break;
-	case 1:_MoveDir.z = 0.0f;	break;
-	case 2:_MoveDir.z = 1.0f;	break;
-	}
-	*/
+
 
 	//	à⁄ìÆï˚å¸ÇÃç∂âEämîF
 	static D3DXVECTOR2 v1;
@@ -229,6 +222,18 @@ void CTankBottom::turn()
 const D3DXMATRIXA16* CTankBottom::getWMat()
 {
 	return &_WMat;
+}
+
+
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval const D3DXVECTOR3* 
+ */
+/***********************************************************************/
+const D3DXVECTOR3  CTankBottom::getPos()
+{
+	return D3DXVECTOR3(_WMat._41,_WMat._42,_WMat._43);
 }
 
 

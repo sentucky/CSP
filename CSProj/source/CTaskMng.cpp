@@ -57,18 +57,6 @@ void CTaskMng::run()
 		end = _TaskList[unVCnt].end();		//	I’[æ“¾
 
 		//	ˆ—Às
-		/***********************************************************************/
-		/*! @brief 
-		 * 
-		 *  @retval run = run-> 
-		 */
-		/***********************************************************************/
-		/***********************************************************************/
-		/*! @brief 
-		 * 
-		 *  @retval run = run-> 
-		 */
-		/***********************************************************************/
 		for(; run != end; run = run->next())
 		{
 			run->getInst()->run();
@@ -86,18 +74,6 @@ void CTaskMng::draw()
 {
 	CListItem<CTaskBase*>* run = _DrawTaskList.begin();
 	CListItem<CTaskBase*>* end = _DrawTaskList.end();
-	/***********************************************************************/
-	/*! @brief 
-	 * 
-	 *  @retval run = run-> 
-	 */
-	/***********************************************************************/
-	/***********************************************************************/
-	/*! @brief 
-	 * 
-	 *  @retval run = run-> 
-	 */
-	/***********************************************************************/
 	for(; run != end; run = run->next())
 	{
 		run->getInst()->run();
@@ -151,6 +127,30 @@ void CTaskMng::erase(CTaskList** deletedList)
 	_TaskList[unTaskID].erase(*deletedList);
 	*deletedList = NULL;
 }
+
+
+void CTaskMng::push(
+		const uint unTaskID,
+		CTaskBase*  pTask,
+		CTaskList** pRef
+		)
+{
+	if(*pRef != NULL)
+	{
+		return;
+	}
+
+	if(TASKKEY::DRAW() == unTaskID)
+	{
+		*pRef = static_cast<CTaskList*>(_DrawTaskList.push_back(pTask));
+	}
+	else
+	{
+		*pRef = static_cast<CTaskList*>(_TaskList[unTaskID].push_back(pTask));
+	}
+}
+
+
 /***********************************************************************/
 /*! @brief ‰ğ•úˆ—
  * 

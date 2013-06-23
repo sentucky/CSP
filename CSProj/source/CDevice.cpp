@@ -68,15 +68,15 @@ BOOL CDevice::init()
 
 	
 	// レンダリングステートパラメータの設定
-    _d3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);			// カリングを行わない
 	_d3dDevice->SetRenderState(D3DRS_ZENABLE, TRUE);					// Zバッファを使用
 	_d3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);			// αブレンドを行う
 	_d3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// αソースカラーの指定
 	_d3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// αデスティネーションカラーの指定
-	_d3dDevice->SetRenderState(D3DRS_LIGHTING , TRUE );					//ライトの無効化
+	_d3dDevice->SetRenderState(D3DRS_LIGHTING , FALSE );				//ライトの無効化
 	_d3dDevice->SetRenderState(D3DRS_ZWRITEENABLE,TRUE);				//深度バッファの設定
 	_d3dDevice->SetRenderState(D3DRS_AMBIENT , 0x00444444 );			//明りで照らす
-//	_d3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);//
+	_d3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+
 	_d3dDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 //	_d3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 	_d3dDevice->SetRenderState(D3DRS_COLORVERTEX, TRUE);
@@ -89,7 +89,7 @@ BOOL CDevice::init()
 
 	// アルファチャンネル有効に
 	_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE); 
-
+	
 	return TRUE;
 }
 //EOF

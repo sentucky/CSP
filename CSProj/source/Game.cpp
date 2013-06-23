@@ -32,6 +32,8 @@
 #include"CFollowCamera.h"
 #include"CPin.h"
 #include"CShell.h"
+#include"CCockpit.h"
+#include"CRank.h"
 
 #include"CSound.h"
 
@@ -40,6 +42,7 @@
 #include"const.h"
 #include"TextureKey.h"
 #include"CSoundKey.h"
+#include"ObjKey.h"
 
 #include"CHItTestTAndT.h"
 #include"CHitTestTankToWall.h"
@@ -82,8 +85,9 @@ void gameInit()
 	INPUTCOMMON->createKeyboard();
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
-//	ps = new CSceneGame;
-	ps = new CSceneTitle;
+	ps = new CSceneGame;
+//	ps = new CSceneTitle;
+//	ps = new CSceneTestSpace;
 	pScene = ps;
 
 
@@ -112,6 +116,9 @@ void gameInit()
 
 	//	メッシュ初期化
 	MESHFACTORY->reserve(MESHKEY::SUM());
+#ifdef DEBUG
+	MESHFACTORY->registMesh(MESHKEY::RING(),	MESHPATH::RING()	);
+#endif
 	MESHFACTORY->registMesh(MESHKEY::TANK01_BOTTOM(),	MESHPATH::TANK01_BOTTOM()	);
 	MESHFACTORY->registMesh(MESHKEY::TANK02_BOTTOM(),	MESHPATH::TANK02_BOTTOM()	);
 	MESHFACTORY->registMesh(MESHKEY::TANK03_BOTTOM(),	MESHPATH::TANK03_BOTTOM()	);
@@ -139,7 +146,6 @@ void gameInit()
 		);
 	CStage* pStage = new CStage(STAGEPATH::NO_01(),MESHFACTORY->create(MESHKEY::STAGE01()));
 
-#ifdef _DEBUG
 	CTank* pObj2 = new CTank(
 		MESHFACTORY->create(MESHKEY::TANK04_TOP()),
 		MESHFACTORY->create(MESHKEY::TANK04_BOTTOM()),
@@ -148,20 +154,18 @@ void gameInit()
 		0.05f,
 		0.05f,
 		3);
-#endif
 
 	OBJFACTORY->reserve(OBJKEY::SUM());
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANK01(),pObj);
-#ifdef _DEBUG
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANKDUMMY(),pObj2);
-#endif
 	OBJFACTORY->registPrototype(OBJKEY::STAGE01(),pStage);
 	OBJFACTORY->registPrototype(OBJKEY::NUM(),			new CNum);
 	OBJFACTORY->registPrototype(OBJKEY::FOLLOWCAMERA(),	new CFollowCamera								);
 	OBJFACTORY->registPrototype(OBJKEY::PIN(),			new CPin(MESHFACTORY->create(MESHKEY::PIN()))	);
 	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOW(),	new CHitTestTankToWall							);
 	OBJFACTORY->registPrototype(OBJKEY::STARTCAMERA(),	new CStartCamWork(pStage->getStageData())		);
-
+	OBJFACTORY->registPrototype(OBJKEY::COCKPIT(),		new CCockpit);
+	OBJFACTORY->registPrototype(OBJKEY::RANK(),			new CRank);
 	CHitTestTAndT* pHTTAT;
 	pHTTAT = new CHitTestTAndT;
 
@@ -172,6 +176,7 @@ void gameInit()
 	CSound* pSound = CSOUND;
 	pSound->reserve(SOUNDKEY::SUM());
 	pSound->Init();
+	pSound->LoadSoundFile(SOUNDKEY::BGM1(),	SOUNDPATH::BGM1()	);
 	pSound->LoadSoundFile(SOUNDKEY::COLLITANKTOTANK(),	SOUNDPATH::COLLITANKTOTANK()	);
 	pSound->LoadSoundFile(SOUNDKEY::ENGILE(),			SOUNDPATH::ENGILE()				);
 	pSound->LoadSoundFile(SOUNDKEY::FANFARE(),			SOUNDPATH::FANFARE()			);
@@ -189,7 +194,7 @@ void gameInit()
  *  @retval void
  */
 /***********************************************************************/
-void gameLoop()
+bool gameLoop()
 {
 
 	//...入力情報の更新
@@ -235,6 +240,10 @@ void gameLoop()
 
 	case P_SCENE_SWITCH:
 		pScene = pScene->nextScene();
+		if(!pScene) 
+		{
+			return false;
+		}
 		Phase = P_INIT;
 		break;
 	}
@@ -245,6 +254,8 @@ void gameLoop()
 		drawEnd();
 		D3DDEVICE->Present(0,0,0,0);
 	}
+
+	return true;
 }
 
 /***********************************************************************/

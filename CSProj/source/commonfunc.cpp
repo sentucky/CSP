@@ -265,7 +265,7 @@ void commonfunc::repulsion(
 	float e2
 	)
 {
-#ifdef _DEBUG
+#ifdef DEBUG
 	if(e1 > 1 || 0 > e1)
 	{
 		MessageAlert("e1‚É•s³‚È’l‚ª“ü—Í‚³‚ê‚Ä‚¢‚Ü‚·","error from repulsion");

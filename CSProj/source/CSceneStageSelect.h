@@ -16,7 +16,7 @@ class CSceneStageSelect:public CSceneBase
 public:
 	CSceneStageSelect();
 	~CSceneStageSelect();
-
+private:
 	void init();				//!<	‰Šú‰»ˆ—
 	void release();				//!<	‰ð•úˆ—
 	void update();				//!<	XVˆ—

@@ -36,7 +36,7 @@ typedef std::vector<uint> vector_uint;
 
 
 
-#ifdef _DEBUG
+#ifdef DEBUG
 //	メモリリークチェッカー
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>

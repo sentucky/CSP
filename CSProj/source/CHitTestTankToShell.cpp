@@ -14,6 +14,7 @@
 #include"CTaskMng.h"
 #include"CShell.h"
 #include"CTank.h"
+#include"ObjKey.h"
 
 CListMng<CObjBase*>* CHitTestTankToShell::_pTankList	= NULL;
 CListMng<CObjBase*>* CHitTestTankToShell::_pShellList	= NULL;

@@ -16,6 +16,7 @@
 #include"CTaskList.h"
 #include"CTaskMng.h"
 
+#include"ObjKey.h"
 
 //	Ã“Iƒƒ“ƒo‰Šú‰»
 CSprite* CNum::_NumSprite[10] = {0,};
@@ -39,7 +40,7 @@ CNum::CNum()
 {
 	ZeroMemory(_NumSprite,sizeof(_NumSprite));
 
-#ifdef _DEBUG
+#ifdef DEBUG
 	static int checker = 0;
 	if(checker > 0 )
 		MessageAlert("ŠÔˆá‚Á‚½Žg‚¢•û‚µ‚Ä‚Ü‚·","warning from CNum::CNum");

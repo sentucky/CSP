@@ -11,6 +11,7 @@
 #include"CTaskMng.h"
 #include"CTaskList.h"
 #include"const.h"
+#include"ObjKey.h"
 
 #include"StageData.h"
 
@@ -30,7 +31,7 @@ CStage::CStage(
 	_Mesh(pMesh),
 	_InstCnt(new int(0))
 {
-	++*_InstCnt;
+	++(*_InstCnt);
 	D3DXMatrixIdentity(&_matW);
 }
 
@@ -52,14 +53,14 @@ CStage::~CStage()
  */
 /***********************************************************************/
 CStage::CStage(const CStage& src)
-	:CObjBase			(src._GroupID						),
-	_pTaskDraw(NULL),
-	_StageDataPath(src._StageDataPath),
-	_StageData(src._StageData),
-	_Mesh(new CMesh(*src._Mesh)),
-	_InstCnt(src._InstCnt)
+	:CObjBase		(src._GroupID			),
+	_pTaskDraw		(NULL					),
+	_StageDataPath	(src._StageDataPath		),
+	_StageData		(src._StageData			),
+	_Mesh			(new CMesh(*src._Mesh)	),
+	_InstCnt		(src._InstCnt			)
 {
-	++*_InstCnt;
+	++(*_InstCnt);
 	D3DXMatrixIdentity(&_matW);
 	enableTask();
 }
@@ -74,6 +75,7 @@ void CStage::release()
 {
 	SAFE_DELETE(_Mesh);
 	--*_InstCnt;
+
 	if(*_InstCnt <= 0)
 	{
 		SAFE_DELETE(_StageData);
@@ -116,7 +118,7 @@ void CStage::disableTask()
 /***********************************************************************/
 void CStage::draw()
 {
-	_Mesh->draw(&_matW);
+//	_Mesh->draw(&_matW);
 	_StageData->Draw();
 }
 

@@ -119,7 +119,7 @@ void CStageData::Draw()
 	}
 
 	//ライン描画
-#ifdef _DEBUG
+#ifdef DEBUG
 	LINE line[512];
 
 	for (i = 0 ; i < rootNum ; i++){
@@ -181,6 +181,7 @@ void CStageData::Load(const char* stageDataPath)
 			tile[j][i].posY = tileIn[j][i].posY;
 			tile[j][i].no	= tileIn[j][i].no;
 			tile[j][i].rot  = tileIn[j][i].rot;
+			tile[j][i].root  = -1;
 
 			if(tileIn[j][i].no == STARTPANEL)
 			{
@@ -278,7 +279,7 @@ void CStageData::Load(const char* stageDataPath)
 		{
 		case 1:	//	ストレート
 		case 3:	//	スタート
-			if(tile[j][i].rot >= 1.5 * pi || tile[j][i].rot < 1.0f * pi &&tile[j][i].rot >= 0.5f * pi){
+			if(tile[j][i].rot >= 1.5 * pi || ( tile[j][i].rot < 1.0f * pi &&tile[j][i].rot >= 0.5f * pi)){
 				next[0] = left;
 				next[1] = right;
 			}
@@ -323,7 +324,7 @@ void CStageData::Load(const char* stageDataPath)
 		case bottom:i+=1;break;
 		}
 
-		if(&(tile[j][i]) == _StartTile)
+		if(tile[j][i].root == 0)
 		{
 			break;
 		}

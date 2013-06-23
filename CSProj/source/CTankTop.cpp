@@ -22,6 +22,7 @@
 
 #include"CInputCommon.h"
 #include"const.h"
+#include"ObjKey.h"
 
 
 /***********************************************************************/

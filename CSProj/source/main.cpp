@@ -52,7 +52,7 @@ void	release();
 /***********************************************************************/
 int WINAPI WinMain( HINSTANCE hInst , HINSTANCE hPrevinst , LPSTR nCmdLine , int nCmdShow )
 {
-#ifdef _DEBUG
+#ifdef DEBUG
    _CrtSetDbgFlag ( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );	//メモリリークチェッカーの適用
 #endif
 	//===変数宣言===//
@@ -87,7 +87,11 @@ int WINAPI WinMain( HINSTANCE hInst , HINSTANCE hPrevinst , LPSTR nCmdLine , int
 			pTime->update();
 			if(pTime->updateFrame())
 			{
-				gameLoop();	//ゲームの処理
+				//ゲームの処理
+				if(gameLoop() == false)
+				{
+					break;
+				}
 				if(GetAsyncKeyState(VK_ESCAPE))
 				{
 					break;

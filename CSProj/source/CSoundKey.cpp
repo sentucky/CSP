@@ -2,6 +2,7 @@
 
 enum eSOUNDKEY
 {
+	SOUND_BGM1,
 	SOUND_ENGINE,
 	SOUDN_COLLITANKTOTANK,
 	SOUND_FIRE,
@@ -10,7 +11,7 @@ enum eSOUNDKEY
 	SOUND_START,
 	SOUND_SUM,
 };
-
+const uint SOUNDKEY::BGM1()				{ return SOUND_BGM1;			}
 const uint SOUNDKEY::COLLITANKTOTANK()	{ return SOUDN_COLLITANKTOTANK;	}
 const uint SOUNDKEY::ENGILE()			{ return SOUND_ENGINE;			}
 const uint SOUNDKEY::FIRE()				{ return SOUND_FIRE;			}
@@ -19,7 +20,7 @@ const uint SOUNDKEY::FANFARE()			{ return SOUND_FANFARE;			}
 const uint SOUNDKEY::START()			{ return SOUND_START;			}
 const uint SOUNDKEY::SUM()				{ return SOUND_SUM;				}
 
-
+char* SOUNDPATH::BGM1()				{ return "data/sound/bgm1.wav";}
 char* SOUNDPATH::COLLITANKTOTANK()	{ return "data/sound/collitanktotank.wav";	}
 char* SOUNDPATH::ENGILE()			{ return "data/sound/engine.wav";			}
 char* SOUNDPATH::FIRE()				{ return "data/sound/fire.wav";				}

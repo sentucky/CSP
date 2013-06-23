@@ -15,10 +15,16 @@ class TEXPATH
 {
 public:
 	static const char* FADEMASK();
+	static const char* BACK_BUTTON();
 	static const char* TITLE_BG();
+	static const char* TITLE_STR();
 	static const char* TITLE_BUTTON01();
 	static const char* TITLE_BUTTON02();
 	static const char* TITLE_BUTTON03();
+	static const char* SELECT_BG();
+	static const char* SELECT_COURSE1();
+	static const char* SELECT_COURSE2();
+	static const char* SELECT_COURSE3();
 	static const char* TILE01();
 	static const char* TILE02();
 	static const char* TILE03();
@@ -40,10 +46,16 @@ class TEXKEY
 {
 public:
 	static const uint FADEMASK();
+	static const uint BACK_BUTTON();
 	static const uint TITLE_BG();
+	static const uint TITLE_STR();
 	static const uint TITLE_BUTTON01();
 	static const uint TITLE_BUTTON02();
 	static const uint TITLE_BUTTON03();
+	static const uint SELECT_BG();
+	static const uint SELECT_COURSE1();
+	static const uint SELECT_COURSE2();
+	static const uint SELECT_COURSE3();
 	static const uint TILE01();
 	static const uint TILE02();
 	static const uint TILE03();

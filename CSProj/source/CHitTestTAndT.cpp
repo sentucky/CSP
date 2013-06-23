@@ -10,6 +10,9 @@
 
 #include"CTaskMng.h"
 
+#include"ObjKey.h"
+
+
 #include"CObjBase.h"
 #include"CListMng.h"
 #include"CTank.h"

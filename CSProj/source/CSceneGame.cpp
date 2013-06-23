@@ -1,10 +1,10 @@
 /***********************************************************************/
 /*! @file  CSceneGame.cpp
-*  @brief ゲーム部分の処理
-*  
-*  @author 
-*  @date 
-*/
+ *  @brief ゲーム部分の処理
+ *  
+ *  @author 
+ *  @date 
+ */
 /***********************************************************************/
 /***********************************************************************/
 //	インクルード
@@ -21,17 +21,23 @@
 #include"CMeshFactory.h"
 #include"CObjMng.h"
 
+#include"CSoundKey.h"
+
 //OBJ
 #include"CTank.h"
 #include"CStage.h"
 #include"CFollowCamera.h"
+#include"CCockpit.h"
+
 
 #include"CTankIntPlayer.h"
 #include"CHItTestTAndT.h"
 #include"CHitTestTankToShell.h"
 #include"CHitTestTankToWall.h"
 
-#ifdef _DEBUG
+#include"ObjKey.h"
+
+#ifdef DEBUG
 #include"CPin.h"
 #include"CTankIntDummy.h"
 
@@ -39,14 +45,15 @@
 #include"CFont.h"
 #include"CScreen.h"
 #include"CListGroup.h"
-#include"CTime.h"
 #endif
+#include"CTime.h"
 
 #include"CLight.h"
 #include"StageData.h"
 #include"CListItem.h"
 #include"CObjBase.h"
 #include "CTankIntDummy.h"
+#include"CSound.h"
 
 CLight* GLight;
 
@@ -56,6 +63,12 @@ enum SCENEGAMEPHASE
 	GP_MAIN,
 	GP_END,
 };
+
+
+#include"CListMng.h"
+#include"CListItem.h"
+
+
 
 /***********************************************************************/
 /*! @brief コンストラクタ
@@ -124,15 +137,15 @@ void CSceneGame::init()
 	//*
 	OUTPUT t[16][16];
 	pStage->getStageData()->getTile(t);
-	CPin* pin = NULL;
+//	CPin* pin = NULL;
 	int n2 = 0;
-	
-//	for(int n = 0; n < 100; n++)
-/*	{
+//*	
+	for(int n = 0; n < 100; n++)
+	{
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
 		pTank2->setPos(
-			pTank->getMatBottom()->_41 + n * 0.1, 
-			pTank->getMatBottom()->_43 + n2 * 0.1
+			pTank->getMatBottom()->_41 + n * 0.1f, 
+			pTank->getMatBottom()->_43 + n2 * 0.1f
 			);
 	}
 	//*/
@@ -151,9 +164,13 @@ void CSceneGame::init()
 
 	//...ピン
 	OBJMNG->push(OBJGROUPKEY::PIN(),OBJFACTORY->create(OBJKEY::PIN()),NULL);
-#ifdef _DEBUG
+#ifdef DEBUG
 
 #endif
+	OBJMNG->push(OBJGROUPKEY::COCKPIT(),OBJFACTORY->create(OBJKEY::RANK()),NULL);
+	CCockpit* Cockpit;
+	OBJMNG->push(OBJGROUPKEY::COCKPIT(),Cockpit = OBJFACTORY->create<CCockpit>(OBJKEY::COCKPIT()),NULL);
+	Cockpit->setTank(pTank);
 
 	//	あたり判定
 	OBJMNG->push(OBJGROUPKEY::HITTEST(),(OBJFACTORY->create(OBJKEY::HITTESTTTOT())),NULL);
@@ -177,6 +194,8 @@ void CSceneGame::init()
 		pTank->getMatBottom()->_42 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->y,
 		pTank->getMatBottom()->_43 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->z
 		);
+	LPDIRECTSOUNDBUFFER bgm = CSOUND->GetSound(SOUNDKEY::BGM1());
+//	bgm->Play(0,0,1);
 }
 
 /***********************************************************************/
@@ -200,6 +219,7 @@ void CSceneGame::update()
 		}
 	}
 
+
 	//	オブジェクトの更新
 	_pCamera->update();
 
@@ -220,9 +240,9 @@ void CSceneGame::draw()
 
 	//	CTankIntDummy::Debug();
 
-#ifdef _DEBUG
 	static RECTEX fpspos(0,0,0,0);
 	FONT->DrawInt("FPS:",CTIMER->getFPS(),fpspos);
+#ifdef DEBUG
 	static RECTEX ps(0,16,0,0);
 	static D3DXVECTOR3 Mouse3DPos;
 	MOUSE.mousePoint3D(&Mouse3DPos,0);
@@ -329,6 +349,7 @@ void CSceneGame::switchGMain()
 	CListItem<CObjBase*>* pItem = TankList->begin();
 	CListItem<CObjBase*>* pEnd = TankList->end();
 	CTank* pTank;
+
 	while(1)
 	{
 		pTank = static_cast<CTank*>(pItem->getInst());
@@ -353,7 +374,6 @@ void CSceneGame::switchGEnd()
 	CListItem<CObjBase*>* pItem = TankList->begin();
 	CListItem<CObjBase*>* pEnd = TankList->end();
 	CTank* pTank;
-	CTank* pTankWin;
 
 
 	while(1)
@@ -370,6 +390,5 @@ void CSceneGame::switchGEnd()
 		pItem = pItem->next();
 	}
 
-	////////////////ここに終了時処理
-
+	
 }

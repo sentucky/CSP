@@ -12,6 +12,7 @@
 #include"CMesh.h"
 #include"CTaskMng.h"
 #include"CTank.h"
+#include"ObjKey.h"
 
 #include"StageData.h"
 
@@ -89,7 +90,7 @@ CShell::CShell(
 {
 	D3DXMatrixIdentity(&_matW);
 	enableTask();
-#ifdef _DEBUG
+#ifdef DEBUG
 	_fRad = 1.0f;
 #endif
 

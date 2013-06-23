@@ -18,6 +18,9 @@
 #include"CListItem.h"
 #include"StageData.h"
 
+#include"ObjKey.h"
+
+
 CListMng<CObjBase*>* CHitTestTankToWall::_pTankList = NULL;
 const CStageData*			 CHitTestTankToWall::_StageData = NULL;
 /***********************************************************************/

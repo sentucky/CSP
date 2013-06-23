@@ -6,6 +6,8 @@
 #include"CCamera.h"
 
 
+#include"ObjKey.h"
+
 CStartCamWork::CStartCamWork(
 	const CStageData* StageData
 	)
@@ -49,7 +51,7 @@ _StageData(src._StageData),
 	//	‚±‚±‚ÅˆÚ“®ŽžŠÔ‚ðŒˆ’è
 	for(int i = 0; i < _SumPhase; ++i)
 	{
-		_CamWorkParam[i].Count = 100;
+		_CamWorkParam[i].Count = 10;
 		_CamWorkParam[i].At = D3DXVECTOR3(
 			_StageData->getStartTile()->posX,
 			0,

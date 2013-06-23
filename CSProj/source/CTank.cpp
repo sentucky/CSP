@@ -9,6 +9,7 @@
 #include"CTank.h"
 
 #include"const.h"
+#include"ObjKey.h"
 //...タスク
 #include"CTaskBase.h"
 #include"CTaskList.h"
@@ -32,12 +33,13 @@
 #include"CSound.h"
 #include"CSoundKey.h"
 
+#include"CTankIntDummy.h"
+
 #ifdef _DEBUG
 #include"CCamera.h"
 #include"CScreen.h"
 #include"CFont.h"
 #include"CInputCommon.h"
-#include"CTankIntDummy.h"
 #endif
 
 #ifdef _DEBUG
@@ -83,11 +85,13 @@ CTank::CTank(
 	_radiate			( 0				),
 	_MaxRadiateTime		( 15			),
 	_Destroyed			( FALSE			),
-	_FlgGoal			( FALSE			)
+	_FlgGoal			( FALSE			),
+	_lap				(0),
+	_lapVal				(0)
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
 	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
-	debugMesh = NULL;
+//	debugMesh = NULL;
 }
 
 /***********************************************************************/
@@ -133,16 +137,16 @@ CTank::CTank(const CTank& src)
 	_radiate			(0									),
 	_MaxRadiateTime		(src._MaxRadiateTime),
 	_Destroyed			( FALSE	),
-	_FlgGoal			( FALSE	)
+	_FlgGoal			( FALSE	),
+	_lap				(0),
+	_lapVal				(0)
 {
 
 	//	思考設定
 	switch(_unThisType)
 	{
 	case  TYPE_PLAYER:_pIntelligence = new CTankIntPlayer(this);	break;
-#ifdef _DEBUG
 	case TYPE_ENEMY01:_pIntelligence = new CTankIntDummy(this);	break;
-#endif
 	}
 	_pTankTop->setIntelligence(_pIntelligence);
 	_pTankBottom->setIntelligence(_pIntelligence);
@@ -151,8 +155,13 @@ CTank::CTank(const CTank& src)
 	_pTankTop->setTankBottom(_pTankBottom);
 
 	//	タスク有効化
-//	enableTask();
+	enableTask();
 	CTaskMng::push<CTank>(TASKKEY::DRAW(),			this,&CTank::draw,	&_pTaskDraw			);
+
+	_lapVal = 0.0f;
+	_lap = 0;
+	_Panel = NULL;
+	_prevPanel = NULL;
 
 #ifdef _DEBUG
 	debugMesh = NULL;
@@ -189,7 +198,7 @@ void CTank::enableTask()
 
 	switch(_unThisType)
 	{
-	case TYPE_ENEMY01:CTaskMng::push<CTank>(TASKKEY::RAP(),this,&CTank::eRap, &_pTaskRap);break;
+	case TYPE_ENEMY01:CTaskMng::push<CTank>(TASKKEY::RAP(),this,&CTank::pRap, &_pTaskRap);break;
 	case TYPE_PLAYER:CTaskMng::push<CTank>(TASKKEY::RAP(),this,&CTank::pRap, &_pTaskRap);break;
 	}
 }
@@ -210,6 +219,12 @@ void CTank::disableTask()
 	CTaskMng::erase(&_pTaskCalcAM);
 	CTaskMng::erase(&_pTaskRap);
 }
+
+const bool CTank::lower(const CTank* A,const CTank* B)
+{
+	return A->_lapVal > B->_lapVal;
+}
+
 
 /***********************************************************************/
 /*! @brief	思考更新
@@ -333,7 +348,7 @@ void CTank::fire()
 /***********************************************************************/
 void CTank::calcMove()
 {
-	_pTankBottom->clacMove();
+	_pTankBottom->clacMove(_Rank);
 }
 
 
@@ -368,7 +383,65 @@ void CTank::pRap()				///<	自機ラップ
 	const OUTPUT* StData = _StageData->getStartTile();
 	const OUTPUT* ScData = _StageData->getSecondTile();
 	const OUTPUT* LaData = _StageData->getLastTile();
-	const D3DXVECTOR2* root = _StageData->getRoot();
+	const D3DXVECTOR3 pos = _pTankBottom->getPos();
+	int rootNum = _StageData->getRootTileNum();
+
+	_Panel = _StageData->step2(pos.x,pos.z);
+	
+	if (!_prevPanel){
+		_prevPanel = (OUTPUT*)StData;
+	}
+
+	//パネル移動
+	if (_Panel != _prevPanel){
+		
+		//パターン１順走
+		if (_Panel == StData && _prevPanel == LaData){
+			_lap++;
+		}
+
+		//パターン２逆走
+		if (_Panel == LaData && _prevPanel == StData){
+			_lap--;
+		}
+		_prevPanel = _Panel;
+	}
+
+	int i,j;
+	
+	OUTPUT* p;
+	OUTPUT* f;
+	OUTPUT* s;
+	for (i = -1 ; i < 2 ; i++){
+		for (j = -1 ; j < 2 ; j++){
+			p = _StageData->step2(pos.x + (i * (500.0f / 16.0f)),pos.z + (j * (500.0f / 16.0f)));
+			if(_Panel->root - p->root == -1)f = p;
+			else if(_Panel->root - p->root == (rootNum - 1))f = p;
+			else if(_Panel->root - p->root == 1)s = p;
+			else if(_Panel->root - p->root == -(rootNum - 1))s = p;
+		}
+	}
+
+	float flen = (pos.x - f->posX) * (pos.x - f->posX) + (pos.z - f->posY) * (pos.z - f->posY);
+	float slen = (pos.x - s->posX) * (pos.x - s->posX) + (pos.z - s->posY) * (pos.z - s->posY);
+
+	if (flen < slen){
+		s = f;
+		p = _Panel;
+	}
+	else {
+		p = s;
+		s = _Panel;
+	}
+
+	
+	float t = (pos.x - p->posX) * (s->posX - p->posX) + (pos.z - p->posY) * (s->posY - p->posY);
+	t /= ((s->posX - p->posX) * (s->posX - p->posX) + (s->posY - p->posY) * (s->posY - p->posY));
+
+	_lapVal = (float)(_lap * rootNum) + p->root + t;
+
+	if (p->root == rootNum - 1 && _Panel->no == 3)
+		_lapVal -= rootNum;
 }
 
 
