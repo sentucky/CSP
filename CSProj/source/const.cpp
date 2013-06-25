@@ -19,12 +19,12 @@ const char* MESHPATH::SHELL03(){		return "data/model/pin.x";		}
 const char* MESHPATH::PIN(){			return "data/model/pin.x";		}
 const char* MESHPATH::YUKA(){			return "data/model/nanase_pose.x";		}
 const char* MESHPATH::STAGE01(){		return "data/model/land2.x";			}
-const char* MESHPATH::TANK01_TOP(){		return "data/model/tank01_top.x";		}
-const char* MESHPATH::TANK02_TOP(){		return "data/model/tank02_top.x";		}
+const char* MESHPATH::TANK01_TOP(){		return "data/model/ziki_Lv1_up.x";		}
+const char* MESHPATH::TANK02_TOP(){		return "data/model/tekki_lv1_up.x";		}
 const char* MESHPATH::TANK03_TOP(){		return "data/model/tank03_top.x";		}
 const char* MESHPATH::TANK04_TOP(){		return "data/model/tank04_top.x";		}
-const char* MESHPATH::TANK01_BOTTOM(){	return "data/model/tank01_bottom.x";	}
-const char* MESHPATH::TANK02_BOTTOM(){	return "data/model/tank02_bottom.x";	}
+const char* MESHPATH::TANK01_BOTTOM(){	return "data/model/ziki_Lv1_down.x";	}
+const char* MESHPATH::TANK02_BOTTOM(){	return "data/model/tekki_lv1_down.x";	}
 const char* MESHPATH::TANK03_BOTTOM(){	return "data/model/tank03_bottom.x";	}
 const char* MESHPATH::TANK04_BOTTOM(){	return "data/model/tank04_bottom.x";	}
 
@@ -77,6 +77,7 @@ const char* EFFECTPATH::TOON(){return "A";}
 enum eTID
 {
 	TID_RANKING,
+	TID_SYSTEMPARAM,
 	TID_COCKPIT,
 	TID_INTELLIGENCE,			//
 	TID_RAP,					//
@@ -94,6 +95,7 @@ enum eTID
 	TID_DRAW,					//
 };
 
+const uint TASKKEY::SYSTEMPARAM(){return TID_SYSTEMPARAM;}
 const uint TASKKEY::COCKPIT(){return TID_COCKPIT;}
 const uint TASKKEY::RANKING(){return TID_RANKING;}
 const uint TASKKEY::RAP(){return TID_RAP;}

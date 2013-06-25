@@ -151,9 +151,11 @@ void CSceneTestSpace::init()
 	D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
 	D3DXMatrixScaling(&mat,0.1,0.1,0.1);
-/*	mat._41 = -100;
+	/*	
+	mat._41 = -100;
 	mat._42 = 80;
-	mat._43 = -100;*/
+	mat._43 = -100;
+	*/
 	Shadow->landMat = mat;
 
 	CCamera::setEye(D3DXVECTOR3(0,200,-300));

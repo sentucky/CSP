@@ -33,7 +33,8 @@
 #include"CPin.h"
 #include"CShell.h"
 #include"CCockpit.h"
-#include"CRank.h"
+#include"CSystemparam.h"
+
 
 #include"CSound.h"
 
@@ -92,6 +93,8 @@ void gameInit()
 
 
 	TEXTUREFACTORY->reserve(TEXKEY::SUM());
+	SPRITEFACTORY->registTexture(TEXKEY::WIN(),				TEXPATH::WIN()				);
+	SPRITEFACTORY->registTexture(TEXKEY::LOSE(),				TEXPATH::LOSE()			);
 	SPRITEFACTORY->registTexture(TEXKEY::FADEMASK(),		TEXPATH::FADEMASK()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BG(),		TEXPATH::TITLE_BG()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON01(),	TEXPATH::TITLE_BUTTON01()	);
@@ -101,16 +104,26 @@ void gameInit()
 	SPRITEFACTORY->registTexture(TEXKEY::TILE02(),			TEXPATH::TILE02()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TILE03(),			TEXPATH::TILE03()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TILE04(),			TEXPATH::TILE04()			);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM0(),			TEXPATH::NUM0()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM1(),			TEXPATH::NUM1()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM2(),			TEXPATH::NUM2()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM3(),			TEXPATH::NUM3()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM4(),			TEXPATH::NUM4()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM5(),			TEXPATH::NUM5()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM6(),			TEXPATH::NUM6()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM7(),			TEXPATH::NUM7()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM8(),			TEXPATH::NUM8()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM9(),			TEXPATH::NUM9()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B0(),			TEXPATH::NUM_B0()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B1(),			TEXPATH::NUM_B1()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B2(),			TEXPATH::NUM_B2()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B3(),			TEXPATH::NUM_B3()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B4(),			TEXPATH::NUM_B4()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B5(),			TEXPATH::NUM_B5()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B6(),			TEXPATH::NUM_B6()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B7(),			TEXPATH::NUM_B7()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B8(),			TEXPATH::NUM_B8()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B9(),			TEXPATH::NUM_B9()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B0(),			TEXPATH::NUM_B0()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W1(),			TEXPATH::NUM_W1()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W2(),			TEXPATH::NUM_W2()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W3(),			TEXPATH::NUM_W3()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W4(),			TEXPATH::NUM_W4()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W5(),			TEXPATH::NUM_W5()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W6(),			TEXPATH::NUM_W6()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W7(),			TEXPATH::NUM_W7()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W8(),			TEXPATH::NUM_W8()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W9(),			TEXPATH::NUM_W9()				);
 	SPRITEFACTORY->registTexture(TEXKEY::ANIMETEST(),		TEXPATH::ANIMETEST()		);
 
 
@@ -165,7 +178,7 @@ void gameInit()
 	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOW(),	new CHitTestTankToWall							);
 	OBJFACTORY->registPrototype(OBJKEY::STARTCAMERA(),	new CStartCamWork(pStage->getStageData())		);
 	OBJFACTORY->registPrototype(OBJKEY::COCKPIT(),		new CCockpit);
-	OBJFACTORY->registPrototype(OBJKEY::RANK(),			new CRank);
+	OBJFACTORY->registPrototype(OBJKEY::SYSTEMPARAM(),	new CSystemparam);
 	CHitTestTAndT* pHTTAT;
 	pHTTAT = new CHitTestTAndT;
 

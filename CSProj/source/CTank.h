@@ -71,10 +71,12 @@ public:
 	void hitTestTank(CTank* pTank);		///<	あたり判定
 	void hitTestShell(CShell* pShell);	///<	弾とのあたり判定後処理
 	void hitTestWall();					///<	壁とのあたり判定の処理
+	void raceEnd();				///<	レース終了時処理
 
 private:
 	void turnTop();				///<	上部の回転
 	void destroyed();			///<	非破壊
+
 
 public:
 	void enableTask();			///<	タスク有効化
@@ -91,6 +93,8 @@ public:
 	const float				getlapVal(){return _lapVal;}
 	const int				getlap(){return _lap;}
 	const uint				getRank(){return _Rank;}
+	const uint				getTankType(){return _unThisType;}
+
 
 	void setMoveVec( D3DXVECTOR3& MoveVec );
 	void setMoveVec( const D3DXVECTOR3 *MoveVec );
@@ -99,7 +103,6 @@ public:
 
 	static void setStageData(const CStageData* pStageData		){	_StageData = pStageData;}
 	static void setSoundFire(const LPDIRECTSOUNDBUFFER SoundFire){ _SoundFire = SoundFire;}
-
 private:
 	CTaskList*		_pTaskDraw;
 	CTaskList*		_pTaskPause;
@@ -125,17 +128,15 @@ private:
 	BOOL			_Destroyed;			///<	破壊判定フラグ
 	BOOL			_FlgGoal;			///<	ゴールフラグ
 
-	uint			_TankType;			///<	タンクの型
-
 	uint			_Rank;
 	float			_lapVal;			//	進行状態
 	int				_lap;				//	ラップ数	
 	OUTPUT*         _Panel;				//
 	OUTPUT*         _prevPanel;			//
-
+public:
 	static const uint TYPE_PLAYER = 0;
 	static const uint TYPE_ENEMY01 = -1;
-
+private:
 	static LPDIRECTSOUNDBUFFER _SoundFire;
 
 #ifdef _DEBUG

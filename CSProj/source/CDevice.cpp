@@ -72,7 +72,7 @@ BOOL CDevice::init()
 	_d3dDevice->SetRenderState(D3DRS_ALPHABLENDENABLE, TRUE);			// αブレンドを行う
 	_d3dDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);		// αソースカラーの指定
 	_d3dDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);	// αデスティネーションカラーの指定
-	_d3dDevice->SetRenderState(D3DRS_LIGHTING , FALSE );				//ライトの無効化
+	_d3dDevice->SetRenderState(D3DRS_LIGHTING , TRUE );				//ライトの無効化
 	_d3dDevice->SetRenderState(D3DRS_ZWRITEENABLE,TRUE);				//深度バッファの設定
 	_d3dDevice->SetRenderState(D3DRS_AMBIENT , 0x00444444 );			//明りで照らす
 	_d3dDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);

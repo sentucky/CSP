@@ -14,6 +14,15 @@
 class TEXPATH
 {
 public:
+	static const char* STARTSELECT();
+	static const char* START();
+	static const char* REDY();
+	static const char* GO();
+	static const char* EXIT();
+	
+
+	static const char* WIN();
+	static const char* LOSE();
 	static const char* FADEMASK();
 	static const char* BACK_BUTTON();
 	static const char* TITLE_BG();
@@ -29,22 +38,40 @@ public:
 	static const char* TILE02();
 	static const char* TILE03();
 	static const char* TILE04();
-	static const char* NUM0();
-	static const char* NUM1();
-	static const char* NUM2();
-	static const char* NUM3();
-	static const char* NUM4();
-	static const char* NUM5();
-	static const char* NUM6();
-	static const char* NUM7();
-	static const char* NUM8();
-	static const char* NUM9();
+	static const char* NUM_B0();
+	static const char* NUM_B1();
+	static const char* NUM_B2();
+	static const char* NUM_B3();
+	static const char* NUM_B4();
+	static const char* NUM_B5();
+	static const char* NUM_B6();
+	static const char* NUM_B7();
+	static const char* NUM_B8();
+	static const char* NUM_B9();
+	static const char* NUM_W0();
+	static const char* NUM_W1();
+	static const char* NUM_W2();
+	static const char* NUM_W3();
+	static const char* NUM_W4();
+	static const char* NUM_W5();
+	static const char* NUM_W6();
+	static const char* NUM_W7();
+	static const char* NUM_W8();
+	static const char* NUM_W9();
 	static const char* ANIMETEST();
 };
 
 class TEXKEY
 {
 public:
+	static const uint STARTSELECT();
+	static const uint START();
+	static const uint REDY();
+	static const uint GO();
+	static const uint EXIT();
+
+	static const uint WIN();
+	static const uint LOSE();
 	static const uint FADEMASK();
 	static const uint BACK_BUTTON();
 	static const uint TITLE_BG();
@@ -60,16 +87,26 @@ public:
 	static const uint TILE02();
 	static const uint TILE03();
 	static const uint TILE04();
-	static const uint NUM0();
-	static const uint NUM1();
-	static const uint NUM2();
-	static const uint NUM3();
-	static const uint NUM4();
-	static const uint NUM5();
-	static const uint NUM6();
-	static const uint NUM7();
-	static const uint NUM8();
-	static const uint NUM9();
+	static const uint NUM_B0();
+	static const uint NUM_B1();
+	static const uint NUM_B2();
+	static const uint NUM_B3();
+	static const uint NUM_B4();
+	static const uint NUM_B5();
+	static const uint NUM_B6();
+	static const uint NUM_B7();
+	static const uint NUM_B8();
+	static const uint NUM_B9();
+	static const uint NUM_W0();
+	static const uint NUM_W1();
+	static const uint NUM_W2();
+	static const uint NUM_W3();
+	static const uint NUM_W4();
+	static const uint NUM_W5();
+	static const uint NUM_W6();
+	static const uint NUM_W7();
+	static const uint NUM_W8();
+	static const uint NUM_W9();
 	static const uint ANIMETEST();
 	static const uint SUM();
 };

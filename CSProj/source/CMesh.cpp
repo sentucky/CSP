@@ -14,6 +14,8 @@
 #include"common.h"
 #include"CEffectBase.h"
 #include"CCamera.h"
+
+
 /***********************************************************************/
 //	マクロ定義
 /***********************************************************************/
@@ -112,7 +114,6 @@ HRESULT CMesh::loadMesh(LPCSTR szMeshName)
 	_pvec3Vertex		= NULL;
 	_szMeshFileName		= szMeshName;
 
-
 	//	メッシュ読み込み
 	//---メッシュファイルの読み込み
 	hr = D3DXLoadMeshFromX(
@@ -125,7 +126,6 @@ HRESULT CMesh::loadMesh(LPCSTR szMeshName)
 		&_dwNumMaterials,
 		&_pd3dMesh
 		);
-
 
 	loadMaterial(pD3DXMatlBuffer);
 
@@ -155,6 +155,9 @@ HRESULT CMesh::loadMaterial(LPD3DXBUFFER pD3DXMatlBuffer)
 	//---マテリアル情報バッファのポインタ取得
 	D3DXMATERIAL* d3dxMaterials = (D3DXMATERIAL*)pD3DXMatlBuffer->GetBufferPointer();
 
+	char curDir[MAX_PATH];
+	int n = 0;
+
 	//---マテリアル情報バッファを保存
 	for(DWORD dwCnt = 0; dwCnt < _dwNumMaterials; dwCnt++)
 	{
@@ -163,10 +166,19 @@ HRESULT CMesh::loadMaterial(LPD3DXBUFFER pD3DXMatlBuffer)
 		_pd3dMeshMaterial[dwCnt].Ambient = _pd3dMeshMaterial[dwCnt].Diffuse;
 		_pd3dMeshTexture[dwCnt] = NULL;
 
+		strcpy(curDir,_szMeshFileName);
+		for(n = sizeof(curDir); n >= 0 && curDir[n] != '/'; n--);
+		curDir[n+1] = '\0';
+
+		if(d3dxMaterials[dwCnt].pTextureFilename == NULL)
+			continue;
+
+		strcat(curDir,d3dxMaterials[dwCnt].pTextureFilename);
+
 		//	テクスチャ読み込み
 		hr = D3DXCreateTextureFromFileA(
 						D3DDEVICE,
-						d3dxMaterials[dwCnt].pTextureFilename,
+						curDir,//d3dxMaterials[dwCnt].pTextureFilename,
 						&_pd3dMeshTexture[dwCnt]);
 
 		if(d3dxMaterials[dwCnt].pTextureFilename &&	FAILED(hr))

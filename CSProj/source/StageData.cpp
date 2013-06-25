@@ -187,7 +187,7 @@ void CStageData::Load(const char* stageDataPath)
 			{
 				stx = j;
 				sty = i;
-				strot = tile[j][i].rot * 3.14f;
+				strot = tile[j][i].rot;
 				_StartTile = &(tile[j][i]);
 			}
 		}
@@ -200,18 +200,18 @@ void CStageData::Load(const char* stageDataPath)
 
 
 	int scx,scy,lsx,lsy;
-	if(strot >= 1.5){
+	if(strot >= 1.5 * D3DX_PI){
 		scx = stx - 1;
 		lsx = stx + 1; 
 		scy = lsy = sty;
 	}
-	else if(strot >= 1.0f)
+	else if(strot >= 1.0f * D3DX_PI)
 	{
 		scy = sty + 1;
 		lsy = sty - 1;
 		scx = lsx = stx;
 	}
-	else if(strot >= 0.5f)
+	else if(strot >= 0.5f * D3DX_PI)
 	{
 		scx = stx + 1;
 		lsx = stx - 1; 

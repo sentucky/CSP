@@ -24,11 +24,13 @@
 //...思考
 #include"CTankIntInter.h"
 #include"CTankIntPlayer.h"
+#include"CTankIntStop.h"
 //...ファクトリ
 #include"CFactory.h"
 #include"CObjMng.h"
 
 #include"StageData.h"
+#include"CFollowCamera.h"
 
 #include"CSound.h"
 #include"CSoundKey.h"
@@ -91,7 +93,9 @@ CTank::CTank(
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
 	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
-//	debugMesh = NULL;
+#ifdef _DEBUG
+	debugMesh = NULL;
+#endif
 }
 
 /***********************************************************************/
@@ -145,7 +149,9 @@ CTank::CTank(const CTank& src)
 	//	思考設定
 	switch(_unThisType)
 	{
-	case  TYPE_PLAYER:_pIntelligence = new CTankIntPlayer(this);	break;
+	case  TYPE_PLAYER:
+		_pIntelligence = new CTankIntPlayer(this);
+		break;
 	case TYPE_ENEMY01:_pIntelligence = new CTankIntDummy(this);	break;
 	}
 	_pTankTop->setIntelligence(_pIntelligence);
@@ -195,12 +201,7 @@ void CTank::enableTask()
 	CTaskMng::push<CTank>(TASKKEY::INTELLIGENCE(),	this,&CTank::intelligence,	&_pTaskIntelligence	);
 	CTaskMng::push<CTank>(TASKKEY::FIRE(),			this,&CTank::fire,	&_pTaskFire);
 	CTaskMng::push<CTank>(TASKKEY::CALCACTIVEMOVE(),this,&CTank::calcMove,&_pTaskCalcAM);
-
-	switch(_unThisType)
-	{
-	case TYPE_ENEMY01:CTaskMng::push<CTank>(TASKKEY::RAP(),this,&CTank::pRap, &_pTaskRap);break;
-	case TYPE_PLAYER:CTaskMng::push<CTank>(TASKKEY::RAP(),this,&CTank::pRap, &_pTaskRap);break;
-	}
+	CTaskMng::push<CTank>(TASKKEY::RAP(),			this,&CTank::pRap, &_pTaskRap);
 }
 
 /***********************************************************************/
@@ -442,6 +443,11 @@ void CTank::pRap()				///<	自機ラップ
 
 	if (p->root == rootNum - 1 && _Panel->no == 3)
 		_lapVal -= rootNum;
+
+	if(_lap > 0)
+	{
+		_FlgGoal = TRUE;
+	}
 }
 
 
@@ -460,8 +466,7 @@ void CTank::hitTestTank( CTank* pTank)
 	D3DXVECTOR3 v1ref[2];
 	const D3DXVECTOR3* v1 = _pTankBottom->getMoveVec();
 	const D3DXVECTOR3* v2 = pTank->getMoveVec();
-	const D3DXVECTOR3* vBak;
-
+	
 	const D3DXMATRIXA16* pmatW1 = _pTankBottom->getWMat();
 	const D3DXMATRIXA16* pmatW2 = pTank->getMatBottom();
 
@@ -495,7 +500,13 @@ void CTank::hitTestShell(CShell* pShell)
 
 	//	耐久切れで破壊
 	if(_life <= 0)
-		_DeleteFlg = TRUE;
+	{
+				_DeleteFlg = TRUE;
+		_Destroyed = TRUE;
+		SAFE_DELETE(_pIntelligence);
+		_pIntelligence = new CTankIntStop(this);
+		//	
+	}
 }
 
 /***********************************************************************/
@@ -506,6 +517,18 @@ void CTank::hitTestShell(CShell* pShell)
 /***********************************************************************/
 void CTank::hitTestWall()
 {
+}
+
+
+void CTank::raceEnd()
+{
+	CTaskMng::erase(&_pTaskRap);
+	CTaskMng::erase(&_pTaskFire);
+	if(_unThisType == TYPE_PLAYER)
+	{
+		SAFE_DELETE(_pIntelligence);
+		_pIntelligence = new CTankIntDummy(this);
+	}
 }
 
 /***********************************************************************/

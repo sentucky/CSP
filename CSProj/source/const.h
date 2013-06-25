@@ -73,6 +73,7 @@ public:
 class TASKKEY
 {
 public:
+	static const uint SYSTEMPARAM();
 	static const uint COCKPIT();
 	static const uint RANKING();
 	static const uint RAP();

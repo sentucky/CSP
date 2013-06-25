@@ -50,16 +50,16 @@ CNum::CNum()
 	if(_NumSprite[0] == 0)
 	{
 		CSpriteFactory* Factory = SPRITEFACTORY;
-		_NumSprite[0] = Factory->create(TEXKEY::NUM0());
-		_NumSprite[1] = Factory->create(TEXKEY::NUM1());
-		_NumSprite[2] = Factory->create(TEXKEY::NUM2());
-		_NumSprite[3] = Factory->create(TEXKEY::NUM3());
-		_NumSprite[4] = Factory->create(TEXKEY::NUM4());
-		_NumSprite[5] = Factory->create(TEXKEY::NUM5());
-		_NumSprite[6] = Factory->create(TEXKEY::NUM6());
-		_NumSprite[7] = Factory->create(TEXKEY::NUM7());
-		_NumSprite[8] = Factory->create(TEXKEY::NUM8());
-		_NumSprite[9] = Factory->create(TEXKEY::NUM9());
+		_NumSprite[0] = Factory->create(TEXKEY::NUM_B0());
+		_NumSprite[1] = Factory->create(TEXKEY::NUM_B1());
+		_NumSprite[2] = Factory->create(TEXKEY::NUM_B2());
+		_NumSprite[3] = Factory->create(TEXKEY::NUM_B3());
+		_NumSprite[4] = Factory->create(TEXKEY::NUM_B4());
+		_NumSprite[5] = Factory->create(TEXKEY::NUM_B5());
+		_NumSprite[6] = Factory->create(TEXKEY::NUM_B6());
+		_NumSprite[7] = Factory->create(TEXKEY::NUM_B7());
+		_NumSprite[8] = Factory->create(TEXKEY::NUM_B8());
+		_NumSprite[9] = Factory->create(TEXKEY::NUM_B9());
 		_xlen = static_cast<float>(_NumSprite[0]->getTextureInfo()->Width);
 		for(int i = 0; i < 10;++i)
 		{

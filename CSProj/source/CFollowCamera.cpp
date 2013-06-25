@@ -100,6 +100,9 @@ void CFollowCamera::disableTask()
 /***********************************************************************/
 void CFollowCamera::update()
 {
+	if(_pTank == NULL)
+		return;
+
 	const float x = _pTank->getMatBottom()->_41;
 	const float y = _pTank->getMatBottom()->_42;
 	const float z = _pTank->getMatBottom()->_43;

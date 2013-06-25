@@ -47,8 +47,9 @@ void CTaskMng::run()
 
 	const uint unVectorSize = _TaskList.size();	//	ベクタサイズ
 
-	CListItem<CTaskBase*>* run;	//	リスト走査用ポインタ
-	CListItem<CTaskBase*>* end;	//	終端リストポインタ
+	CListItem<CTaskBase*>* run;		//	リスト走査用ポインタ
+	CListItem<CTaskBase*>* next;	//	次のリストポインタ
+	CListItem<CTaskBase*>* end;		//	終端リストポインタ
 
 	//	処理
 	for(uint unVCnt = 0; unVCnt < unVectorSize; unVCnt++)
@@ -57,9 +58,11 @@ void CTaskMng::run()
 		end = _TaskList[unVCnt].end();		//	終端取得
 
 		//	処理実行
-		for(; run != end; run = run->next())
+		while( run != end)
 		{
+			next = run->next();
 			run->getInst()->run();
+			run = next;
 		}
 	}
 }
@@ -129,6 +132,12 @@ void CTaskMng::erase(CTaskList** deletedList)
 }
 
 
+/***********************************************************************/
+/*! @brief 追加
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CTaskMng::push(
 		const uint unTaskID,
 		CTaskBase*  pTask,

@@ -28,7 +28,7 @@
 #include"CStage.h"
 #include"CFollowCamera.h"
 #include"CCockpit.h"
-
+#include"CSystemparam.h"
 
 #include"CTankIntPlayer.h"
 #include"CHItTestTAndT.h"
@@ -140,7 +140,7 @@ void CSceneGame::init()
 //	CPin* pin = NULL;
 	int n2 = 0;
 //*	
-	for(int n = 0; n < 100; n++)
+	for(int n = 0; n < 1; n++)
 	{
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
 		pTank2->setPos(
@@ -167,10 +167,16 @@ void CSceneGame::init()
 #ifdef _DEBUG
 
 #endif
-	OBJMNG->push(OBJGROUPKEY::COCKPIT(),OBJFACTORY->create(OBJKEY::RANK()),NULL);
+	CSystemparam* SysParam;
+	OBJMNG->push(OBJGROUPKEY::COCKPIT(),SysParam = OBJFACTORY->create<CSystemparam>(OBJKEY::SYSTEMPARAM()),NULL);
+	SysParam->setCamera(_FollowCamera);
+	SysParam->setPlayerTank(pTank);
+
 	CCockpit* Cockpit;
 	OBJMNG->push(OBJGROUPKEY::COCKPIT(),Cockpit = OBJFACTORY->create<CCockpit>(OBJKEY::COCKPIT()),NULL);
 	Cockpit->setTank(pTank);
+
+
 
 	//	あたり判定
 	OBJMNG->push(OBJGROUPKEY::HITTEST(),(OBJFACTORY->create(OBJKEY::HITTESTTTOT())),NULL);
@@ -195,6 +201,10 @@ void CSceneGame::init()
 		pTank->getMatBottom()->_43 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->z
 		);
 	LPDIRECTSOUNDBUFFER bgm = CSOUND->GetSound(SOUNDKEY::BGM1());
+
+
+	
+
 //	bgm->Play(0,0,1);
 }
 
@@ -296,30 +306,77 @@ void CSceneGame::standby(CStage* pStage)
 	const CListItem<CObjBase*>*pEnd = pTankMng->end();
 
 
-
 	//	開始位置のタイルを取得したい
 	//....スタート位置タイル取得
-	const OUTPUT* pStTile= pStage->getStageData()->getStartTile();
+	const OUTPUT* pStTile= pStage->getStageData()->getLastTile();
+
+	const float rotStartTile = pStTile->rot;
+
+	float moveX = 2.0f;
+	float moveY = 2.0f;
 
 
-	const float moveX = 1.0f;
-	const float moveY = 1.0f;
+	float pointX = pStTile->posX;
+	float pointY = pStTile->posY;
 
 	//....基点取得
-	const float& pointX = pStTile->posX;
-	const float& pointY = pStTile->posY;
+	if(rotStartTile >= 1.5f * D3DX_PI){
+		pointX -= 15;
+		pointY -= 15;
+	}
+	else 	if(rotStartTile >= 1.0f * D3DX_PI){
+		pointX += 15;
+		pointY -= 15;
+	}
+	else 	if(rotStartTile >= 0.5f * D3DX_PI){ 
+		pointX += 15;
+		pointY += 15;
+	}
+	else{
+		pointX -= 15;
+		pointY += 15;
+	}
+	float setPointX;
+	float setPointY;
 
 	uint cnt = 0;
 	CTank* pTank = NULL;
+
+
+	const int div = 10;
 
 	while(pListTank !=  pEnd)
 	{
 		//	本来の型でポインタ取得
 
 		pTank = static_cast<CTank*>(pListTank->getInst());
+
+
+		if(rotStartTile >= 1.5f * D3DX_PI)
+		{//+X-Y
+			setPointX = pointX + moveX * static_cast<float>(cnt / div);
+			setPointY = pointY + moveY * static_cast<float>(cnt % div);
+
+		}
+		else 	if(rotStartTile >= 1.0f * D3DX_PI)
+		{
+			setPointX = pointX + moveX * static_cast<float>(cnt % div) * -1;
+			setPointY = pointY + moveY * static_cast<float>(cnt / div);
+		}
+		else 	if(rotStartTile >= 0.5f * D3DX_PI)
+		{ 
+			setPointX = pointX + moveX * static_cast<float>(cnt / div) * -1;
+			setPointY = pointY + moveY * static_cast<float>(cnt % div) * -1;
+		}
+		else
+		{
+			setPointX = pointX + moveX * static_cast<float>(cnt % div);
+			setPointY = pointY + moveY * static_cast<float>(cnt / div) * -1;
+		}
+
 		pTank->setPos(
-			pointX + moveX * static_cast<float>(cnt % 10),
-			pointY + moveY * static_cast<float>(cnt / 10)
+			setPointX, 
+			setPointY
 			);
 		pListTank = pListTank->next();
 		++cnt;
@@ -370,25 +427,7 @@ void CSceneGame::switchGMain()
 /***********************************************************************/
 void CSceneGame::switchGEnd()
 {
-	CListMng<CObjBase*>*TankList =  OBJMNG->getList(OBJGROUPKEY::TANK());
-	CListItem<CObjBase*>* pItem = TankList->begin();
-	CListItem<CObjBase*>* pEnd = TankList->end();
-	CTank* pTank;
 
-
-	while(1)
-	{
-		pTank = static_cast<CTank*>(pItem->getInst());
-		if(pTank->getFlgGoal() == TRUE )
-		{
-			break;
-		}
-		else if( pItem == pEnd)
-		{
-			return;
-		}
-		pItem = pItem->next();
-	}
 
 	
 }

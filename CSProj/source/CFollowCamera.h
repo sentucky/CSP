@@ -31,6 +31,11 @@ public:
 	void update();	///<	視点、注視点の更新
 
 	void setTank(CTank* pTank);
+	void setNAtToEye(const float x, const float y, const float z){
+		_NAtToEye.x = x;
+		_NAtToEye.y = y;
+		_NAtToEye.z = z;
+	}
 
 	const float getDistance(){return _fDistance;}
 	const D3DXVECTOR3* getNAtToEye(){return &_NAtToEye;}

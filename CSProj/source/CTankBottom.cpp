@@ -166,7 +166,6 @@ void CTankBottom::turn()
 	v1.y = _Dir.z;
 	_MoveDir.x = pMoveDir->x;
 	_MoveDir.z = pMoveDir->y;
-
 	float fCross = D3DXVec2CCW(&v1,pMoveDir);	//	äOêœ
 
 	float fDot	 = D3DXVec3Dot(&_Dir,&_MoveDir);
