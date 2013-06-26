@@ -90,6 +90,7 @@ public:
 	const float				getRadius();	///<	”¼Œa‚Ìæ“¾
 	const BOOL				getDestroyed(){return _Destroyed;}	///<	”í”j‰óƒtƒ‰ƒOæ“¾
 	const BOOL				getFlgGoal(){return _FlgGoal;}
+	const uint				getThisType(){return _unThisType;}
 
 	const float				getlapVal(){return _lapVal;}
 	const int				getlap(){return _lap;}

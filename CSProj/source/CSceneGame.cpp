@@ -147,7 +147,7 @@ void CSceneGame::init()
 	int n2 = 0;
 //*	
 	CTankIntInter::setPlayerTank(pTank);
-	for(int n = 0; n < 100; n++)
+	for(int n = 0; n < 500; n++)
 	{
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
 	}
@@ -317,7 +317,7 @@ void CSceneGame::standby(CStage* pStage)
 	//	要素抽出
 	CListMng<CObjBase*>* pTankMng = OBJMNG->getList(OBJGROUPKEY::TANK());
 	CListItem<CObjBase*>*pListTank	= pTankMng->begin();
-	const CListItem<CObjBase*>*pEnd = pTankMng->end();
+	CListItem<CObjBase*>*pEnd = pTankMng->end();
 
 
 	//	開始位置のタイルを取得したい
@@ -357,15 +357,19 @@ void CSceneGame::standby(CStage* pStage)
 	uint cnt = 0;
 	CTank* pTank = NULL;
 
+	CTank* Player;
 
-	const int div = 2;
+	const int div = 7;
 
 	while(pListTank !=  pEnd)
 	{
 		//	本来の型でポインタ取得
 
 		pTank = static_cast<CTank*>(pListTank->getInst());
-
+		if(pTank->getThisType() == CTank::TYPE_PLAYER)
+		{
+			Player = pTank;
+		}
 
 		if(rotStartTile >= 1.5f * D3DX_PI)
 		{//+X-Y
@@ -380,8 +384,8 @@ void CSceneGame::standby(CStage* pStage)
 		}
 		else 	if(rotStartTile >= 0.5f * D3DX_PI)
 		{ 
-			setPointX = pointX + moveX * static_cast<float>(cnt / div) * -1;
-			setPointY = pointY + moveY * static_cast<float>(cnt % div) * -1;
+			setPointX = pointX + moveX * static_cast<float>(cnt % div) * +1;
+			setPointY = pointY + moveY * static_cast<float>(cnt / div) * +1;
 		}
 		else
 		{
@@ -396,6 +400,17 @@ void CSceneGame::standby(CStage* pStage)
 		pListTank = pListTank->next();
 		++cnt;
 	}
+
+	//	最後尾とプレイヤーの位置交換
+	pTank = static_cast<CTank*>(pEnd->prev()->getInst());
+	if( Player != pTank)
+	{
+		const float tmpx = pTank->getMatBottom()->_41;
+		const float tmpz = pTank->getMatBottom()->_43;
+		pTank->setPos(Player->getMatBottom()->_41, Player->getMatBottom()->_43);
+		Player->setPos(tmpx, tmpz);
+	}
+
 	CCamera::update();
 }
 
@@ -409,7 +424,7 @@ void CSceneGame::standby(CStage* pStage)
 void CSceneGame::switchGMain()
 {
 	//	CAMERA切り替え
-	
+	/*
 	_FollowCamera->enableTask();
 	_FollowCamera->update();
 
@@ -429,6 +444,7 @@ void CSceneGame::switchGMain()
 			break;
 		}
 	}
+	*/
 }
 
 /***********************************************************************/

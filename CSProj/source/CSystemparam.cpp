@@ -135,7 +135,6 @@ void CSystemparam::disableTask()
 	CTaskMng::erase(&_TaskStartCheck);
 	CTaskMng::erase(&_TaskDrawResult);
 	CTaskMng::erase(&_TaskDrawStart);
-	CTaskMng::erase(&_TaskStartCheck);
 }
 
 

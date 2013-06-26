@@ -167,8 +167,8 @@ CTank::CTank(const CTank& src)
 	_pTankTop->setTankBottom(_pTankBottom);
 
 	//	タスク有効化
-	enableTask();
-	CTaskMng::push<CTank>(TASKKEY::DRAW(),			this,&CTank::draw,	&_pTaskDraw			);
+	//enableTask();
+	CTaskMng::push<CTank>(TASKKEY::DRAW(),	this,&CTank::draw,	&_pTaskDraw			);
 
 	_lapVal = 0.0f;
 	_lap = 0;

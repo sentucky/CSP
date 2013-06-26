@@ -86,8 +86,8 @@ void gameInit()
 	INPUTCOMMON->createKeyboard();
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
-	ps = new CSceneGame;
-//	ps = new CSceneTitle;
+//	ps = new CSceneGame;
+	ps = new CSceneTitle;
 //	ps = new CSceneTestSpace;
 	pScene = ps;
 
