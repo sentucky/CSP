@@ -14,14 +14,14 @@
 class TEXPATH
 {
 public:
-	static const char* STARTSELECT();
+	static const char* STAGESELECT();
 	static const char* START();
-	static const char* REDY();
+	static const char* READY();
 	static const char* GO();
 	static const char* EXIT();
 	
 
-	static const char* WIN();
+	static const char* VICTORY();
 	static const char* LOSE();
 	static const char* FADEMASK();
 	static const char* BACK_BUTTON();
@@ -34,6 +34,9 @@ public:
 	static const char* SELECT_COURSE1();
 	static const char* SELECT_COURSE2();
 	static const char* SELECT_COURSE3();
+	static const char* RESULT_BG();
+	static const char* RESULT_RANK();
+	static const char* RESULT_LOSE();
 	static const char* TILE01();
 	static const char* TILE02();
 	static const char* TILE03();
@@ -58,19 +61,20 @@ public:
 	static const char* NUM_W7();
 	static const char* NUM_W8();
 	static const char* NUM_W9();
+	static const char* NUM_TH();
 	static const char* ANIMETEST();
 };
 
 class TEXKEY
 {
 public:
-	static const uint STARTSELECT();
+	static const uint STAGESELECT();
 	static const uint START();
-	static const uint REDY();
+	static const uint READY();
 	static const uint GO();
 	static const uint EXIT();
 
-	static const uint WIN();
+	static const uint VICTORY();
 	static const uint LOSE();
 	static const uint FADEMASK();
 	static const uint BACK_BUTTON();
@@ -83,6 +87,9 @@ public:
 	static const uint SELECT_COURSE1();
 	static const uint SELECT_COURSE2();
 	static const uint SELECT_COURSE3();
+	static const uint RESULT_BG();
+	static const uint RESULT_RANK();
+	static const uint RESULT_LOSE();
 	static const uint TILE01();
 	static const uint TILE02();
 	static const uint TILE03();
@@ -107,6 +114,7 @@ public:
 	static const uint NUM_W7();
 	static const uint NUM_W8();
 	static const uint NUM_W9();
+	static const uint NUM_TH();
 	static const uint ANIMETEST();
 	static const uint SUM();
 };

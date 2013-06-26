@@ -76,14 +76,17 @@ public:
 	const D3DXVECTOR2* getModeDir(){return &_MoveDir;}				///<	移動方向の取得
 	const D3DXVECTOR3* getTargetPoint();	///<	砲塔を向ける先を取得
 	static void setStageData(const CStageData* StageData);	///<	ステージデータの設定
+	static void setPlayerTank(CTank* t );	// プレイヤーポインタセット
 protected:
 	BOOL	_FireFlg;					///<	発砲フラグ
 	D3DXVECTOR2	_MoveDir;				///<	移動方向
 	
 	CTank*	_pMyTank;					///<	思考が反映される戦車
-	D3DXVECTOR3			_TargetPoint;	///<	ターゲットの座標
-	static CTank*		_pPlayerTank;	///<	プレイヤータンクのポインタ
+	D3DXVECTOR3					_TargetPoint;	///<	ターゲットの座標
+	static CTank*				_pPlayerTank;	///<	プレイヤータンクのポインタ
 	static const CStageData*	_StageData;		///<	ステージデータ
+public:
+	static CTank**				_Ranking[1024];		///<
 };
 
 

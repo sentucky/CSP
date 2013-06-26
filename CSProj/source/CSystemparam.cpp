@@ -14,6 +14,7 @@
 
 #include"CTank.h"
 #include"CFollowCamera.h"
+#include"CStartCamWork.h"
 
 #include"CObjMng.h"
 #include"CTaskMng.h"
@@ -21,8 +22,11 @@
 #include"CSpriteFactory.h"
 #include"CSprite.h"
 
+
 #include<algorithm>
 
+
+int CSystemparam::_MaxGoalCount = 300;
 
 /***********************************************************************/
 /*! @brief 
@@ -33,11 +37,16 @@
 CSystemparam::CSystemparam()
 	:CObjBase(OBJGROUPKEY::GAMESYSTEM()),
 	_flgRaceResult(0),
+	_flgEnd(FALSE),
 	_Sprite(NULL),
 	_playerTank(NULL),
 	_TaskList(NULL),
+	_TaskEndCount(NULL),
 	_TaskEndCheck(NULL),
-	_TaskDrawResult(NULL)
+	_TaskStartCheck(NULL),
+	_TaskDrawResult(NULL),
+	_TaskDrawStart(NULL),
+	_goalCount(_MaxGoalCount)
 {
 }
 
@@ -50,6 +59,7 @@ CSystemparam::CSystemparam()
 CSystemparam::~CSystemparam()
 {
 	disableTask();
+	SAFE_DELETE(_Sprite);
 }
 
 /***********************************************************************/
@@ -62,14 +72,23 @@ CSystemparam::~CSystemparam()
 CSystemparam::CSystemparam(const CSystemparam& src)
 	:CObjBase(OBJGROUPKEY::GAMESYSTEM()),
 	_flgRaceResult(0),
+	_flgEnd(FALSE),
 	_Sprite(NULL),
 	_playerTank(NULL),
+	_TaskEndCount(NULL),
 	_TaskList(NULL),
 	_TaskEndCheck(NULL),
-	_TaskDrawResult(NULL)
+	_TaskStartCheck(NULL),
+	_TaskDrawResult(NULL),
+	_TaskDrawStart(NULL),
+	_goalCount(_MaxGoalCount)
 {
 	TankList = OBJMNG->getList(OBJGROUPKEY::TANK());
+	D3DXMatrixIdentity(&_spriteMatrix);
+	_spriteMatrix._41 = 400;
+	_spriteMatrix._42 = 320;
 	enableTask();
+	_Sprite = SPRITEFACTORY->create(TEXKEY::READY());
 }
 
 /***********************************************************************/
@@ -83,13 +102,23 @@ void CSystemparam::enableTask()
 	CTaskMng::push<CSystemparam>(
 		TASKKEY::RANKING(),
 		this,
-		&CSystemparam::run,
+		&CSystemparam::Ranking,
 		&_TaskList);
 	CTaskMng::push<CSystemparam>(
 		TASKKEY::SYSTEMPARAM(),
 		this,
 		&CSystemparam::endcheck,
 		&_TaskEndCheck);
+	CTaskMng::push<CSystemparam>(
+		TASKKEY::DRAW(),
+		this,
+		&CSystemparam::drawStart,
+		&_TaskDrawStart);
+	CTaskMng::push<CSystemparam>(
+		TASKKEY::SYSTEMPARAM(),
+		this,
+		&CSystemparam::startcheck,
+		&_TaskStartCheck);
 }
 
 /***********************************************************************/
@@ -101,8 +130,26 @@ void CSystemparam::enableTask()
 void CSystemparam::disableTask()
 {
 	CTaskMng::erase(&_TaskList);
+	CTaskMng::erase(&_TaskEndCount);
 	CTaskMng::erase(&_TaskEndCheck);
+	CTaskMng::erase(&_TaskStartCheck);
 	CTaskMng::erase(&_TaskDrawResult);
+	CTaskMng::erase(&_TaskDrawStart);
+	CTaskMng::erase(&_TaskStartCheck);
+}
+
+
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
+void CSystemparam::endCount()
+{
+	--_goalCount;
+
+	_flgEnd = _goalCount <= 0 ? TRUE : FALSE;
 }
 
 /***********************************************************************/
@@ -124,8 +171,8 @@ void CSystemparam::endcheck()
 	}
 
 
-	_Camera->setTank(pTank);
-	_Camera->setNAtToEye(1.0f,0.5f,1.0f);
+	_FollowCamera->setTank(pTank);
+	_FollowCamera->setNAtToEye(1.0f,0.5f,1.0f);
 
 	//	レース終了
 	pItem = TankList->begin();
@@ -143,8 +190,14 @@ void CSystemparam::endcheck()
 		&CSystemparam::drawResult,
 		&_TaskDrawResult);
 
+	CTaskMng::push(TASKKEY::SYSTEMPARAM(),
+		this,
+		&CSystemparam::endCount,
+		&_TaskEndCount);
+
 	CTaskMng::erase(&_TaskEndCheck);
-	if(_flgRaceResult == 1)	_Sprite = SPRITEFACTORY->create(TEXKEY::WIN());
+	SAFE_DELETE(_Sprite);
+	if(_flgRaceResult == 1)	_Sprite = SPRITEFACTORY->create(TEXKEY::VICTORY());
 	else					_Sprite = SPRITEFACTORY->create(TEXKEY::LOSE());
 	
 
@@ -156,37 +209,74 @@ void CSystemparam::endcheck()
  *  @retval void
  */
 /***********************************************************************/
-void CSystemparam::run()
+void CSystemparam::Ranking()
 {
-	const uint size = TankList->size();
-
-	CTank* pArray[512] = {0,};
+	memset(_Ranking,0,sizeof(_Ranking));
 
 
 	CListItem<CObjBase*>* run = TankList->begin();
+	CListItem<CObjBase*>* end = TankList->end();
 
-	uint n;
+	uint n = 0;
 
-	for(n = 0; n < size; n++)
+	CTank* pTank;
+
+	while(run != end)
 	{
-		pArray[n] = static_cast<CTank*>(run->getInst());
+	 	pTank = static_cast<CTank*>(run->getInst());
+		if(!pTank->getDestroyed())
+		{
+			_Ranking[n] = pTank;
+			n++;
+		}
 		run = run->next();
 	}
 
-	std::sort(pArray,pArray + size,CTank::lower);
 
-	for(n = 0; n < size; n++)
+	std::sort(_Ranking,_Ranking + n,CTank::lower);
+
+	const uint Sum = n;
+
+	for(n = 0; n < Sum; n++)
 	{
-		pArray[n]->setRank(n+1);
+		_Ranking[n]->setRank(n);
 	}
 }
 
 void CSystemparam::drawResult()
 {
-	D3DXVECTOR3 _pos(400,320,0);
-	D3DXVECTOR3 _scale(1,1,1);
-	D3DXVECTOR3 _rot(0,0,0);
-	_Sprite->draw(0,&_pos,&_rot,&_scale);
+	_Sprite->draw(0,&_spriteMatrix);
+}
+
+void CSystemparam::drawStart()
+{	
+	_Sprite->draw(
+		0,
+		&_spriteMatrix
+		);
+}
+
+void CSystemparam::switchGame()
+{
+	_FollowCamera->enableTask();
+	_FollowCamera->update();
+
+	//	戦車を動かせるようにする
+	CListMng<CObjBase*>*TankList =  OBJMNG->getList(OBJGROUPKEY::TANK());
+	CListItem<CObjBase*>* pItem = TankList->begin();
+	CListItem<CObjBase*>* pEnd = TankList->end();
+	CTank* pTank;
+
+	while(1)
+	{
+		pTank = static_cast<CTank*>(pItem->getInst());
+		pTank->enableTask();
+		pItem = pItem->next();
+		if(pItem == pEnd)
+		{
+			break;
+		}
+	}
 }
 
 BOOL CSystemparam::endcheckGoal(CTank** GoalTank,CListItem<CObjBase*>* begin,const CListItem<CObjBase*>* end)
@@ -211,6 +301,8 @@ BOOL CSystemparam::endcheckGoal(CTank** GoalTank,CListItem<CObjBase*>* begin,con
 			{
 				_flgRaceResult = 1;
 				*GoalTank = pTank;
+				SAFE_DELETE(_Sprite);
+				_Sprite = SPRITEFACTORY->create(TEXKEY::VICTORY());
 				return TRUE;
 			}
 			++sumGoals;
@@ -224,11 +316,12 @@ BOOL CSystemparam::endcheckGoal(CTank** GoalTank,CListItem<CObjBase*>* begin,con
 
 	}
 
-	//	ゴールした戦車の中に時期があればその時の処理
 	if(sumGoals > 0)
 	{//	ゴールしたタンクあり
 		_flgRaceResult = 2;
 		*GoalTank = pTankGoals[0];
+		SAFE_DELETE(_Sprite);
+		_Sprite = SPRITEFACTORY->create(TEXKEY::LOSE());
 		return TRUE;
 	}
 	return FALSE;
@@ -242,20 +335,47 @@ BOOL CSystemparam::endcheckDestroy(CTank** DestroyerTank,CListItem<CObjBase*>* b
 	{
 		_flgRaceResult = 2;
 		*DestroyerTank = _playerTank;
+		SAFE_DELETE(_Sprite);
+		_Sprite = SPRITEFACTORY->create(TEXKEY::LOSE());
 		return TRUE;
 	}
 	if(sumTanks <= 1)
 	{
 		if(sumTanks == 0)
 		{///	同時撃破
+			SAFE_DELETE(_Sprite);
+			_Sprite = SPRITEFACTORY->create(TEXKEY::LOSE());
 			_flgRaceResult = 2;
 		}
 		else
 		{
 			*DestroyerTank = static_cast<CTank*>(begin->getInst());
+			SAFE_DELETE(_Sprite);
+			_Sprite = SPRITEFACTORY->create(TEXKEY::VICTORY());
 			_flgRaceResult = 1;
 		}
 		return TRUE;
 	}
 	return FALSE;
+}
+
+void CSystemparam::startcheck()
+{
+	if(_CamStart == NULL)
+	{
+		--_startCount;
+		if(_startCount <= 0)
+		{
+			CTaskMng::erase(&_TaskDrawStart);
+			CTaskMng::erase(&_TaskStartCheck);
+		}
+	}
+	else if(_CamStart->getDeleteFlg() == TRUE)
+	{
+		_CamStart = NULL;
+		switchGame();
+		SAFE_DELETE(_Sprite);
+		_Sprite = SPRITEFACTORY->create(TEXKEY::GO());
+		_startCount = MaxStartCount;
+	}
 }

@@ -97,7 +97,7 @@ void CSceneTitle::update()
 	const RECTEX *size;
 	D3DXVECTOR2 colpos;
 
-	
+	CHECK_UPDATE;
 
 	if(vecTitlePos[1].x < 400.0f)
 	{
@@ -134,6 +134,8 @@ void CSceneTitle::update()
 
 void CSceneTitle::draw()
 {
+	CHECK_DRAW;
+
 	pTitleSprite[0]->draw(0, &D3DXVECTOR3(vecTitlePos[0].x, vecTitlePos[0].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
 	pTitleSprite[1]->draw(0, &D3DXVECTOR3(vecTitlePos[1].x, vecTitlePos[1].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
 

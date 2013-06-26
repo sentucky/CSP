@@ -62,6 +62,7 @@ void CTaskMng::run()
 		{
 			next = run->next();
 			run->getInst()->run();
+
 			run = next;
 		}
 	}

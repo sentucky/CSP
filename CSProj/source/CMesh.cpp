@@ -166,6 +166,7 @@ HRESULT CMesh::loadMaterial(LPD3DXBUFFER pD3DXMatlBuffer)
 		_pd3dMeshMaterial[dwCnt].Ambient = _pd3dMeshMaterial[dwCnt].Diffuse;
 		_pd3dMeshTexture[dwCnt] = NULL;
 
+		memset(curDir,0,sizeof(curDir));
 		strcpy(curDir,_szMeshFileName);
 		for(n = sizeof(curDir); n >= 0 && curDir[n] != '/'; n--);
 		curDir[n+1] = '\0';

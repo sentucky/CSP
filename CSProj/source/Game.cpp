@@ -20,7 +20,7 @@
 #include"CScreen.h"
 #include"CFadeInOut.h"
 #include"CMeshFactory.h"
-#include"CDevice.h"	
+#include"CDevice.h"			//デバイスクラスヘッダ
 #include"CTaskMng.h"
 #include"CFactory.h"
 
@@ -93,13 +93,22 @@ void gameInit()
 
 
 	TEXTUREFACTORY->reserve(TEXKEY::SUM());
-	SPRITEFACTORY->registTexture(TEXKEY::WIN(),				TEXPATH::WIN()				);
-	SPRITEFACTORY->registTexture(TEXKEY::LOSE(),				TEXPATH::LOSE()			);
+	SPRITEFACTORY->registTexture(TEXKEY::VICTORY(),				TEXPATH::VICTORY()				);
+	SPRITEFACTORY->registTexture(TEXKEY::LOSE(),			TEXPATH::LOSE()			);
 	SPRITEFACTORY->registTexture(TEXKEY::FADEMASK(),		TEXPATH::FADEMASK()			);
+	SPRITEFACTORY->registTexture(TEXKEY::BACK_BUTTON(),		TEXPATH::BACK_BUTTON()		);
 	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BG(),		TEXPATH::TITLE_BG()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TITLE_STR(),		TEXPATH::TITLE_STR()		);
 	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON01(),	TEXPATH::TITLE_BUTTON01()	);
 	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON02(),	TEXPATH::TITLE_BUTTON02()	);
 	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BUTTON03(),	TEXPATH::TITLE_BUTTON03()	);
+	SPRITEFACTORY->registTexture(TEXKEY::SELECT_BG(),		TEXPATH::SELECT_BG()		);
+	SPRITEFACTORY->registTexture(TEXKEY::SELECT_COURSE1(),	TEXPATH::SELECT_COURSE1()	);
+	SPRITEFACTORY->registTexture(TEXKEY::SELECT_COURSE2(),	TEXPATH::SELECT_COURSE2()	);
+	SPRITEFACTORY->registTexture(TEXKEY::SELECT_COURSE3(),	TEXPATH::SELECT_COURSE3()	);
+	SPRITEFACTORY->registTexture(TEXKEY::RESULT_BG(),		TEXPATH::RESULT_BG()		);
+	SPRITEFACTORY->registTexture(TEXKEY::RESULT_RANK(),		TEXPATH::RESULT_RANK()		);
+	SPRITEFACTORY->registTexture(TEXKEY::RESULT_LOSE(),		TEXPATH::RESULT_LOSE()		);
 	SPRITEFACTORY->registTexture(TEXKEY::TILE01(),			TEXPATH::TILE01()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TILE02(),			TEXPATH::TILE02()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TILE03(),			TEXPATH::TILE03()			);
@@ -114,7 +123,7 @@ void gameInit()
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_B7(),			TEXPATH::NUM_B7()				);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_B8(),			TEXPATH::NUM_B8()				);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_B9(),			TEXPATH::NUM_B9()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B0(),			TEXPATH::NUM_B0()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W0(),			TEXPATH::NUM_W0()				);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_W1(),			TEXPATH::NUM_W1()				);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_W2(),			TEXPATH::NUM_W2()				);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_W3(),			TEXPATH::NUM_W3()				);
@@ -124,6 +133,15 @@ void gameInit()
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_W7(),			TEXPATH::NUM_W7()				);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_W8(),			TEXPATH::NUM_W8()				);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_W9(),			TEXPATH::NUM_W9()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_TH(),			TEXPATH::NUM_TH()				);
+
+	SPRITEFACTORY->registTexture(TEXKEY::START(),			TEXPATH::START()				);
+	SPRITEFACTORY->registTexture(TEXKEY::STAGESELECT(),		TEXPATH::STAGESELECT()			);
+	SPRITEFACTORY->registTexture(TEXKEY::EXIT(),			TEXPATH::EXIT()					);
+	SPRITEFACTORY->registTexture(TEXKEY::READY(),			TEXPATH::READY()					);
+	SPRITEFACTORY->registTexture(TEXKEY::GO(),				TEXPATH::GO()					);
+
+
 	SPRITEFACTORY->registTexture(TEXKEY::ANIMETEST(),		TEXPATH::ANIMETEST()		);
 
 
@@ -142,6 +160,7 @@ void gameInit()
 	MESHFACTORY->registMesh(MESHKEY::TANK04_TOP(),		MESHPATH::TANK04_TOP()		);
 	MESHFACTORY->registMesh(MESHKEY::STAGE01(),			MESHPATH::STAGE01()			);
 	MESHFACTORY->registMesh(MESHKEY::PIN(),				MESHPATH::PIN()				);
+	MESHFACTORY->registMesh(MESHKEY::SHELL01(),			MESHPATH::SHELL01()			);
 
 
 	
@@ -152,10 +171,10 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK01_TOP()),
 		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM()),
 		0,
-		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::PIN()),1),
+		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1),
 		0.05f,
 		0.05f,
-		3
+		50
 		);
 	CStage* pStage = new CStage(STAGEPATH::NO_01(),MESHFACTORY->create(MESHKEY::STAGE01()));
 
@@ -163,7 +182,7 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK04_TOP()),
 		MESHFACTORY->create(MESHKEY::TANK04_BOTTOM()),
 		-1,
-		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::PIN()),1),
+		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::SHELL01()),1),
 		0.05f,
 		0.05f,
 		3);
@@ -212,6 +231,11 @@ bool gameLoop()
 
 	//...入力情報の更新
 	INPUTCOMMON->update();
+
+	if(	pLastScene != pScene)
+	{
+		SAFE_DELETE(pLastScene);
+	}
 	pLastScene = pScene;
 
 	switch(Phase)
@@ -262,7 +286,7 @@ bool gameLoop()
 	}
 	if(drawBegin())
 	{
-		pScene->draw();
+		pLastScene->draw();
 		FADEINOUT->draw();
 		drawEnd();
 		D3DDEVICE->Present(0,0,0,0);

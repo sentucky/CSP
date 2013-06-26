@@ -32,7 +32,6 @@
 CMesh *TestMesh[2] = {NULL,};
 CLight* pLight;
 CCamera* pCamera;
-CSprite* pSprite;
 CEffectBase* pEffect;
 CEffectBase* pEffect2;
 
@@ -71,13 +70,10 @@ D3DXVECTOR4 v4lD(1.0f,1.0f,1.0f,1.0f);
  * 
  */
 /***********************************************************************/
-namespace stest
-{
 CAnimeParam* aparam = NULL;
 CSprite *pSprite = NULL;
 CNum* pNum;
 CNum* pNum2;
-}
 
 #include"CShadowMap.h"
 #include"CMeshFactory.h"
@@ -98,6 +94,10 @@ void CSceneTestSpace::init()
 {
 
 	release();
+
+	pSprite = SPRITEFACTORY->create(TEXKEY::ANIMETEST());
+	pSprite->createAnimeParam(ANIMEPATH::TEST());
+	pSprite->getAnimeParam()->setState(ANIME_STATE::PLAY_LOOP);
 	/*
 	MESHFACTORY->registMesh(MESHKEY::YUKA(),MESHPATH::YUKA());
 	TestMesh[0] = MESHFACTORY->create(MESHKEY::YUKA());
@@ -143,7 +143,7 @@ void CSceneTestSpace::init()
 	stest::aparam = new CAnimeParam(ANIMEPATH::TEST());
 	stest::aparam->setState(PLAY_LOOP);
 	stest::pSprite = SPRITEFACTORY->create(TEXKEY::ANIMETEST());
-	*/
+	
 	CCamera::init();
 	Shadow = new CShadowMap("0","data/fx/shadowmap.fx");
 
@@ -151,11 +151,11 @@ void CSceneTestSpace::init()
 	D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
 	D3DXMatrixScaling(&mat,0.1,0.1,0.1);
-	/*	
+	/*
 	mat._41 = -100;
 	mat._42 = 80;
 	mat._43 = -100;
-	*/
+	
 	Shadow->landMat = mat;
 
 	CCamera::setEye(D3DXVECTOR3(0,200,-300));
@@ -178,6 +178,7 @@ void CSceneTestSpace::init()
 void CSceneTestSpace::update()
 {
 	CHECK_UPDATE;
+	pSprite->updateAnime();
 	/*
 	D3DXVECTOR3 Eye = pCamera->getEye();
 	if(GetAsyncKeyState('S'))
@@ -214,7 +215,7 @@ void CSceneTestSpace::update()
 		stest::pNum->addNum(10);
 		stest::pNum2->addNum(10);
 	}
-	*/
+	
 //	light->update();
 	CCamera::update();
 
@@ -246,7 +247,7 @@ void CSceneTestSpace::update()
 	{
 		eye.y+=move;
 	}
-	CCamera::setEye(eye);
+	CCamera::setEye(eye);*/
 }
 
 
@@ -259,6 +260,12 @@ void CSceneTestSpace::update()
 void CSceneTestSpace::draw()
 {
 	CHECK_DRAW;
+	pSprite->draw(
+		0,
+		&D3DXVECTOR3(400,320,0),
+		&D3DXVECTOR3(0,0,0),
+		&D3DXVECTOR3(1,1,1)
+		);
 	/*
 	stest::pSprite->draw(
 		0,
@@ -268,7 +275,7 @@ void CSceneTestSpace::draw()
 
 	stest::pNum->draw();
 	stest::pNum2->draw();
-	*/
+	
 	D3DXMATRIXA16 MAT;
 	D3DXMatrixIdentity(&MAT);
 	D3DXMatrixScaling(&MAT,0.1f,0.1f,0.1f);
@@ -322,15 +329,16 @@ void CSceneTestSpace::draw()
 /***********************************************************************/
 void CSceneTestSpace::release()
 {
+	delete pSprite;
 	/*
 	SAFE_DELETE(stest::aparam);
 	SAFE_DELETE(stest::pSprite);
 	SAFE_DELETE(stest::pNum);
 	SAFE_DELETE(stest::pNum2);
-	*/
+	
 	SAFE_DELETE(pMesh);
 	SAFE_DELETE(light);
-	/*
+	
 	SAFE_DELETE(TestMesh[0]);
 	SAFE_DELETE(TestMesh[1]);
 	SAFE_DELETE(pCamera);

@@ -63,7 +63,7 @@ private:
 	D3DXVECTOR3 _Pos;
 	D3DXVECTOR3 _Rot;
 	D3DXVECTOR3 _Scale;
-	static CSprite* _NumSprite[10];
+	CSprite* _NumSprite[10];
 
 	uint _DrawMode;
 	BOOL _flgProto;

@@ -92,7 +92,6 @@ void CTankBottom::draw()
 /***********************************************************************/
 void CTankBottom::move()
 {
-
 	//	姿勢からベクトルを計算
 	_MoveVec *= _fDeceleration;
 	_WMat._41 += _MoveVec.x;
@@ -155,11 +154,8 @@ void CTankBottom::turn()
 		return;
 	}
 
-
-
 	//	移動方向の左右確認
 	static D3DXVECTOR2 v1;
-
 
 	D3DXVec3Normalize(&_MoveDir,&_MoveDir);
 	v1.x = _Dir.x;
@@ -169,8 +165,6 @@ void CTankBottom::turn()
 	float fCross = D3DXVec2CCW(&v1,pMoveDir);	//	外積
 
 	float fDot	 = D3DXVec3Dot(&_Dir,&_MoveDir);
-
-
 
 	//	左右判定
 	//	平行かつ鋭角

@@ -12,6 +12,7 @@
 
 		CTank*			CTankIntInter::_pPlayerTank = NULL;	//	プレイヤータンクのポインタ
 const	CStageData*		CTankIntInter::_StageData	= NULL;	//	ステージデータ
+CTank**			CTankIntInter::_Ranking[1024]= {NULL,};		///<
 
 /***********************************************************************/
 /*! @brief コンストラクタ
@@ -80,4 +81,8 @@ const D3DXVECTOR3* CTankIntInter::getTargetPoint()
 void CTankIntInter::setStageData(const CStageData* StageData)
 {
 	_StageData = StageData;
+}
+void CTankIntInter::setPlayerTank(CTank* t){
+
+	_pPlayerTank = t;
 }

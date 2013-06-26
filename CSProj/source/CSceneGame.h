@@ -24,6 +24,7 @@ class CFollowCamera;
 template<class T>
 class CListItem;
 class CObjBase;
+class CSystemparam;
 /***********************************************************************/
 /*!	@class CSceneGame
  *	@brift ゲーム部分の処理
@@ -54,6 +55,7 @@ private:
 	CCamera* _pCamera;	///<	カメラクラスポインタ
 	CFollowCamera* _FollowCamera;
 	CListItem<CObjBase*>* _CamStart;
+	CSystemparam* _SysPara;
 };
 
 #endif

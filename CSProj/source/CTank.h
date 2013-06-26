@@ -31,6 +31,7 @@ class CShell;
 class CTankTop;
 class CTankBottom;
 class CStageData;
+
 /***********************************************************************/
 /*!
  *	@class CTank
@@ -64,6 +65,7 @@ public:
 	void calcMove();			///<	ˆÚ“®—ÊŒvŽZ
 	void eRap();				///<	“Gƒ‰ƒbƒv
 	void pRap();				///<	Ž©‹@ƒ‰ƒbƒv
+	void destroyed();			///<	”ñ”j‰ó
 
 
 
@@ -75,7 +77,6 @@ public:
 
 private:
 	void turnTop();				///<	ã•”‚Ì‰ñ“]
-	void destroyed();			///<	”ñ”j‰ó
 
 
 public:
@@ -94,6 +95,7 @@ public:
 	const int				getlap(){return _lap;}
 	const uint				getRank(){return _Rank;}
 	const uint				getTankType(){return _unThisType;}
+	const CTankIntInter*	getIntelligence(){return _pIntelligence;}		// Ž{sŽæ“¾
 
 
 	void setMoveVec( D3DXVECTOR3& MoveVec );
@@ -101,6 +103,7 @@ public:
 	void setPos(const float x,const float z);
 	void setRank(const uint Rank){_Rank = Rank;}
 
+	static void setTankPlayer(CTank* Player){_Player = Player;};
 	static void setStageData(const CStageData* pStageData		){	_StageData = pStageData;}
 	static void setSoundFire(const LPDIRECTSOUNDBUFFER SoundFire){ _SoundFire = SoundFire;}
 private:
@@ -111,6 +114,7 @@ private:
 	CTaskList*		_pTaskFire;
 	CTaskList*		_pTaskCalcAM;
 	CTaskList*		_pTaskRap;
+	CTaskList*		_pTaskDestroyed;
 
 	CTankTop*		_pTankTop;			///<	íŽÔ‚Ìã•”
 	CTankBottom*	_pTankBottom;		///<	íŽÔ‚Ì‰º•”
@@ -125,6 +129,8 @@ private:
 	int				_radiate;			///<	•ú”Mó‹µ
 	int				_MaxRadiateTime;	///<	•ú”MŽžŠÔ‚ÌÅ‘å’l
 
+	int				_deldelayCount;
+
 	BOOL			_Destroyed;			///<	”j‰ó”»’èƒtƒ‰ƒO
 	BOOL			_FlgGoal;			///<	ƒS[ƒ‹ƒtƒ‰ƒO
 
@@ -133,11 +139,15 @@ private:
 	int				_lap;				//	ƒ‰ƒbƒv”	
 	OUTPUT*         _Panel;				//
 	OUTPUT*         _prevPanel;			//
+
+	static CTank* _Player;
+
 public:
 	static const uint TYPE_PLAYER = 0;
 	static const uint TYPE_ENEMY01 = -1;
 private:
 	static LPDIRECTSOUNDBUFFER _SoundFire;
+	static const int _maxdeldelayCount = 60;
 
 #ifdef _DEBUG
 LPD3DXMESH debugMesh;;

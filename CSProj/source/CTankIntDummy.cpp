@@ -10,10 +10,10 @@
 
 #include"CTank.h"
 #include"StageData.h"
+#include"CObjMng.h"
+#include"ObjKey.h"
 
 
-float debug,debug2,debug3,debug4,debug5;
-float p;
 /***********************************************************************/
 /*! @brief 
  * 
@@ -63,8 +63,8 @@ CTankIntDummy::CTankIntDummy(const CTankIntDummy& src)
 void CTankIntDummy::update()
 {
 	
-	CTankIntDummy::root();
-	Debug();
+	root();
+	shot();
 	
 }
 /***********************************************************************/
@@ -75,50 +75,63 @@ void CTankIntDummy::update()
 /***********************************************************************/
 void CTankIntDummy::root(){
 	
-	static D3DXVECTOR2 i;// 現在位置から目的ナビポイントまでのベクトル
-	static D3DXVECTOR2 o;// 前ナビポイントから目的ナビポイントまでのベクトル
-	static D3DXVECTOR2 a;
-	static D3DXVECTOR2 b;
+	static D3DXVECTOR2 TanktoNaviPoint;			// 現在位置から目的ナビポイントまでのベクトル
+	static D3DXVECTOR2 NaviToNavi;				// 前ナビポイントから目的ナビポイントまでのベクトル
+	static D3DXVECTOR2 TtoNUnitVec;				// 現在位置から目的ナビポイントまでの単位ベクトル
+	static D3DXVECTOR2 NtoNUnitVec;				// 前ナビポイントから目的ナビポイントまでの単位ベクトル
+	static float dot;
 	// 現在位置から目的ナビポイントまで
 	
-	i.x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_pMyTank->getMatBottom()->_41;
-	i.y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_pMyTank->getMatBottom()->_43;
+	TanktoNaviPoint.x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_pMyTank->getMatBottom()->_41;
+	TanktoNaviPoint.y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_pMyTank->getMatBottom()->_43;
 	//前ナビポイントから目的ナビポイントまで
-	o.x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_StageData->getRoot()[_point-1].x;
-	o.y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_StageData->getRoot()[_point-1].y;
+	NaviToNavi.x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_StageData->getRoot()[_point-1].x;
+	NaviToNavi.y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_StageData->getRoot()[_point-1].y;
 	
 	// 性器化
-	D3DXVec2Normalize(&a,&i);
-	D3DXVec2Normalize(&b,&o);
+	D3DXVec2Normalize(&TtoNUnitVec,&TanktoNaviPoint);
+	D3DXVec2Normalize(&NtoNUnitVec,&NaviToNavi);
 
-	float k = D3DXVec2Dot(&a,&b);
-	debug = k;
-	debug2 =  CTankIntDummy::_StageData->getRoot()[_point].x;
-	debug3 =  CTankIntDummy::_StageData->getRoot()[_point].y;
-	debug4 = CTankIntDummy::_pMyTank->getMatBottom()->_41;
-	debug5 = CTankIntDummy::_pMyTank->getMatBottom()->_43;
+	dot = D3DXVec2Dot(&TtoNUnitVec,&NtoNUnitVec);
 	
-	p = CTankIntDummy::_StageData->getRootNum();
-	
-	if(k<0){
+	if(dot<0){
 		if( _point >= CTankIntDummy::_StageData->getRootNum()-1 ){
 			_point = 0;	// ナビポイントリセット
 		}else{
 			_point++;	// 次のポイントへ
-		}
+			}
 	}
-	_MoveDir = D3DXVECTOR2(a.x,a.y);	// ナビポイントへ移動
-	
+	_MoveDir = D3DXVECTOR2(TtoNUnitVec.x,TtoNUnitVec.y);	// ナビポイントへ移動
 	
 }
 
-// デバッグ出力
-void CTankIntDummy::Debug(){
-	FONT->DrawFloat("navipointNormalize:",debug,RECTEX(0,16,0,0));
-	FONT->DrawFloat("navipointX:",debug2,RECTEX(0,32,0,0));
-	FONT->DrawFloat("Y:",debug3,RECTEX(250,32,0,0));
-	FONT->DrawFloat("enemyX:",debug4,RECTEX(0,176,0,0));
-	FONT->DrawFloat("enemyy:",debug5,RECTEX(0,192,0,0));
-	FONT->DrawFloat("pointnum:",p,RECTEX(0,300,0,0));
+/***********************************************************************/
+/*! @brief 近くの敵をうつ関数
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
+void CTankIntDummy::shot(){
+	static int aimNum;
+	// 射撃処理
+	if(rand()%SHOT_PROB == 1){	// 撃つ確率
+		
+		// 狙う敵のナンバー設定
+		if(rand()%2){aimNum = 1;}else{aimNum = -1;}	
+
+		const uint myRank = CTankIntDummy::CTankIntInter::_pMyTank->getRank();
+		
+		if(myRank + aimNum < 0 || ((*CTankIntDummy::_Ranking)[myRank + aimNum]) == NULL ||  myRank +aimNum > OBJMNG->getList(OBJGROUPKEY::TANK())->size())
+			return;
+		
+		// 銃口向けて
+		CTankIntDummy::_TargetPoint.x =
+			(*CTankIntDummy::_Ranking)[myRank + aimNum ]->getMatBottom()->_41;
+		CTankIntDummy::_TargetPoint.z =
+			(*CTankIntDummy::_Ranking)[myRank + aimNum ]->getMatBottom()->_43;
+		// 発射
+		CTankIntDummy::_FireFlg = true;
+		
+	}
 
 }

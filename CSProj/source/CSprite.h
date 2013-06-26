@@ -21,7 +21,8 @@
 #include"common.h"
 #define	FVF_VERTEX_2D	(D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)
 
-
+class CAnimeParam;
+class ANIMEPATH;
 
 const DWORD kdwColorRevisionMax = 0xffffffff;
 /***********************************************************************/
@@ -55,6 +56,11 @@ public:
 		DWORD SpriteType,
 		const D3DXMATRIXA16* pmatWorld);	///<	2D描画
 
+	void createAnimeParam(ANIMEPATH& AnimePath);
+	void updateAnime();
+	void setCatAnime(const uint Cat);
+	void setStateAniem(const uint State);
+
 	//---テクスチャスプライトの作成
 	HRESULT create();							///<	スプライトを作る
 
@@ -74,12 +80,7 @@ public:
 
 	//...色補正値
 	void setColorRevision(D3DXCOLOR&);			///<	色補正の設定
-	void setColorRevision(						//	色補正の設定
-		const float fR,
-		const float fG,
-		const float fB,
-		const float fA
-		);
+	void setColorRevision(const float fR,const float fG,	const float fB,	const float fA);
 	void setColorRevisionR(const float fR);		///<	色補正個別設定R
 	void setColorRevisionG(const float fG);		///<	色補正個別設定G
 	void setColorRevisionB(const float fB);		///<	色補正個別設定B
@@ -89,17 +90,18 @@ public:
 	//....色補正
 	D3DCOLOR CSprite::getColorRevision();	///<	色補正の取得
 	const RECTEX*	CSprite::getUV();		///<	UV座標の取得
-
+	CAnimeParam*	getAnimeParam(){return _AnimeParam;}
 	//...テクスチャ情報の取得
 	const D3DXIMAGE_INFO* getTextureInfo();	///<	テクスチャ情報取得
 
 
 protected:
-	CTexture*			_pTexture;		//!<	テクスチャ
-	LPD3DXSPRITE		_pD3DSprite;	//!<	スプライト
-	D3DXVECTOR3			_vecCenter;		//!<	スプライト中心点
-	RECTEX				_UV;			//!<	Rectの値
-	D3DCOLOR			_colorRevision;	//!<	色補正の値
-	BOOL				_bDrawFlg;		//!<	描画フラグ
+	CTexture*			_pTexture;		///<	テクスチャ
+	LPD3DXSPRITE		_pD3DSprite;	///<	スプライト
+	D3DXVECTOR3			_vecCenter;		///<	スプライト中心点
+	RECTEX				_UV;			///<	Rectの値
+	D3DCOLOR			_colorRevision;	///<	色補正の値
+	BOOL				_bDrawFlg;		///<	描画フラグ
+	CAnimeParam*		_AnimeParam;	///<
 };
 //EOF

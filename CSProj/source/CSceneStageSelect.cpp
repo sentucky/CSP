@@ -99,6 +99,8 @@ void CSceneStageSelect::update()
 	const RECTEX *size;
 	D3DXVECTOR2 colpos;
 
+	CHECK_UPDATE;
+
 	StageSelectClickpos = MOUSE.getPointWindow();	
 	for(uint i = 2; i < SumSprite; i++)
 	{
@@ -126,17 +128,22 @@ void CSceneStageSelect::update()
 			if(i > 2)
 			{
 				changebutton = true;
-			}
-			else
+			}	
+		}
+		else
+		{
+			if(i > 2)
 			{
 				changebutton = false;
-			}
-		}
+			}	
+		}		
 	}
 }
 
 void CSceneStageSelect::draw()
 {
+	CHECK_DRAW;
+
 	pSprite[0]->draw(0,	&D3DXVECTOR3(vecPos[0].x, vecPos[0].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
 	pSprite[1]->draw(0,	&D3DXVECTOR3(vecPos[1].x, vecPos[1].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
 	pSprite[2]->draw(0,	&D3DXVECTOR3(vecPos[2].x, vecPos[2].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));

@@ -12,6 +12,7 @@
 #include"CSprite.h"
 #include"CScreen.h"
 #include"common.h"
+#include"CAnimeParam.h"
 
 /***********************************************************************/
 //	マクロ定義
@@ -28,12 +29,13 @@
  */
 /***********************************************************************/
 CSprite::CSprite(CTexture* pTexture)
-	:_pTexture(pTexture),
-	 _pD3DSprite(NULL),	
-	 _vecCenter(D3DXVECTOR3(0,0,0)),		
-	 _UV(RECTEX(0,0,0,0)),			
-	 _colorRevision(D3DXCOLOR(0.5f,0.5f,0.5f,1.0f)),
-	 _bDrawFlg(TRUE)
+	:_pTexture		(pTexture						),
+	 _pD3DSprite	(NULL							),	
+	 _vecCenter		(D3DXVECTOR3(0,0,0)				),		
+	 _UV(RECTEX		(0,0,0,0)						),			
+	 _colorRevision	(D3DXCOLOR(0.5f,0.5f,0.5f,1.0f)	),
+	 _bDrawFlg		(TRUE							),
+	 _AnimeParam	(NULL							)
 {
 	_pTexture = pTexture;	//テクスチャの登録
 	create();
@@ -46,12 +48,13 @@ CSprite::CSprite(CTexture* pTexture)
  */
 /***********************************************************************/
 CSprite::CSprite(const CSprite& copy)
-	:_pTexture(copy._pTexture),
-	_pD3DSprite(NULL),	
-	 _vecCenter(copy._vecCenter),		
-	 _UV(copy._UV),			
-	 _colorRevision(copy._colorRevision),
-	 _bDrawFlg(TRUE)
+	:_pTexture		( copy._pTexture		),
+	_pD3DSprite		( NULL					),	
+	 _vecCenter		( copy._vecCenter		),		
+	 _UV			( copy._UV				),			
+	 _colorRevision	( copy._colorRevision	),
+	 _bDrawFlg		( TRUE					),
+	 _AnimeParam	( NULL					)
 {
 	create();
 }
@@ -67,6 +70,7 @@ CSprite::~CSprite()
 		_pTexture = NULL;
 	}
 	SAFE_RELEASE(_pD3DSprite);
+	SAFE_DELETE(_AnimeParam);
 }
 
 /***********************************************************************/
@@ -212,7 +216,7 @@ void CSprite::draw(DWORD SpriteType,const D3DXVECTOR3* vec3Pos,const D3DXVECTOR3
  * 
  *  @param[in] SpriteType	描画オプション 
  *  @param[in] pmatWorld	ワールドマトリクス
- *  @param[in] pmatView		ビューマトリクス
+ *  @param[in] pmatView		ビューマトリクスw
  *  @retval void
  */
 /***********************************************************************/
@@ -277,6 +281,32 @@ void CSprite::draw(DWORD SpriteType,const D3DXMATRIXA16* pmatWorld)
 	_pD3DSprite->Draw(_pTexture->getTexture(), &_UV, &_vecCenter,NULL, _colorRevision);
 	_pD3DSprite->End();	//描画終了
 }
+
+
+void CSprite::createAnimeParam(ANIMEPATH& AnimePath)
+{
+	_AnimeParam = new CAnimeParam(AnimePath);
+	_UV = _AnimeParam->getUV();
+}
+
+void CSprite::updateAnime()
+{
+	if(_AnimeParam == NULL)
+		return;
+
+	_AnimeParam->update();
+	_UV = _AnimeParam->getUV();
+}
+
+void CSprite::setCatAnime(const uint Cat)
+{
+	_AnimeParam->setCat(Cat);
+}
+void CSprite::setStateAniem(const uint State)
+{
+	_AnimeParam->setState(State);
+}
+
 
 /***********************************************************************/
 /*! @brief テクスチャ設定

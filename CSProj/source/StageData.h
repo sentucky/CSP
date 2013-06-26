@@ -26,6 +26,7 @@
 #include "d3d9.h"
 #include "Rect.h"
 
+#define YOUSO(p) (int)((p + 250.0f) / (500.0f / 16.0f))
 
 #pragma pack(push,1)
 typedef struct{

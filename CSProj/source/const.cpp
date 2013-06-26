@@ -13,12 +13,12 @@ const char* STAGEPATH::NO_01(){return "data/stage/stageData00.dat";}
 #ifdef _DEBUG
 const char* MESHPATH::RING(){			return "data/model/donuts.x";		}
 #endif
-const char* MESHPATH::SHELL01(){		return "data/model/pin.x";		}
+const char* MESHPATH::SHELL01(){		return "data/model/tama.x";		}
 const char* MESHPATH::SHELL02(){		return "data/model/pin.x";		}
 const char* MESHPATH::SHELL03(){		return "data/model/pin.x";		}
 const char* MESHPATH::PIN(){			return "data/model/pin.x";		}
 const char* MESHPATH::YUKA(){			return "data/model/nanase_pose.x";		}
-const char* MESHPATH::STAGE01(){		return "data/model/land2.x";			}
+const char* MESHPATH::STAGE01(){		return "data/model/curse_tmp.x";		}
 const char* MESHPATH::TANK01_TOP(){		return "data/model/ziki_Lv1_up.x";		}
 const char* MESHPATH::TANK02_TOP(){		return "data/model/tekki_lv1_up.x";		}
 const char* MESHPATH::TANK03_TOP(){		return "data/model/tank03_top.x";		}
@@ -76,7 +76,7 @@ const char* EFFECTPATH::TOON(){return "A";}
 
 enum eTID
 {
-	TID_RANKING,
+	TID_STARTCAMMOVE,
 	TID_SYSTEMPARAM,
 	TID_COCKPIT,
 	TID_INTELLIGENCE,			//
@@ -88,13 +88,15 @@ enum eTID
 	TID_HITTEST_TANK_TO_SHELL,	//0
 	TID_HITTEST_WALL,			//
 	TID_MOVE,					//
-	TID_EXPLOSION,				//
 	TID_FOLLOW,					//	ÉJÉÅÉâí«îˆ
+	TID_RANKING,
+	TID_EXPLOSION,				//
 	TID_CHECKALIVE,				//
 	TID_SUM,					//
 	TID_DRAW,					//
 };
 
+const uint TASKKEY::STARTCAMMOVE(){return TID_STARTCAMMOVE;}
 const uint TASKKEY::SYSTEMPARAM(){return TID_SYSTEMPARAM;}
 const uint TASKKEY::COCKPIT(){return TID_COCKPIT;}
 const uint TASKKEY::RANKING(){return TID_RANKING;}

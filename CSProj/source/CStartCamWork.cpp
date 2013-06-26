@@ -69,7 +69,7 @@ _StageData(src._StageData),
 void CStartCamWork::enableTask()
 {
 	CTaskMng::push<CStartCamWork>(
-		TASKKEY::UPDATECAMERA(),
+		TASKKEY::STARTCAMMOVE(),
 		this,
 		&CStartCamWork::camMove,
 		&_TaskCamMove);

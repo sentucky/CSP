@@ -105,12 +105,6 @@ void CHitTestTankToWall::hitTest()
 		pTank = static_cast<CTank*>(run->getInst());
 
 
-		if(pTank->getDestroyed())
-		{
-			run = run->next();
-			continue;
-		}
-
 		//	—§‚Á‚Ä‚¢‚éêŠ‚ð’m‚é
 		const float tx = pTank->getMatBottom()->_41;
 		const float ty = pTank->getMatBottom()->_43;

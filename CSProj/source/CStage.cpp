@@ -118,7 +118,7 @@ void CStage::disableTask()
 /***********************************************************************/
 void CStage::draw()
 {
-//	_Mesh->draw(&_matW);
+	_Mesh->draw(&_matW);
 	_StageData->Draw();
 }
 

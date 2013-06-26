@@ -7,6 +7,7 @@
 class CTaskList;
 class CNum;
 class CTank;
+class CSprite;
 
 class CCockpit:public CObjBase
 {
@@ -27,6 +28,9 @@ private:
 	CTaskList*	_TaskUpdate;
 	CTank*		_Tank;
 	CNum*		_Num;
+	CSprite*	_SpriteTh;
+
+	D3DXMATRIXA16 _spriteThMatrix;
 };
 
 #endif

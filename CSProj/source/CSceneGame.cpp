@@ -10,6 +10,9 @@
 //	インクルード
 /***********************************************************************/
 #include"CSceneGame.h"
+
+#include"CSceneTitle.h"
+
 #include"CCamera.h"
 #include"CStartCamWork.h"
 
@@ -78,7 +81,8 @@ CSceneGame::CSceneGame()
 	:_pCamera(NULL),
 	Phase(NULL),
 	_FollowCamera(NULL),
-	_CamStart(NULL)
+	_CamStart(NULL),
+	_SysPara(NULL)
 {
 }
 
@@ -122,6 +126,8 @@ void CSceneGame::init()
 
 	//	リストサイズ設定
 	OBJMNG->resize(OBJGROUPKEY::SUM());
+	CTaskMng::resize(TASKKEY::SUM());
+
 
 	//	オブジェクト作成
 	//...ステージ
@@ -131,22 +137,19 @@ void CSceneGame::init()
 	//...戦車
 	CTank*			pTank = NULL;
 	OBJMNG->push(OBJGROUPKEY::TANK(),pTank = static_cast<CTank*>(OBJFACTORY->create(OBJKEY::TANK01())),NULL);
+	CTank::setTankPlayer(pTank);
 
 #ifdef _DEBUG
 	CTank*			pTank2 = NULL;
 	//*
 	OUTPUT t[16][16];
 	pStage->getStageData()->getTile(t);
-//	CPin* pin = NULL;
 	int n2 = 0;
 //*	
-	for(int n = 0; n < 1; n++)
+	CTankIntInter::setPlayerTank(pTank);
+	for(int n = 0; n < 100; n++)
 	{
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
-		pTank2->setPos(
-			pTank->getMatBottom()->_41 + n * 0.1f, 
-			pTank->getMatBottom()->_43 + n2 * 0.1f
-			);
 	}
 	//*/
 #endif
@@ -157,7 +160,7 @@ void CSceneGame::init()
 	_FollowCamera->setTank(pTank);
 
 	CStartCamWork* pSTCam = NULL;
-	OBJMNG->push(OBJGROUPKEY::CAMERA(),pSTCam = static_cast<CStartCamWork*>(OBJFACTORY->create(OBJKEY::STARTCAMERA())),&_CamStart);
+	OBJMNG->push(OBJGROUPKEY::CAMERA(),pSTCam = static_cast<CStartCamWork*>(OBJFACTORY->create(OBJKEY::STARTCAMERA())),NULL);
 	pSTCam->reset();
 	pSTCam->camMove();
 
@@ -169,7 +172,8 @@ void CSceneGame::init()
 #endif
 	CSystemparam* SysParam;
 	OBJMNG->push(OBJGROUPKEY::COCKPIT(),SysParam = OBJFACTORY->create<CSystemparam>(OBJKEY::SYSTEMPARAM()),NULL);
-	SysParam->setCamera(_FollowCamera);
+	_SysPara = SysParam;
+	SysParam->setFollowCamera(_FollowCamera);
 	SysParam->setPlayerTank(pTank);
 
 	CCockpit* Cockpit;
@@ -185,7 +189,10 @@ void CSceneGame::init()
 
 
 	CTankIntInter::setStageData(pStage->getStageData());
+	SysParam->Rankcpy(	CTankIntInter::_Ranking);
 	CTank::setStageData(pStage->getStageData());
+	
+
 	CHitTestTankToWall::setStageData(pStage->getStageData());
 	CHitTestTankToWall::setTankList(OBJMNG->getList(OBJGROUPKEY::TANK()));
 	CHitTestTankToShell::setShellList(OBJMNG->getList(OBJGROUPKEY::SHELL()));
@@ -201,6 +208,7 @@ void CSceneGame::init()
 		pTank->getMatBottom()->_43 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->z
 		);
 	LPDIRECTSOUNDBUFFER bgm = CSOUND->GetSound(SOUNDKEY::BGM1());
+	SysParam->setCamStart(pSTCam);
 
 
 	
@@ -220,7 +228,7 @@ void CSceneGame::update()
 
 
 	CTaskMng::run();
-
+	/*
 	if(_CamStart != 0)
 	{
 		if(_CamStart->getInst()->getDeleteFlg() == TRUE)
@@ -228,13 +236,19 @@ void CSceneGame::update()
 			switchGMain();
 		}
 	}
-
+	*/
 
 	//	オブジェクトの更新
 	_pCamera->update();
 
 	//	不要オブジェクトの削除
 	OBJMNG->checkDelete();
+
+	if(_SysPara->getFlgEnd())
+	{
+		_EndFlg = TRUE;
+	}
+
 }
 
 /***********************************************************************/
@@ -248,7 +262,7 @@ void CSceneGame::draw()
 	CHECK_DRAW;
 	CTaskMng::draw();
 
-	//	CTankIntDummy::Debug();
+
 
 	static RECTEX fpspos(0,0,0,0);
 	FONT->DrawInt("FPS:",CTIMER->getFPS(),fpspos);
@@ -288,7 +302,7 @@ void CSceneGame::release()
 /***********************************************************************/
 CSceneBase * CSceneGame::nextScene()
 {
-	return this;
+	return new CSceneTitle;
 }
 
 /***********************************************************************/
@@ -318,7 +332,7 @@ void CSceneGame::standby(CStage* pStage)
 
 	float pointX = pStTile->posX;
 	float pointY = pStTile->posY;
-
+	/*
 	//....基点取得
 	if(rotStartTile >= 1.5f * D3DX_PI){
 		pointX -= 15;
@@ -336,14 +350,15 @@ void CSceneGame::standby(CStage* pStage)
 		pointX -= 15;
 		pointY += 15;
 	}
+	*/
 	float setPointX;
 	float setPointY;
-
+	
 	uint cnt = 0;
 	CTank* pTank = NULL;
 
 
-	const int div = 10;
+	const int div = 2;
 
 	while(pListTank !=  pEnd)
 	{
@@ -354,8 +369,8 @@ void CSceneGame::standby(CStage* pStage)
 
 		if(rotStartTile >= 1.5f * D3DX_PI)
 		{//+X-Y
-			setPointX = pointX + moveX * static_cast<float>(cnt / div);
-			setPointY = pointY + moveY * static_cast<float>(cnt % div);
+			setPointX = pointX + moveX * static_cast<float>(cnt / div)*-1;
+			setPointY = pointY + moveY * static_cast<float>(cnt % div)*-1;
 
 		}
 		else 	if(rotStartTile >= 1.0f * D3DX_PI)
@@ -394,10 +409,7 @@ void CSceneGame::standby(CStage* pStage)
 void CSceneGame::switchGMain()
 {
 	//	CAMERA切り替え
-	OBJMNG->erase(
-		OBJGROUPKEY::CAMERA(),
-		&_CamStart
-		);
+	
 	_FollowCamera->enableTask();
 	_FollowCamera->update();
 

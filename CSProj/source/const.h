@@ -73,6 +73,7 @@ public:
 class TASKKEY
 {
 public:
+	static const uint STARTCAMMOVE();
 	static const uint SYSTEMPARAM();
 	static const uint COCKPIT();
 	static const uint RANKING();

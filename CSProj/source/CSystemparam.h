@@ -12,6 +12,8 @@ class CTaskList;
 class CFollowCamera;
 class CSprite;
 
+class CStartCamWork;
+
 class CSystemparam:public CObjBase
 {
 public:
@@ -21,34 +23,62 @@ public:
 private:
 	void enableTask();
 	void disableTask();
+
 	void drawResult();
+	void drawStart();
+	void drawReady();
 
+	void endCount();
 	void endcheck();
-	void run();
-
+	void startcheck();
+	void Ranking();
+	
 
 	BOOL endcheckGoal(CTank** GoalTank,CListItem<CObjBase*>* begin,const CListItem<CObjBase*>* end);
 	BOOL endcheckDestroy(CTank** DestroyerTank,CListItem<CObjBase*>* begin,const uint sumTanks);
 public:
-	void setCamera(CFollowCamera* camera){_Camera = camera;}
-	void setPlayerTank(CTank* tank){_playerTank = tank;}
+	void setFollowCamera(CFollowCamera* FollowCamera)	{	_FollowCamera		= FollowCamera;	}
+	void setPlayerTank(CTank* tank)			{	_playerTank	= tank;		}
+
+	void setCamStart(CStartCamWork* camstart)		{_CamStart		= camstart;		}
+
+	void Rankcpy(CTank** cpy[1024]){
+		for(int n = 0; n < 1024; n++)
+		{
+			cpy[n] = &_Ranking[n];
+		}
+	}
+
+	void switchGame();
+
 	const uint getFlgResult(){return _flgRaceResult;}
-	const uint getFlgGameEnd(){return _flgGameEnd;}
+	const BOOL getFlgEnd(){return _flgEnd;}
 private:
 	CTaskList* _TaskList;
+	CTaskList* _TaskEndCount;
 	CTaskList* _TaskEndCheck;
+	CTaskList* _TaskStartCheck;
 	CTaskList* _TaskDrawResult;
+	CTaskList* _TaskDrawStart;
 
 	uint _flgRaceResult;	//	0:レース中	1:プレイヤー勝利 2:プレイヤー負け
-	BOOL _flgGameEnd;
-
-	CFollowCamera* _Camera;
+	BOOL _flgEnd;
 
 	CSprite* _Sprite;
 
-	CTank* _playerTank;
+	int _startCount;
+	static const int MaxStartCount = 60;
 
+	int _goalCount;
+	static int _MaxGoalCount;
+
+	CTank* _playerTank;
+	CTank* _Ranking[1024];
 	CListMng<CObjBase*>* TankList;
+
+	CStartCamWork*	_CamStart;
+	CFollowCamera*  _FollowCamera;
+	D3DXMATRIXA16	_spriteMatrix;
 };
 
 #endif

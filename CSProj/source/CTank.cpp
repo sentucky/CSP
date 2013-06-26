@@ -48,6 +48,7 @@
 LPD3DXMESH debugMesh = NULL;
 #endif
 
+CTank* CTank::_Player = NULL;
 const CStageData* CTank::_StageData = NULL;
 LPDIRECTSOUNDBUFFER CTank::_SoundFire	= NULL;
 /***********************************************************************/
@@ -78,6 +79,7 @@ CTank::CTank(
 	_pTaskFire			( NULL			),
 	_pTaskCalcAM		( NULL			),
 	_pTaskRap			( NULL			),
+	_pTaskDestroyed		( NULL			),
 	_pTankTop			( NULL			),
 	_pTankBottom		( NULL			),
 	_pIntelligence		( NULL			),
@@ -86,10 +88,12 @@ CTank::CTank(
 	_life				( Life			),
 	_radiate			( 0				),
 	_MaxRadiateTime		( 15			),
+	_deldelayCount		( 0				),
 	_Destroyed			( FALSE			),
 	_FlgGoal			( FALSE			),
-	_lap				(0),
-	_lapVal				(0)
+	_lap				(-1),
+	_lapVal				(0),
+	_Rank				(0)
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
 	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
@@ -132,6 +136,7 @@ CTank::CTank(const CTank& src)
 	_pTaskFire			( NULL								),
 	_pTaskCalcAM		( NULL								),
 	_pTaskRap			( NULL								),
+	_pTaskDestroyed		( NULL								),
 	_pTankTop			( new CTankTop(*src._pTankTop)		),
 	_pTankBottom		( new CTankBottom(*src._pTankBottom)),
 	_pIntelligence		( NULL								),
@@ -139,13 +144,14 @@ CTank::CTank(const CTank& src)
 	_unThisType			( src._unThisType					),
 	_life				( src._life							),
 	_radiate			(0									),
-	_MaxRadiateTime		(src._MaxRadiateTime),
-	_Destroyed			( FALSE	),
-	_FlgGoal			( FALSE	),
-	_lap				(0),
-	_lapVal				(0)
+	_MaxRadiateTime		(src._MaxRadiateTime				),
+	_deldelayCount		( 0									),
+	_Destroyed			( FALSE								),
+	_FlgGoal			( FALSE								),
+	_lap				(-1									),
+	_lapVal				(0									),
+	_Rank				(0									)
 {
-
 	//	思考設定
 	switch(_unThisType)
 	{
@@ -246,13 +252,37 @@ void CTank::intelligence()
 /***********************************************************************/
 void CTank::draw()
 {
+	int x;
+	int y;
+
+	int playerx;
+	int playery;
+
+	x = YOUSO(_pTankBottom->getWMat()->_41);
+	y = YOUSO(_pTankBottom->getWMat()->_43);
+
+	playerx = YOUSO(_Player->getMatBottom()->_41);
+	playery = YOUSO(_Player->getMatBottom()->_43);
+
+	if(abs(x - playerx) > 1 || abs(y - playery) > 1)
+	{
+		return;
+	}
 	_pTankTop->draw();
 	_pTankBottom->draw();
+
+
+	if(_unThisType == 0)
+	{
+		FONT->DrawFloat("lapval,",this->_lapVal,RECTEX(400,0,0,0));
+		FONT->DrawInt("lap,",this->_lap,RECTEX(400,16,0,0));
+	}
+
 
 #ifdef _DEBUG
 	/*
 	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
-	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatView());			//カメラ座標変換
+	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatViewOUSO());			//カメラ座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());	//ワールド座標変換
 
 //	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
@@ -261,9 +291,7 @@ void CTank::draw()
 	*/
 
 	static BOOL flg = TRUE;
-	uint x;
-	uint y;
-	_StageData->step(&x,&y,_pTankBottom->getWMat()->_41,_pTankBottom->getWMat()->_43);
+//	_StageData->step(&x,&y,_pTankBottom->getWMat()->_41,_pTankBottom->getWMat()->_43);
 	FONT->DrawInt("step",x,RECTEX(0,32,0,0));
 	FONT->DrawInt("step",y,RECTEX(100,32,0,0));
 
@@ -349,7 +377,7 @@ void CTank::fire()
 /***********************************************************************/
 void CTank::calcMove()
 {
-	_pTankBottom->clacMove(_Rank);
+	_pTankBottom->clacMove(_Rank + 1);
 }
 
 
@@ -390,7 +418,7 @@ void CTank::pRap()				///<	自機ラップ
 	_Panel = _StageData->step2(pos.x,pos.z);
 	
 	if (!_prevPanel){
-		_prevPanel = (OUTPUT*)StData;
+		_prevPanel = (OUTPUT*)_Panel;
 	}
 
 	//パネル移動
@@ -444,9 +472,27 @@ void CTank::pRap()				///<	自機ラップ
 	if (p->root == rootNum - 1 && _Panel->no == 3)
 		_lapVal -= rootNum;
 
-	if(_lap > 0)
+	if(_lap > 1)
 	{
 		_FlgGoal = TRUE;
+	}
+}
+
+
+/***********************************************************************/
+/*! @brief 削除演出
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
+void CTank::destroyed()
+{
+	--_deldelayCount;
+
+	if(_deldelayCount < 0)
+	{
+		CTaskMng::erase(&_pTaskDestroyed);
+		_DeleteFlg = TRUE;
 	}
 }
 
@@ -501,11 +547,16 @@ void CTank::hitTestShell(CShell* pShell)
 	//	耐久切れで破壊
 	if(_life <= 0)
 	{
-				_DeleteFlg = TRUE;
+		//_DeleteFlg = TRUE;
 		_Destroyed = TRUE;
+
 		SAFE_DELETE(_pIntelligence);
 		_pIntelligence = new CTankIntStop(this);
-		//	
+		CTaskMng::erase(&_pTaskPause);
+		CTaskMng::erase(&_pTaskFire);
+		CTaskMng::erase(&_pTaskRap);
+		CTaskMng::push<CTank>(TASKKEY::EXPLOSION(),this,&CTank::destroyed,&_pTaskDestroyed);
+		_deldelayCount = _maxdeldelayCount;
 	}
 }
 

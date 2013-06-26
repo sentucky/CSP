@@ -107,7 +107,7 @@ void CHitTestTankToShell::hitTest()
 	while(pRunTank != pEndTank)
 	{
 		pTank = static_cast<CTank*>(pRunTank->getInst());
-		if(pTank->getDeleteFlg() == TRUE)
+		if(pTank->getDestroyed() == TRUE)
 		{
 			pRunTank = pRunTank->next();
 			continue;

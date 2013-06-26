@@ -1,29 +1,12 @@
 #include"AnimeKey.h"
 
-enum eANIMEKEY
-{
-	ANIMEKEY_TEST,
-	ANIMEKEY_SUM
-};
 
-
-
-ANIMEKEY::ANIMEKEY(const uint n):Key(n){}
-
-ANIMEKEY& ANIMEKEY::TEST()
-{
-	static ANIMEKEY Param(ANIMEKEY_TEST);
-	return Param;
-}
-
-const uint ANIMEKEY::operator=(ANIMEKEY& src){return src.Key;}
 
 ANIMEPATH::ANIMEPATH(const char* path):Path(path){}
 
 
-ANIMEPATH& ANIMEPATH::TEST()
-{
-	static ANIMEPATH Param("data/animeparam/data2.dat");
-	return Param;
-}
+ANIMEPATH& ANIMEPATH::TEST()	{	return ANIMEPATH("data/animeparam/data2.dat");	}
+ANIMEPATH& ANIMEPATH::SMOKE()	{	return ANIMEPATH("data/animeparam/kemuri.dat");	}
+ANIMEPATH& ANIMEPATH::SPARK()	{	return ANIMEPATH("data/animeparam/hibana.dat");	}
+ANIMEPATH& ANIMEPATH::BARN()	{	return ANIMEPATH("data/animeparam/burn.dat");}
 
