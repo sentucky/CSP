@@ -86,15 +86,16 @@ void gameInit()
 	INPUTCOMMON->createKeyboard();
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
-//	ps = new CSceneGame;
-	ps = new CSceneTitle;
+	ps = new CSceneGame;
+//	ps = new CSceneTitle;
 //	ps = new CSceneTestSpace;
 	pScene = ps;
 
 
 	TEXTUREFACTORY->reserve(TEXKEY::SUM());
-	SPRITEFACTORY->registTexture(TEXKEY::VICTORY(),				TEXPATH::VICTORY()				);
-	SPRITEFACTORY->registTexture(TEXKEY::LOSE(),			TEXPATH::LOSE()			);
+	SPRITEFACTORY->registTexture(TEXKEY::GAME_BG(),			TEXPATH::GAME_BG()			);
+	SPRITEFACTORY->registTexture(TEXKEY::VICTORY(),			TEXPATH::VICTORY()			);
+	SPRITEFACTORY->registTexture(TEXKEY::LOSE(),			TEXPATH::LOSE()				);
 	SPRITEFACTORY->registTexture(TEXKEY::FADEMASK(),		TEXPATH::FADEMASK()			);
 	SPRITEFACTORY->registTexture(TEXKEY::BACK_BUTTON(),		TEXPATH::BACK_BUTTON()		);
 	SPRITEFACTORY->registTexture(TEXKEY::TITLE_BG(),		TEXPATH::TITLE_BG()			);
@@ -113,33 +114,33 @@ void gameInit()
 	SPRITEFACTORY->registTexture(TEXKEY::TILE02(),			TEXPATH::TILE02()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TILE03(),			TEXPATH::TILE03()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TILE04(),			TEXPATH::TILE04()			);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B0(),			TEXPATH::NUM_B0()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B1(),			TEXPATH::NUM_B1()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B2(),			TEXPATH::NUM_B2()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B3(),			TEXPATH::NUM_B3()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B4(),			TEXPATH::NUM_B4()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B5(),			TEXPATH::NUM_B5()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B6(),			TEXPATH::NUM_B6()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B7(),			TEXPATH::NUM_B7()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B8(),			TEXPATH::NUM_B8()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_B9(),			TEXPATH::NUM_B9()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W0(),			TEXPATH::NUM_W0()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W1(),			TEXPATH::NUM_W1()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W2(),			TEXPATH::NUM_W2()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W3(),			TEXPATH::NUM_W3()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W4(),			TEXPATH::NUM_W4()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W5(),			TEXPATH::NUM_W5()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W6(),			TEXPATH::NUM_W6()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W7(),			TEXPATH::NUM_W7()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W8(),			TEXPATH::NUM_W8()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_W9(),			TEXPATH::NUM_W9()				);
-	SPRITEFACTORY->registTexture(TEXKEY::NUM_TH(),			TEXPATH::NUM_TH()				);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B0(),			TEXPATH::NUM_B0()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B1(),			TEXPATH::NUM_B1()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B2(),			TEXPATH::NUM_B2()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B3(),			TEXPATH::NUM_B3()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B4(),			TEXPATH::NUM_B4()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B5(),			TEXPATH::NUM_B5()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B6(),			TEXPATH::NUM_B6()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B7(),			TEXPATH::NUM_B7()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B8(),			TEXPATH::NUM_B8()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_B9(),			TEXPATH::NUM_B9()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W0(),			TEXPATH::NUM_W0()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W1(),			TEXPATH::NUM_W1()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W2(),			TEXPATH::NUM_W2()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W3(),			TEXPATH::NUM_W3()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W4(),			TEXPATH::NUM_W4()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W5(),			TEXPATH::NUM_W5()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W6(),			TEXPATH::NUM_W6()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W7(),			TEXPATH::NUM_W7()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W8(),			TEXPATH::NUM_W8()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_W9(),			TEXPATH::NUM_W9()			);
+	SPRITEFACTORY->registTexture(TEXKEY::NUM_TH(),			TEXPATH::NUM_TH()			);
 
-	SPRITEFACTORY->registTexture(TEXKEY::START(),			TEXPATH::START()				);
-	SPRITEFACTORY->registTexture(TEXKEY::STAGESELECT(),		TEXPATH::STAGESELECT()			);
-	SPRITEFACTORY->registTexture(TEXKEY::EXIT(),			TEXPATH::EXIT()					);
-	SPRITEFACTORY->registTexture(TEXKEY::READY(),			TEXPATH::READY()					);
-	SPRITEFACTORY->registTexture(TEXKEY::GO(),				TEXPATH::GO()					);
+	SPRITEFACTORY->registTexture(TEXKEY::START(),			TEXPATH::START()			);
+	SPRITEFACTORY->registTexture(TEXKEY::STAGESELECT(),		TEXPATH::STAGESELECT()		);
+	SPRITEFACTORY->registTexture(TEXKEY::EXIT(),			TEXPATH::EXIT()				);
+	SPRITEFACTORY->registTexture(TEXKEY::READY(),			TEXPATH::READY()			);
+	SPRITEFACTORY->registTexture(TEXKEY::GO(),				TEXPATH::GO()				);
 
 
 	SPRITEFACTORY->registTexture(TEXKEY::ANIMETEST(),		TEXPATH::ANIMETEST()		);
@@ -150,6 +151,7 @@ void gameInit()
 #ifdef _DEBUG
 	MESHFACTORY->registMesh(MESHKEY::RING(),	MESHPATH::RING()	);
 #endif
+	MESHFACTORY->registMesh(MESHKEY::DOME(),			MESHPATH::DOME()			);
 	MESHFACTORY->registMesh(MESHKEY::TANK01_BOTTOM(),	MESHPATH::TANK01_BOTTOM()	);
 	MESHFACTORY->registMesh(MESHKEY::TANK02_BOTTOM(),	MESHPATH::TANK02_BOTTOM()	);
 	MESHFACTORY->registMesh(MESHKEY::TANK03_BOTTOM(),	MESHPATH::TANK03_BOTTOM()	);
@@ -176,7 +178,7 @@ void gameInit()
 		0.05f,
 		50
 		);
-	CStage* pStage = new CStage(STAGEPATH::NO_01(),MESHFACTORY->create(MESHKEY::STAGE01()));
+	CStage* pStage = new CStage(STAGEPATH::NO_01(),MESHFACTORY->create(MESHKEY::DOME()));
 
 	CTank* pObj2 = new CTank(
 		MESHFACTORY->create(MESHKEY::TANK04_TOP()),

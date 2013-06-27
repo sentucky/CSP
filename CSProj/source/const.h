@@ -23,6 +23,7 @@ public:
 #ifdef _DEBUG
 	static const char* RING();
 #endif
+	static const char* DOME();
 	static const char* SHELL01();
 	static const char* SHELL02();
 	static const char* SHELL03();
@@ -45,6 +46,7 @@ public:
 #ifdef _DEBUG
 	static const uint RING();
 #endif
+	static const uint DOME();
 	static const uint YUKA();
 	static const uint STAGE01();
 	static const uint TANK01_TOP();

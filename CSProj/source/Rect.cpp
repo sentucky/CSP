@@ -76,11 +76,22 @@ void CRect::Draw()
 	if (mIsUpdate)
 		this->Update();
 
+	D3DMATERIAL9 materials2;
+	materials2.Specular.a = 1.0f;
+	materials2.Ambient .a = 1.0f;
+	materials2.Diffuse.b = 	materials2.Diffuse.g = 	materials2.Diffuse.r = 	materials2.Diffuse.a = 1.0f;
+	materials2.Power = 1.0f;
+	materials2.Emissive.b = materials2.Emissive.g = materials2.Emissive.r = 0.25f;
+	materials2.Emissive.a = 1.0f;
+
+
 	//FVFの設定
 	mDevice_pr->SetFVF(FVF_VERTEX_RECT);
 
 	//テクスチャ設定
 	mDevice_pr->SetTexture(0,mTexture_pr);
+
+	mDevice_pr->SetMaterial((D3DMATERIAL9*)&materials2);
 
 	//ポリゴン描画
 	mDevice_pr->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP,2,mVtx,sizeof(VERTEX_RECT));

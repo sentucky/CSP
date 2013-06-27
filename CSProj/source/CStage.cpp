@@ -14,6 +14,13 @@
 #include"ObjKey.h"
 
 #include"StageData.h"
+#include"CSprite.h"
+#include"CSpriteFactory.h"
+#include"TextureKey.h"
+#include"CCamera.h"
+
+CSprite* sprite;
+D3DXMATRIXA16 SpriteMat;
 
 /***********************************************************************/
 /*! @brief コンストラクタ
@@ -41,6 +48,7 @@ CStage::CStage(
 /***********************************************************************/
 CStage::~CStage()
 {
+	SAFE_DELETE(sprite);
 	disableTask();
 	release();
 }
@@ -62,7 +70,14 @@ CStage::CStage(const CStage& src)
 {
 	++(*_InstCnt);
 	D3DXMatrixIdentity(&_WMat);
+	D3DXMatrixIdentity(&SpriteMat);
+	D3DXMatrixRotationX(&SpriteMat,0.5f* D3DX_PI);
+	SpriteMat._42 -= 0.005f;
+
+	_WMat._42 -= 0.01f;	//	Zかぶり回避 
 	enableTask();
+	sprite = SPRITEFACTORY->create(TEXKEY::GAME_BG());
+	
 }
 
 /***********************************************************************/
@@ -119,6 +134,7 @@ void CStage::disableTask()
 void CStage::draw()
 {
 	_Mesh->draw(&_WMat);
+	sprite->draw(0,&SpriteMat,CCamera::getMatView());
 	_StageData->Draw();
 }
 

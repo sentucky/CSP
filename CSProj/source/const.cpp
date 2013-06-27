@@ -13,6 +13,7 @@ const char* STAGEPATH::NO_01(){return "data/stage/stageData00.dat";}
 #ifdef _DEBUG
 const char* MESHPATH::RING(){			return "data/model/donuts.x";		}
 #endif
+const char* MESHPATH::DOME(){			return "data/model/karidome.x";}
 const char* MESHPATH::SHELL01(){		return "data/model/tama.x";		}
 const char* MESHPATH::SHELL02(){		return "data/model/pin.x";		}
 const char* MESHPATH::SHELL03(){		return "data/model/pin.x";		}
@@ -34,6 +35,7 @@ const char* MESHPATH::TANK04_BOTTOM(){	return "data/model/tank04_bottom.x";	}
 enum eMESHKEY
 {
 	MESH_PIN,			//
+	MESH_DOME,			//
 	MESH_SHELL01,		//
 	MESH_SHELL02,		//
 	MESH_SHELL03,		//
@@ -54,21 +56,22 @@ enum eMESHKEY
 };
 
 #ifdef _DEBUG
-const uint MESHKEY::RING(){			return MESH_RING;			}
+const uint MESHKEY::RING()			{	return MESH_RING;			}
 #endif
-const uint MESHKEY::SHELL01(){		return MESH_SHELL01;		}
-const uint MESHKEY::PIN(){			return MESH_PIN;			}
-const uint MESHKEY::YUKA(){			return MESH_YUKA;			}
-const uint MESHKEY::STAGE01(){		return MESH_STAGE01;		}
-const uint MESHKEY::TANK01_TOP(){	return MESH_TANK01_TOP;		}
-const uint MESHKEY::TANK02_TOP(){	return MESH_TANK02_TOP;		}
-const uint MESHKEY::TANK03_TOP(){	return MESH_TANK03_TOP;		}
-const uint MESHKEY::TANK04_TOP(){	return MESH_TANK04_TOP;		}
-const uint MESHKEY::TANK01_BOTTOM(){return MESH_TANK01_BOTTOM;	}
-const uint MESHKEY::TANK02_BOTTOM(){return MESH_TANK02_BOTTOM;	}
-const uint MESHKEY::TANK03_BOTTOM(){return MESH_TANK03_BOTTOM;	}
-const uint MESHKEY::TANK04_BOTTOM(){return MESH_TANK04_BOTTOM;	}
-const uint MESHKEY::SUM(){			return MESH_SUM;			}
+const uint MESHKEY::DOME()			{	return MESH_DOME;			}
+const uint MESHKEY::SHELL01()		{	return MESH_SHELL01;		}
+const uint MESHKEY::PIN()			{	return MESH_PIN;			}
+const uint MESHKEY::YUKA()			{	return MESH_YUKA;			}
+const uint MESHKEY::STAGE01()		{	return MESH_STAGE01;		}
+const uint MESHKEY::TANK01_TOP()	{	return MESH_TANK01_TOP;		}
+const uint MESHKEY::TANK02_TOP()	{	return MESH_TANK02_TOP;		}
+const uint MESHKEY::TANK03_TOP()	{	return MESH_TANK03_TOP;		}
+const uint MESHKEY::TANK04_TOP()	{	return MESH_TANK04_TOP;		}
+const uint MESHKEY::TANK01_BOTTOM()	{	return MESH_TANK01_BOTTOM;	}
+const uint MESHKEY::TANK02_BOTTOM()	{	return MESH_TANK02_BOTTOM;	}
+const uint MESHKEY::TANK03_BOTTOM()	{	return MESH_TANK03_BOTTOM;	}
+const uint MESHKEY::TANK04_BOTTOM()	{	return MESH_TANK04_BOTTOM;	}
+const uint MESHKEY::SUM()			{	return MESH_SUM;			}
 
 const char* EFFECTPATH::NONE(){return "a";}
 const char* EFFECTPATH::TOON(){return "A";}
