@@ -37,7 +37,7 @@ pTitleSprite->getUV()で画像の矩形サイズが取得できる
 マウス座標と併用してあたり判定してください
 */
 
-const uint SumTitleSprite = 4;		//	スプライト最大数
+const uint SumTitleSprite = 6;		//	スプライト最大数
 D3DXVECTOR2 vecTitlePos[SumTitleSprite];
 CSprite* pTitleSprite[SumTitleSprite] = {NULL,};	//	スプライトポインタ
 POINT TitleClickpos;
@@ -77,10 +77,14 @@ void CSceneTitle::init()
 	vecTitlePos[0] = D3DXVECTOR2(400.0f, 320.0f);
 	pTitleSprite[1] = SPRITEFACTORY->create(TEXKEY::TITLE_STR());
 	vecTitlePos[1] = D3DXVECTOR2(-200.0f, 160.0f);
-	pTitleSprite[2] = SPRITEFACTORY->create(TEXKEY::TITLE_BUTTON01());
+	pTitleSprite[2] = SPRITEFACTORY->create(TEXKEY::SELECT_BUTTON01());
 	vecTitlePos[2] = D3DXVECTOR2(400.0f, 370.0f);
-	pTitleSprite[3] = SPRITEFACTORY->create(TEXKEY::TITLE_BUTTON02());
+	pTitleSprite[3] = SPRITEFACTORY->create(TEXKEY::END_BUTTON01());
 	vecTitlePos[3] = D3DXVECTOR2(400.0f, 515.0f);
+	pTitleSprite[4] = SPRITEFACTORY->create(TEXKEY::SELECT_BUTTON02());
+	vecTitlePos[4] = D3DXVECTOR2(400.0f, 370.0f);
+	pTitleSprite[5] = SPRITEFACTORY->create(TEXKEY::END_BUTTON02());
+	vecTitlePos[5] = D3DXVECTOR2(400.0f, 515.0f);
 	for(int i = 0; i < 2; i++)
 	{
 		changebutton[i] = false;
@@ -122,7 +126,7 @@ void CSceneTitle::update()
 			if(MOUSE.getTrgMouseButton(0))
 			{		
 				this->_EndFlg = true;
-				gotoscene = i - 1;
+				gotoscene = i - 3;
 			}
 		}
 		else
@@ -141,7 +145,7 @@ void CSceneTitle::draw()
 
 	if(changebutton[0])
 	{
-		pTitleSprite[3]->draw(0,	&D3DXVECTOR3(vecTitlePos[2].x, vecTitlePos[2].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
+		pTitleSprite[4]->draw(0,	&D3DXVECTOR3(vecTitlePos[2].x, vecTitlePos[2].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
 	}
 	else
 	{
@@ -150,11 +154,11 @@ void CSceneTitle::draw()
 
 	if(changebutton[1])
 	{
-		pTitleSprite[3]->draw(0,	&D3DXVECTOR3(vecTitlePos[3].x, vecTitlePos[3].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
+		pTitleSprite[5]->draw(0,	&D3DXVECTOR3(vecTitlePos[3].x, vecTitlePos[3].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
 	}
 	else
 	{
-		pTitleSprite[2]->draw(0,	&D3DXVECTOR3(vecTitlePos[3].x, vecTitlePos[3].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
+		pTitleSprite[3]->draw(0,	&D3DXVECTOR3(vecTitlePos[3].x, vecTitlePos[3].y, 0.0f), &D3DXVECTOR3(0,0,0), &D3DXVECTOR3(1,1,0));
 	}
 }
 /***********************************************************************/
@@ -184,7 +188,6 @@ CSceneBase* CSceneTitle::nextScene()
 		return new CSceneStageSelect;
 		break;
 	case 2:
-		delete this;
 		return (CSceneBase *)0;
 		break;
 	}

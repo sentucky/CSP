@@ -9,6 +9,7 @@
 #include"CSceneStageSelect.h"
 
 #include"CSceneGame.h"
+#include"CSceneResult.h"
 #include"CSceneTitle.h"
 #include"CSprite.h"
 #include"CSpriteFactory.h"
@@ -74,15 +75,15 @@ CSceneStageSelect::~CSceneStageSelect()
 /***********************************************************************/
 void CSceneStageSelect::init()
 {
-	pSprite[0] = SPRITEFACTORY->create(TEXKEY::SELECT_BG());
+	pSprite[0] = SPRITEFACTORY->create(TEXKEY::TITLE_BG());
 	vecPos[0] = D3DXVECTOR2(400.0f, 320.0f);
 	pSprite[1] = SPRITEFACTORY->create(TEXKEY::SELECT_COURSE1());
 	vecPos[1] = D3DXVECTOR2(400.0f, 200.0f);
 	pSprite[2] = SPRITEFACTORY->create(TEXKEY::BACK_BUTTON());
 	vecPos[2] = D3DXVECTOR2(100.0f, 560.0f);
-	pSprite[3] = SPRITEFACTORY->create(TEXKEY::TITLE_BUTTON01());
+	pSprite[3] = SPRITEFACTORY->create(TEXKEY::START_BUTTON01());
 	vecPos[3] = D3DXVECTOR2(400.0f, 500.0f);
-	pSprite[4] = SPRITEFACTORY->create(TEXKEY::TITLE_BUTTON02());
+	pSprite[4] = SPRITEFACTORY->create(TEXKEY::START_BUTTON02());
 	vecPos[4] = D3DXVECTOR2(400.0f, 500.0f);
 	
 	changebutton = false;
@@ -185,6 +186,7 @@ CSceneBase* CSceneStageSelect::nextScene()
 	else
 	{
 		return new CSceneGame;
+		//return new CSceneResult;
 	}
 	return this;
 }	//!<	ƒV[ƒ“Ø‚è‘Ö‚¦

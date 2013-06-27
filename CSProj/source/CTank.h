@@ -94,6 +94,10 @@ public:
 	const uint				getThisType(){return _unThisType;}
 
 	const float				getlapVal(){return _lapVal;}
+	const int				getradiate(){return _radiate;}
+	const int				getMaxradiateTime(){return _MaxRadiateTime;}
+	const int				getlife(){return _life;}
+	const int				getmaxlife(){return _Maxlife;}
 	const int				getlap(){return _lap;}
 	const uint				getRank(){return _Rank;}
 	const uint				getTankType(){return _unThisType;}
@@ -127,6 +131,7 @@ private:
 	uint			_unThisType;		///<	ƒ^ƒCƒv
 
 	int				_life;				///<	‘Ï‹v—Í
+	const int		_Maxlife;				///<	‘Ï‹v—Í
 
 	int				_radiate;			///<	•ú”Mó‹µ
 	int				_MaxRadiateTime;	///<	•ú”MŠÔ‚ÌÅ‘å’l

@@ -86,6 +86,7 @@ CTank::CTank(
 	_fRadius			( 1.0f			),
 	_unThisType			( unThisType	),
 	_life				( Life			),
+	_Maxlife			( Life			),
 	_radiate			( 0				),
 	_MaxRadiateTime		( 15			),
 	_deldelayCount		( 0				),
@@ -143,6 +144,7 @@ CTank::CTank(const CTank& src)
 	_fRadius			( src._fRadius						),
 	_unThisType			( src._unThisType					),
 	_life				( src._life							),
+	_Maxlife			( src._Maxlife						),
 	_radiate			(0									),
 	_MaxRadiateTime		(src._MaxRadiateTime				),
 	_deldelayCount		( 0									),
@@ -167,8 +169,8 @@ CTank::CTank(const CTank& src)
 	_pTankTop->setTankBottom(_pTankBottom);
 
 	//	タスク有効化
-	//enableTask();
-	CTaskMng::push<CTank>(TASKKEY::DRAW(),	this,&CTank::draw,	&_pTaskDraw			);
+//	enableTask();
+	CTaskMng::push<CTank>(TASKKEY::DRAW(),			this,&CTank::draw,	&_pTaskDraw			);
 
 	_lapVal = 0.0f;
 	_lap = 0;
@@ -278,6 +280,8 @@ void CTank::draw()
 		FONT->DrawFloat("lapval,",this->_lapVal,RECTEX(400,0,0,0));
 		FONT->DrawInt("lap,",this->_lap,RECTEX(400,16,0,0));
 	}
+
+	//煙のエフェクト
 
 
 #ifdef _DEBUG
@@ -488,6 +492,9 @@ void CTank::pRap()				///<	自機ラップ
 /***********************************************************************/
 void CTank::destroyed()
 {
+	//爆発演出
+
+
 	--_deldelayCount;
 
 	if(_deldelayCount < 0)

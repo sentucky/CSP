@@ -29,8 +29,12 @@ private:
 	CTank*		_Tank;
 	CNum*		_Num;
 	CSprite*	_SpriteTh;
+	CSprite*	_SpriteCircle;
+	CSprite*	_SpriteStatus;
 
 	D3DXMATRIXA16 _spriteThMatrix;
+	D3DXMATRIXA16 _spriteCircleMatrix;
+	D3DXMATRIXA16 _spriteStatusMatrix;
 };
 
 #endif

@@ -367,6 +367,20 @@ void CSystemparam::startcheck()
 		{
 			CTaskMng::erase(&_TaskDrawStart);
 			CTaskMng::erase(&_TaskStartCheck);
+			
+			CListItem<CObjBase*>* run = TankList->begin();
+			CListItem<CObjBase*>* end = TankList->end();
+
+			uint n = 0;
+
+			CTank* pTank;
+
+			while(run != end)
+			{
+				static_cast<CTank*>(run->getInst())->enableTask();
+				run = run->next();
+			}
+
 		}
 	}
 	else if(_CamStart->getDeleteFlg() == TRUE)
