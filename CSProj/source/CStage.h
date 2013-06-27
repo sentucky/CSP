@@ -48,7 +48,7 @@ private:
 	CStageData*		_StageData;			///<	ステージデータ
 	CTaskList*		_pTaskDraw;			///<	描画関数
 	CMesh*			_Mesh;				///<	メッシュ
-	D3DXMATRIXA16	_matW;				///<	マトリクス
+	D3DXMATRIXA16	_WMat;				///<	マトリクス
 	int*			_InstCnt;
 };
 

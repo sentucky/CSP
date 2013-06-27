@@ -151,6 +151,47 @@ void CTankTop::cooldown()
 	_CntCool = _CntCool > 0 ? _CntCool - 1 : 0;
 }
 
+
+void CTankTop::rotationy(const float fY)
+{
+	_TopDir.x = _TopDir.y = _TopDir.z = 0;
+
+	if( fY >= 1.5f)
+	{
+		_TopDir.x = 1;
+	}
+	else if(fY >= 1.0f)
+	{
+		_TopDir.y = -1;
+	}
+	else if(fY >= 0.5f)
+	{
+		_TopDir.x = -1;
+	}
+	else
+	{
+		_TopDir.y = 1;
+	}
+
+	const float x = _WMat._41;
+	const float y = _WMat._42;
+	const float z = _WMat._43;
+
+
+
+	_WMat._41 = _WMat._42 = _WMat._43 = 0;
+
+	float rot = -atan2f(_TopDir.z,_TopDir.x);
+
+	D3DXMatrixRotationY(&_WMat,rot + 0.5f * D3DX_PI);
+
+	_WMat._41 = x;
+	_WMat._42 = y;
+	_WMat._43 = z;
+
+}
+
+
 /***********************************************************************/
 /*! @brief 
  * 

@@ -32,7 +32,7 @@ CStage::CStage(
 	_InstCnt(new int(0))
 {
 	++(*_InstCnt);
-	D3DXMatrixIdentity(&_matW);
+	D3DXMatrixIdentity(&_WMat);
 }
 
 /***********************************************************************/
@@ -61,7 +61,7 @@ CStage::CStage(const CStage& src)
 	_InstCnt		(src._InstCnt			)
 {
 	++(*_InstCnt);
-	D3DXMatrixIdentity(&_matW);
+	D3DXMatrixIdentity(&_WMat);
 	enableTask();
 }
 
@@ -118,7 +118,7 @@ void CStage::disableTask()
 /***********************************************************************/
 void CStage::draw()
 {
-	_Mesh->draw(&_matW);
+	_Mesh->draw(&_WMat);
 	_StageData->Draw();
 }
 

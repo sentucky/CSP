@@ -137,6 +137,43 @@ void CTankBottom::rotateMatrix(float fTurnSpeed)
 	D3DXVec3Normalize(&_Dir,&_Dir);
 }
 
+void CTankBottom::rotationsetY(const float fY)
+{
+	_Dir.x = _Dir.y = _Dir.z = 0;
+
+	if( fY >= 1.5f)
+	{
+		_Dir.x = 1;
+	}
+	else if(fY >= 1.0f)
+	{
+		_Dir.y = -1;
+	}
+	else if(fY >= 0.5f)
+	{
+		_Dir.x = -1;
+	}
+	else
+	{
+		_Dir.y = 1;
+	}
+
+	const float x = _WMat._41;
+	const float y = _WMat._42;
+	const float z = _WMat._43;
+
+	_WMat._41 = _WMat._42 = _WMat._43 = 0;
+
+	float rot = -atan2f(_Dir.z,_Dir.x);
+
+	D3DXMatrixRotationY(&_WMat,rot + 0.5f * 3.1415f);
+
+	_WMat._41 = x;
+	_WMat._42 = y;
+	_WMat._43 = z;
+}
+
+
 /***********************************************************************/
 /*! @brief 
  * 

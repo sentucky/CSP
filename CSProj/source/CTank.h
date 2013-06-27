@@ -84,6 +84,7 @@ public:
 	void disableTask();			///<	タスク無効化
 
 	static const bool lower(const CTank* A,const CTank* B);
+	void rotationY(const float fY);	
 
 	const D3DXMATRIXA16*	getMatBottom();	///<	ボトムのマトリクス取得
 	const D3DXVECTOR3*		getMoveVec();	///<	移動ベクトル

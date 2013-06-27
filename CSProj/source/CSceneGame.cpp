@@ -147,7 +147,7 @@ void CSceneGame::init()
 	int n2 = 0;
 //*	
 	CTankIntInter::setPlayerTank(pTank);
-	for(int n = 0; n < 500; n++)
+	for(int n = 0; n < 100; n++)
 	{
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
 	}
@@ -162,7 +162,7 @@ void CSceneGame::init()
 	CStartCamWork* pSTCam = NULL;
 	OBJMNG->push(OBJGROUPKEY::CAMERA(),pSTCam = static_cast<CStartCamWork*>(OBJFACTORY->create(OBJKEY::STARTCAMERA())),NULL);
 	pSTCam->reset();
-	pSTCam->camMove();
+
 
 
 	//...ピン
@@ -202,11 +202,42 @@ void CSceneGame::init()
 	standby(pStage);
 	_DrawFlg = TRUE;
 
+	pSTCam->count(0,60);
+	pSTCam->count(1,30);
+	pSTCam->point(
+		0,
+		pStage->getStageData()->getStartTile()->posX + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->x,
+		_FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->y,
+		pStage->getStageData()->getStartTile()->posY + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->z
+		);
+	pSTCam->point(
+		1,
+		pTank->getMatBottom()->_41 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->x,
+		pTank->getMatBottom()->_42 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->y,
+		pTank->getMatBottom()->_43 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->z
+		);
 	pSTCam->lastPoint(
 		pTank->getMatBottom()->_41 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->x,
 		pTank->getMatBottom()->_42 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->y,
 		pTank->getMatBottom()->_43 + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->z
 		);
+	pSTCam->At(
+		0,
+		pStage->getStageData()->getStartTile()->posX,
+		0,
+		pStage->getStageData()->getStartTile()->posY);
+	pSTCam->At(
+		1,
+		pTank->getMatBottom()->_41,
+		pTank->getMatBottom()->_42,
+		pTank->getMatBottom()->_43
+		);
+	pSTCam->lastAt(
+		pTank->getMatBottom()->_41,
+		pTank->getMatBottom()->_42,
+		pTank->getMatBottom()->_43
+		);
+	pSTCam->camMove();
 	LPDIRECTSOUNDBUFFER bgm = CSOUND->GetSound(SOUNDKEY::BGM1());
 	SysParam->setCamStart(pSTCam);
 
@@ -228,15 +259,6 @@ void CSceneGame::update()
 
 
 	CTaskMng::run();
-	/*
-	if(_CamStart != 0)
-	{
-		if(_CamStart->getInst()->getDeleteFlg() == TRUE)
-		{
-			switchGMain();
-		}
-	}
-	*/
 
 	//	オブジェクトの更新
 	_pCamera->update();
@@ -332,25 +354,28 @@ void CSceneGame::standby(CStage* pStage)
 
 	float pointX = pStTile->posX;
 	float pointY = pStTile->posY;
-	/*
+
+	const int div = 7;
+
+
 	//....基点取得
 	if(rotStartTile >= 1.5f * D3DX_PI){
-		pointX -= 15;
-		pointY -= 15;
+		pointX -= (15 - (7));
+		pointY += (15 - (7));
 	}
 	else 	if(rotStartTile >= 1.0f * D3DX_PI){
-		pointX += 15;
-		pointY -= 15;
+		pointX += (15 - (7));
+		pointY -= (15 - (7));
 	}
 	else 	if(rotStartTile >= 0.5f * D3DX_PI){ 
-		pointX += 15;
-		pointY += 15;
+		pointX += (15 - (7));
+		pointY += (15 - (7));
 	}
 	else{
-		pointX -= 15;
-		pointY += 15;
+		pointX -= (15 - (7));
+		pointY += (15 - (7));
 	}
-	*/
+
 	float setPointX;
 	float setPointY;
 	
@@ -359,13 +384,13 @@ void CSceneGame::standby(CStage* pStage)
 
 	CTank* Player;
 
-	const int div = 7;
 
 	while(pListTank !=  pEnd)
 	{
 		//	本来の型でポインタ取得
 
 		pTank = static_cast<CTank*>(pListTank->getInst());
+		pTank->rotationY(rotStartTile);
 		if(pTank->getThisType() == CTank::TYPE_PLAYER)
 		{
 			Player = pTank;
@@ -424,27 +449,6 @@ void CSceneGame::standby(CStage* pStage)
 void CSceneGame::switchGMain()
 {
 	//	CAMERA切り替え
-	/*
-	_FollowCamera->enableTask();
-	_FollowCamera->update();
-
-	//	戦車を動かせるようにする
-	CListMng<CObjBase*>*TankList =  OBJMNG->getList(OBJGROUPKEY::TANK());
-	CListItem<CObjBase*>* pItem = TankList->begin();
-	CListItem<CObjBase*>* pEnd = TankList->end();
-	CTank* pTank;
-
-	while(1)
-	{
-		pTank = static_cast<CTank*>(pItem->getInst());
-		pTank->enableTask();
-		pItem = pItem->next();
-		if(pItem == pEnd)
-		{
-			break;
-		}
-	}
-	*/
 }
 
 /***********************************************************************/

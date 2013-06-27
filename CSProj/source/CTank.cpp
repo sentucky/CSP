@@ -225,6 +225,7 @@ void CTank::disableTask()
 	CTaskMng::erase(&_pTaskFire);
 	CTaskMng::erase(&_pTaskCalcAM);
 	CTaskMng::erase(&_pTaskRap);
+	CTaskMng::erase(&_pTaskDestroyed);
 }
 
 const bool CTank::lower(const CTank* A,const CTank* B)
@@ -261,8 +262,8 @@ void CTank::draw()
 	x = YOUSO(_pTankBottom->getWMat()->_41);
 	y = YOUSO(_pTankBottom->getWMat()->_43);
 
-	playerx = YOUSO(_Player->getMatBottom()->_41);
-	playery = YOUSO(_Player->getMatBottom()->_43);
+	playerx = YOUSO(CCamera::getAt().x);
+	playery = YOUSO(CCamera::getAt().z);
 
 	if(abs(x - playerx) > 1 || abs(y - playery) > 1)
 	{
@@ -340,7 +341,7 @@ void CTank::move()
 	const D3DXMATRIXA16* pMatTank = _pTankBottom->getWMat();
 	_pTankTop->setPos(
 		pMatTank->_41,
-		pMatTank->_42 + 0.5f,
+		pMatTank->_42,
 		pMatTank->_43
 		);
 }
@@ -654,7 +655,13 @@ void CTank::setPos(const float x,const float z)
 	const D3DXMATRIXA16* pMatTank = _pTankBottom->getWMat();
 	_pTankTop->setPos(
 		pMatTank->_41,
-		pMatTank->_42 + 0.5f,
+		pMatTank->_42,
 		pMatTank->_43
 		);
+}
+
+void CTank::rotationY(const float fY)
+{
+	_pTankBottom->rotationsetY(fY);
+	_pTankTop->rotationy(fY);
 }

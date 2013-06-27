@@ -32,6 +32,7 @@ public:
 	void turn();
 	void clacMove(const uint rank);
 	void rotateMatrix(float fTurnSpeed);
+	void rotationsetY(const float fY);
 
 	const D3DXMATRIXA16* getWMat();
 

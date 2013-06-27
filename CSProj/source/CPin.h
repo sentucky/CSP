@@ -33,16 +33,16 @@ public:
 	void move();		///<	XV
 	void setPos(const float x,const float y,const float z)
 	{
-		_matW._41 = x;
-		_matW._42 = y;
-		_matW._43 = z;
+		_WMat._41 = x;
+		_WMat._42 = y;
+		_WMat._43 = z;
 	}
 private:
 	CTaskList* _pTaskDraw;
 	CTaskList* _pTaskUpdate;
 
 	CMesh*			_pMesh;
-	D3DXMATRIXA16	_matW;
+	D3DXMATRIXA16	_WMat;
 };
 
 #endif

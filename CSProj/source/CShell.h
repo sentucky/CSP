@@ -58,7 +58,7 @@ public:
 	 *  @retval const D3DXMATRIXA16* 
 	 */
 	/***********************************************************************/
-	const D3DXMATRIXA16* getMatW(){return &_matW;}
+	const D3DXMATRIXA16* getMatW(){return &_WMat;}
 	/***********************************************************************/
 	/*! @brief 
 	 * 
@@ -93,7 +93,7 @@ public:
 	}
 
 private:
-	D3DXMATRIXA16	_matW;			///<	ワールドマトリクス
+	D3DXMATRIXA16	_WMat;			///<	ワールドマトリクス
 	D3DXVECTOR3		_OldPos;		///<	旧座標
 	D3DXVECTOR3		_Trajectory;	///<	軌道ベクトル
 	D3DXVECTOR3		_MoveVector;	///<	移動ベクトル

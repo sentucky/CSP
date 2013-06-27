@@ -37,6 +37,8 @@ public:
 	void draw();					///<	•`‰æ
 	void cooldown();				///<	•ú”M(—Dæ“x’á
 
+	void rotationy(const float fY);
+
 	void setTankBottom(CTankBottom* pTankBottom){_Bottom = pTankBottom;}
 	void setOwner(CTank* pTank){_Owner = pTank;}
 	void setPos(const float x, const float y,const float z);

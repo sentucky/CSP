@@ -62,7 +62,7 @@ _pTaskDraw(NULL),
 	_pTaskUpdate(NULL),
 	_pMesh(new CMesh(*src._pMesh))
 {
-	D3DXMatrixIdentity(&_matW);
+	D3DXMatrixIdentity(&_WMat);
 	enableTask();
 }
 
@@ -102,7 +102,7 @@ void CPin::disableTask()
 /***********************************************************************/
 void CPin::draw()
 {
-	_pMesh->draw(&_matW);
+	_pMesh->draw(&_WMat);
 #ifdef _DEBUG
 #endif
 }
@@ -119,8 +119,8 @@ void CPin::move()
 
 	MOUSE.mousePoint3D(&Target,0);
 
-	_matW._41 = Target.x;
-	_matW._42 = Target.y;
-	_matW._43 = Target.z;
+	_WMat._41 = Target.x;
+	_WMat._42 = Target.y;
+	_WMat._43 = Target.z;
 }
 

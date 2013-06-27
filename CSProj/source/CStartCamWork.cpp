@@ -27,7 +27,7 @@ CStartCamWork::~CStartCamWork()
 
 CStartCamWork::CStartCamWork(const CStartCamWork& src)
 	:CObjBase			(src._GroupID						),
-_StageData(src._StageData),
+	_StageData(src._StageData),
 	_TaskCamMove(NULL),
 	_CurPhase(0),
 	_t(0),
@@ -42,22 +42,11 @@ _StageData(src._StageData),
 	//	※最後の枠にはあとから、追尾カメラが入るので、値が反映されない
 	//
 	//	ここで移動量を決定
-	_CamWorkParam[0].Pos = D3DXVECTOR3(-30,50,30);
-	_CamWorkParam[1].Pos = D3DXVECTOR3(0,10,20);
-	_CamWorkParam[2].Pos = D3DXVECTOR3(50,10,0);
-	_CamWorkParam[3].Pos = D3DXVECTOR3(50,10,0);
-	_CamWorkParam[4].Pos = D3DXVECTOR3(0,10,-30);
 
 	//	ここで移動時間を決定
 	for(int i = 0; i < _SumPhase; ++i)
 	{
-		_CamWorkParam[i].Count = 10;
-		_CamWorkParam[i].At = D3DXVECTOR3(
-			_StageData->getStartTile()->posX,
-			0,
-			_StageData->getStartTile()->posY);
-		_CamWorkParam[i].Pos.x += _StageData->getStartTile()->posX;
-		_CamWorkParam[i].Pos.z += _StageData->getStartTile()->posY;
+		_CamWorkParam[i].Count = 60;
 	}
 	//													以上
 	//******************************************************
@@ -132,12 +121,48 @@ void CStartCamWork::reset()
 	{
 		D3DXVec3TransformCoord(&_CamWorkParam[i].Pos,&_CamWorkParam[i].Pos,&RotMat);
 	}
-	
+
 }
+
+void CStartCamWork::count(const int n, const uint count)
+{
+	if(n >= _SumPhase)
+		return;
+	_CamWorkParam[n].Count = count;
+}
+
+void CStartCamWork::point(const int n,const float x,const float y,const float z)
+{
+	if(n >= _SumPhase)
+		return;
+
+	_CamWorkParam[n].Pos.x = x;
+	_CamWorkParam[n].Pos.y = y;
+	_CamWorkParam[n].Pos.z = z;
+}
+
+
 
 void CStartCamWork::lastPoint(const float x,const float y,const float z)
 {
 	_CamWorkParam[_SumPhase - 1].Pos.x = x;
 	_CamWorkParam[_SumPhase - 1].Pos.y = y;
 	_CamWorkParam[_SumPhase - 1].Pos.z = z;
+}
+
+
+void CStartCamWork::At(const int n,const float x,const float y,const float z)
+{
+	if(n >= _SumPhase)
+		return;
+	_CamWorkParam[n].At.x = x;
+	_CamWorkParam[n].At.y = y;
+	_CamWorkParam[n].At.z = z;
+}
+
+void CStartCamWork::lastAt(const float x,const float y,const float z)
+{
+	_CamWorkParam[_SumPhase - 1].At.x = x;
+	_CamWorkParam[_SumPhase - 1].At.y = y;
+	_CamWorkParam[_SumPhase - 1].At.z = z;
 }

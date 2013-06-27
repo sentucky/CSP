@@ -49,7 +49,7 @@ CShell::CShell(
 	_Power(power),
 	_fRad(1.0f)
 {
-	D3DXMatrixIdentity(&_matW);
+	D3DXMatrixIdentity(&_WMat);
 }
 
 /***********************************************************************/
@@ -91,7 +91,7 @@ CShell::CShell(
 	_fRad(src._fRad)
 
 {
-	D3DXMatrixIdentity(&_matW);
+	D3DXMatrixIdentity(&_WMat);
 	enableTask();
 #ifdef _DEBUG
 	_fRad = 1.0f;
@@ -135,7 +135,7 @@ void CShell::disableTask()
 /***********************************************************************/
 void CShell::draw()
 {
-	_pMesh->draw(&_matW);
+	_pMesh->draw(&_WMat);
 }
 
 /***********************************************************************/
@@ -146,12 +146,12 @@ void CShell::draw()
 /***********************************************************************/
 void CShell::move()
 {
-	_OldPos.x = _matW._41;
-	_OldPos.y = _matW._42;
-	_OldPos.z = _matW._43;
-	_matW._41 += _MoveVector.x;
-	_matW._42 += _MoveVector.y;
-	_matW._43 += _MoveVector.z;
+	_OldPos.x = _WMat._41;
+	_OldPos.y = _WMat._42;
+	_OldPos.z = _WMat._43;
+	_WMat._41 += _MoveVector.x;
+	_WMat._42 += _MoveVector.y;
+	_WMat._43 += _MoveVector.z;
 }
 
 /***********************************************************************/
@@ -223,6 +223,23 @@ D3DXVECTOR3& CShell::getTrajectory()
 void CShell::moveVector(const D3DXVECTOR3* MoveVec)
 {
 	D3DXVec3Normalize(&_MoveVector,&_MoveVector);
+	D3DXMATRIXA16 matbak = _WMat;
+
+	D3DXMATRIXA16 rotmat;
+	D3DXMatrixIdentity(&rotmat);
+
+	float rotY = -atan2f(MoveVec->z,MoveVec->x) + 0.5f * D3DX_PI;
+
+	D3DXMatrixRotationY(&rotmat,rotY);
+
+	_WMat._41 = _WMat._42 = _WMat._43 = 0;
+
+	_WMat *= rotmat;
+
+	_WMat._41 = matbak._41;
+	_WMat._42 = matbak._42;
+	_WMat._43 = matbak._43;
+
 	_MoveVector *= _MoveSpeed;
 	_MoveVector += *MoveVec;
 }
@@ -236,9 +253,9 @@ void CShell::moveVector(const D3DXVECTOR3* MoveVec)
 /***********************************************************************/
 void CShell::setPos(const D3DXMATRIXA16*	pos)
 {
-	_matW._41 = pos->_41;
-	_matW._42 = pos->_42;
-	_matW._43 = pos->_43;
+	_WMat._41 = pos->_41;
+	_WMat._42 = pos->_42;
+	_WMat._43 = pos->_43;
 }
 
 /***********************************************************************/
@@ -250,7 +267,7 @@ void CShell::setPos(const D3DXMATRIXA16*	pos)
 /***********************************************************************/
 void CShell::setPos(const D3DXVECTOR3*		pos)
 {
-	_matW._41 = pos->x;
-	_matW._42 = pos->y;
-	_matW._43 = pos->z;
+	_WMat._41 = pos->x;
+	_WMat._42 = pos->y;
+	_WMat._43 = pos->z;
 }
