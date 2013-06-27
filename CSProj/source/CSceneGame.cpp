@@ -147,7 +147,7 @@ void CSceneGame::init()
 	int n2 = 0;
 //*	
 	CTankIntInter::setPlayerTank(pTank);
-	for(int n = 0; n < 100; n++)
+	for(int n = 0; n < 200; n++)
 	{
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
 	}
@@ -202,7 +202,7 @@ void CSceneGame::init()
 	standby(pStage);
 	_DrawFlg = TRUE;
 
-	pSTCam->count(0,60);
+	pSTCam->count(0,215);
 	pSTCam->count(1,30);
 	pSTCam->point(
 		0,
@@ -238,13 +238,14 @@ void CSceneGame::init()
 		pTank->getMatBottom()->_43
 		);
 	pSTCam->camMove();
-	LPDIRECTSOUNDBUFFER bgm = CSOUND->GetSound(SOUNDKEY::BGM1());
+	//*
+	LPDIRECTSOUNDBUFFER bgm = CSOUND->GetSound(SOUNDKEY::GAMEBGM());
+	//*/
 	SysParam->setCamStart(pSTCam);
 
 
 	
 
-//	bgm->Play(0,0,1);
 }
 
 /***********************************************************************/
@@ -324,6 +325,7 @@ void CSceneGame::release()
 /***********************************************************************/
 CSceneBase * CSceneGame::nextScene()
 {
+	CSOUND->GetSound(SOUNDKEY::LOSEBGM())->Stop();
 	return new CSceneTitle;
 }
 

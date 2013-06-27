@@ -26,9 +26,13 @@ CCockpit::CCockpit()
 	_SpriteTh	(NULL					),
 	_SpriteCircle	(NULL					),
 	_SpriteStatus	(NULL					),
+	_spriteMiniMap	(NULL					),
+	_spriteDot		(NULL					),
 	_spriteThMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
 	_spriteCircleMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-	_spriteStatusMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+	_spriteStatusMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+	_spriteMiniMapMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+	_spriteDotMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 {
 }
 
@@ -39,6 +43,8 @@ CCockpit::~CCockpit()
 	SAFE_DELETE(_SpriteTh);
 	SAFE_DELETE(_SpriteCircle);
 	SAFE_DELETE(_SpriteStatus);
+	SAFE_DELETE(_spriteMiniMap);
+	SAFE_DELETE(_spriteDot);
 }
 
 CCockpit::CCockpit(const CCockpit& src)
@@ -50,14 +56,20 @@ CCockpit::CCockpit(const CCockpit& src)
 	_SpriteTh	(NULL					),
 	_SpriteCircle	(NULL					),
 	_SpriteStatus	(NULL					),
+	_spriteMiniMap	(NULL					),
+	_spriteDot		(NULL					),
 	_spriteThMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
 	_spriteCircleMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
-	_spriteStatusMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+	_spriteStatusMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+	_spriteMiniMapMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0),
+	_spriteDotMatrix(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 {
 	const D3DXIMAGE_INFO *info;
 	D3DXMatrixIdentity(&_spriteThMatrix);
 	D3DXMatrixIdentity(&_spriteCircleMatrix);
 	D3DXMatrixIdentity(&_spriteStatusMatrix);
+	D3DXMatrixIdentity(&_spriteMiniMapMatrix);
+	D3DXMatrixIdentity(&_spriteDotMatrix);
 
 	_Num = OBJFACTORY->create<CNum>(OBJKEY::NUM());
 	_Num->setDrawMode(POINT_RIGHT);
@@ -67,14 +79,15 @@ CCockpit::CCockpit(const CCockpit& src)
 	
 	_SpriteCircle = SPRITEFACTORY->create(TEXKEY::CIRCLE());
 	info = _SpriteCircle->getTextureInfo();
-//	_SpriteCircle->setCenter(info->Width / 2, info->Height / 2, 0);
 
 	_SpriteStatus = SPRITEFACTORY->create(TEXKEY::TANK());
 	info = _SpriteStatus->getTextureInfo();
-//	_SpriteStatus->setCenter(info->Width / 2, info->Height / 2, 0);
 	_SpriteStatus->createAnimeParam(ANIMEPATH::TANK());
 	_SpriteStatus->setCatAnime(0);
 	_SpriteStatus->updateAnime();
+
+	_spriteMiniMap = SPRITEFACTORY->create(TEXKEY::SELECT_COURSE1());
+	_spriteDot	   = SPRITEFACTORY->create(TEXKEY::MINIDOT());
 
 	_spriteThMatrix._41 = 720;
 	_spriteThMatrix._42 = 400;
@@ -83,6 +96,8 @@ CCockpit::CCockpit(const CCockpit& src)
 	_spriteCircleMatrix._43 = 0.001;
 	_spriteStatusMatrix._41 = 355;
 	_spriteStatusMatrix._42 = 510;
+	_spriteMiniMapMatrix._41 = 126;
+	_spriteMiniMapMatrix._42 = 126;
 
 	enableTask();
 }
@@ -114,7 +129,8 @@ void CCockpit::draw()
 	_SpriteTh->draw(0,&_spriteThMatrix);
 	_SpriteCircle->draw(0,&_spriteCircleMatrix);
 	_SpriteStatus->draw(0,&_spriteStatusMatrix);
-
+	_spriteMiniMap->draw(0,&_spriteMiniMapMatrix);
+	_spriteDot->draw(0,&_spriteDotMatrix);
 }
 
 void CCockpit::update()
@@ -130,5 +146,24 @@ void CCockpit::update()
 	_Num->setNum(_Tank->getRank()+1);
 	_SpriteStatus->setCatAnime(5 - int(5 * (life / maxlife)));
 	_SpriteStatus->updateAnime();
+
+	updateMiniMap();
+}
+
+#include"CInputCommon.h"
+
+void CCockpit::updateMiniMap()
+{
+	//	プレイヤー座標 - 中心点 = ベクトル
+	//	ミニマップ中心点 + ベクトル = ミニマップ座標
+
+	static float a = 1.25f;
+	static float b = 1.25f;
 	
+
+	const float vx = (_Tank->getMatBottom()->_41) * 0.5f * a;
+	const float vy = -(_Tank->getMatBottom()->_43) * 0.5f * b;
+
+	_spriteDotMatrix._41 = vx + _spriteMiniMapMatrix._41;
+	_spriteDotMatrix._42 = vy + _spriteMiniMapMatrix._42;
 }

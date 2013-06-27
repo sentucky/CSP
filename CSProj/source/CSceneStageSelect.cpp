@@ -16,6 +16,8 @@
 #include"const.h"
 #include"TextureKey.h"
 #include"CInputCommon.h"
+#include"CSound.h"
+#include"CSoundKey.h"
 
 /*
 //---
@@ -166,6 +168,7 @@ void CSceneStageSelect::draw()
 /***********************************************************************/
 void CSceneStageSelect::release()
 {
+
 	for(uint i = 0; i < SumSprite; i++)
 	{
 		SAFE_DELETE(pSprite[i]);
@@ -185,6 +188,7 @@ CSceneBase* CSceneStageSelect::nextScene()
 	}
 	else
 	{
+		CSOUND->GetSound(SOUNDKEY::TITLEBGM())->Stop();
 		return new CSceneGame;
 		//return new CSceneResult;
 	}

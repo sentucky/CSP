@@ -1,6 +1,7 @@
 #include"TextureKey.h"
 
 enum eTEXKEY{
+	TEX_MINIDOT,
 	TEX_GAME_BG,
 	TEX_CIRCLE,
 	TEX_TANK,
@@ -64,6 +65,7 @@ enum eTEXKEY{
 };
 
 
+const uint TEXKEY::MINIDOT()		{	return TEX_MINIDOT;			}
 const uint TEXKEY::GAME_BG()		{	return TEX_GAME_BG;			}
 const uint TEXKEY::CIRCLE()			{	return TEX_CIRCLE;			}
 const uint TEXKEY::TANK()			{	return TEX_TANK;			}
@@ -123,6 +125,7 @@ const uint TEXKEY::NUM_TH()			{	return TEX_NUM_TH;			}
 const uint TEXKEY::ANIMETEST()		{	return TEX_ANIMETEST;		}
 const uint TEXKEY::SUM()			{	return TEX_SUM;				}
 
+const char* TEXPATH::MINIDOT()		{ return "data/texture/minidot.png";}
 const char* TEXPATH::CIRCLE()		{ return "data/texture/ziki_zyoutai_circle.png";}
 const char* TEXPATH::TANK()			{ return "data/texture/ziki_zyoutai.png";		}
 const char* TEXPATH::GAME_BG()			{ return "data/model/course_BG.tga";	}
@@ -148,7 +151,7 @@ const char* TEXPATH::RETRY_BUTTON02()	{ return "data/texture/retry_button02.png"
 const char* TEXPATH::START_BUTTON01()	{ return "data/texture/start_button01.png";	}
 const char* TEXPATH::START_BUTTON02()	{ return "data/texture/start_button02.png";	}
 const char* TEXPATH::SELECT_BG()		{ return "data/texture/select_bg.jpg";		}
-const char* TEXPATH::SELECT_COURSE1()	{ return "data/texture/select_course1.jpg";	}
+const char* TEXPATH::SELECT_COURSE1()	{ return "data/texture/minimap.png";	}
 const char* TEXPATH::SELECT_COURSE2()	{ return "data/texture/select_course2.jpg";	}
 const char* TEXPATH::SELECT_COURSE3()	{ return "data/texture/select_course3.jpg";	}
 const char* TEXPATH::RESULT_BG()		{ return "data/texture/result_bg.jpg";		}

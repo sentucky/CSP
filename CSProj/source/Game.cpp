@@ -86,12 +86,13 @@ void gameInit()
 	INPUTCOMMON->createKeyboard();
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
-	ps = new CSceneGame;
-//	ps = new CSceneTitle;
+//	ps = new CSceneGame;
+	ps = new CSceneTitle;
 //	ps = new CSceneTestSpace;
 	pScene = ps;
 
 	TEXTUREFACTORY->reserve(TEXKEY::SUM());
+	SPRITEFACTORY->registTexture(TEXKEY::MINIDOT(),			TEXPATH::MINIDOT()			);
 	SPRITEFACTORY->registTexture(TEXKEY::GAME_BG(),			TEXPATH::GAME_BG()			);
 	SPRITEFACTORY->registTexture(TEXKEY::CIRCLE(),			TEXPATH::CIRCLE()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TANK(),			TEXPATH::TANK()				);
@@ -189,13 +190,13 @@ void gameInit()
 	CStage* pStage = new CStage(STAGEPATH::NO_01(),MESHFACTORY->create(MESHKEY::DOME()));
 
 	CTank* pObj2 = new CTank(
-		MESHFACTORY->create(MESHKEY::TANK04_TOP()),
-		MESHFACTORY->create(MESHKEY::TANK04_BOTTOM()),
+		MESHFACTORY->create(MESHKEY::TANK02_TOP()),
+		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM()),
 		-1,
 		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::SHELL01()),1),
 		0.05f,
 		0.05f,
-		3);
+		10);
 
 	OBJFACTORY->reserve(OBJKEY::SUM());
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANK01(),pObj);
@@ -214,19 +215,19 @@ void gameInit()
 	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOT(),pHTTAT);
 	OBJFACTORY->registPrototype(OBJKEY::HITTESTTTOS(),new CHitTestTankToShell);
 
-
+	//*
 	CSound* pSound = CSOUND;
 	pSound->reserve(SOUNDKEY::SUM());
 	pSound->Init();
-	pSound->LoadSoundFile(SOUNDKEY::BGM1(),	SOUNDPATH::BGM1()	);
-	pSound->LoadSoundFile(SOUNDKEY::COLLITANKTOTANK(),	SOUNDPATH::COLLITANKTOTANK()	);
-	pSound->LoadSoundFile(SOUNDKEY::ENGILE(),			SOUNDPATH::ENGILE()				);
-	pSound->LoadSoundFile(SOUNDKEY::FANFARE(),			SOUNDPATH::FANFARE()			);
-	pSound->LoadSoundFile(SOUNDKEY::FIRE(),				SOUNDPATH::FIRE()				);
-	pSound->LoadSoundFile(SOUNDKEY::HITSHELL(),			SOUNDPATH::HITSHELL()			);
-	pSound->LoadSoundFile(SOUNDKEY::START(),			SOUNDPATH::START()				);
-
+	pSound->LoadSoundFile(SOUNDKEY::COLLISION(),	SOUNDPATH::COLLISION()	);
+	pSound->LoadSoundFile(SOUNDKEY::FANFARE(),		SOUNDPATH::FANFARE()	);
+	pSound->LoadSoundFile(SOUNDKEY::MOVE(),			SOUNDPATH::MOVE()	);
+	pSound->LoadSoundFile(SOUNDKEY::FIRE(),			SOUNDPATH::FIRE()	);
+	pSound->LoadSoundFile(SOUNDKEY::GAMEBGM(),		SOUNDPATH::GAMEBGM()	);
+	pSound->LoadSoundFile(SOUNDKEY::LOSEBGM(),		SOUNDPATH::LOSEBGM()	);
+	pSound->LoadSoundFile(SOUNDKEY::TITLEBGM(),		SOUNDPATH::TITLEBGM()	);
 	CTank::setSoundFire(pSound->GetSound(SOUNDKEY::FIRE()));
+//*/	
 }
 
 

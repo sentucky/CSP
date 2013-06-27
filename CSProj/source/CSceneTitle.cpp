@@ -14,6 +14,8 @@
 #include"const.h"
 #include"TextureKey.h"
 #include"CInputCommon.h"
+#include"CSound.h"
+#include"CSoundKey.h"
 
 /*
 //---
@@ -89,6 +91,7 @@ void CSceneTitle::init()
 	{
 		changebutton[i] = false;
 	}
+	CSOUND->GetSound(SOUNDKEY::TITLEBGM())->Play(0,0,1);
 }
 /***********************************************************************/
 /*! @brief 
@@ -173,6 +176,7 @@ void CSceneTitle::release()
 	{
 		SAFE_DELETE(pTitleSprite[i]);
 	}
+
 }
 /***********************************************************************/
 /*! @brief 

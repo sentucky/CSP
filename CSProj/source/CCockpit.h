@@ -23,6 +23,7 @@ public:
 	void update();
 	void setTank(CTank* Tank){ _Tank = Tank;}
 
+	void updateMiniMap();
 private:
 	CTaskList*	_TaskDraw;
 	CTaskList*	_TaskUpdate;
@@ -31,10 +32,13 @@ private:
 	CSprite*	_SpriteTh;
 	CSprite*	_SpriteCircle;
 	CSprite*	_SpriteStatus;
-
+	CSprite*	_spriteMiniMap;
+	CSprite*	_spriteDot;
 	D3DXMATRIXA16 _spriteThMatrix;
 	D3DXMATRIXA16 _spriteCircleMatrix;
 	D3DXMATRIXA16 _spriteStatusMatrix;
+	D3DXMATRIXA16 _spriteMiniMapMatrix;
+	D3DXMATRIXA16 _spriteDotMatrix;
 };
 
 #endif

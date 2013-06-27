@@ -22,6 +22,8 @@
 #include"CSpriteFactory.h"
 #include"CSprite.h"
 
+#include"CSound.h"
+#include"CSoundKey.h"
 
 #include<algorithm>
 
@@ -89,6 +91,7 @@ CSystemparam::CSystemparam(const CSystemparam& src)
 	_spriteMatrix._42 = 320;
 	enableTask();
 	_Sprite = SPRITEFACTORY->create(TEXKEY::READY());
+	CSOUND->GetSound(SOUNDKEY::FANFARE())->Play(0,0,0);
 }
 
 /***********************************************************************/
@@ -149,6 +152,7 @@ void CSystemparam::endCount()
 	--_goalCount;
 
 	_flgEnd = _goalCount <= 0 ? TRUE : FALSE;
+
 }
 
 /***********************************************************************/
@@ -195,11 +199,15 @@ void CSystemparam::endcheck()
 		&_TaskEndCount);
 
 	CTaskMng::erase(&_TaskEndCheck);
+	CSOUND->GetSound(SOUNDKEY::GAMEBGM())->Stop();
 	SAFE_DELETE(_Sprite);
-	if(_flgRaceResult == 1)	_Sprite = SPRITEFACTORY->create(TEXKEY::VICTORY());
-	else					_Sprite = SPRITEFACTORY->create(TEXKEY::LOSE());
-	
-
+	if(_flgRaceResult == 1){
+		_Sprite = SPRITEFACTORY->create(TEXKEY::VICTORY());
+	}
+	else	{
+		_Sprite = SPRITEFACTORY->create(TEXKEY::LOSE());
+		CSOUND->GetSound(SOUNDKEY::LOSEBGM())->Play(0,0,1);
+	}
 }
 
 /***********************************************************************/
@@ -362,6 +370,7 @@ void CSystemparam::startcheck()
 {
 	if(_CamStart == NULL)
 	{
+		CSOUND->GetSound(SOUNDKEY::GAMEBGM())->Play(0,0,1);	
 		--_startCount;
 		if(_startCount <= 0)
 		{
@@ -385,6 +394,8 @@ void CSystemparam::startcheck()
 	}
 	else if(_CamStart->getDeleteFlg() == TRUE)
 	{
+		CSOUND->GetSound(SOUNDKEY::FANFARE())->Stop();
+		CSOUND->GetSound(SOUNDKEY::FIRE())->Play(0,0,0);
 		_CamStart = NULL;
 		switchGame();
 		SAFE_DELETE(_Sprite);

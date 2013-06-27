@@ -22,6 +22,7 @@ public:
 	static const char* GO();
 	static const char* EXIT();
 	
+	static const char* MINIDOT();
 	static const char* GAME_BG();
 	static const char* VICTORY();
 	static const char* LOSE();
@@ -85,6 +86,7 @@ public:
 	static const uint GO();
 	static const uint EXIT();
 
+	static const uint MINIDOT();
 	static const uint GAME_BG();
 	static const uint VICTORY();
 	static const uint LOSE();

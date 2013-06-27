@@ -339,6 +339,10 @@ void CTank::pause()
 /***********************************************************************/
 void CTank::move()
 {
+	const D3DXVECTOR3* movevec = _pTankBottom->getMoveVec();
+	if( movevec->x + movevec->z > 10)
+		CSOUND->GetSound(SOUNDKEY::MOVE())->Play(0,0,0);
+
 	_pTankBottom->move();
 
 	//	ˆÚ“®‰ÁŽZ‚³‚ñ
@@ -477,7 +481,7 @@ void CTank::pRap()				///<	Ž©‹@ƒ‰ƒbƒv
 	if (p->root == rootNum - 1 && _Panel->no == 3)
 		_lapVal -= rootNum;
 
-	if(_lap > 1)
+	if(_lap > 3)
 	{
 		_FlgGoal = TRUE;
 	}

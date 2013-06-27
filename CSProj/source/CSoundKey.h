@@ -6,13 +6,15 @@
 class SOUNDKEY
 {
 public:
-	static const uint BGM1();
-	static const uint COLLITANKTOTANK();
-	static const uint ENGILE();
-	static const uint FIRE();
-	static const uint HITSHELL();
+	static const uint GAMEBGM();
+	static const uint LOSEBGM();
+	static const uint TITLEBGM();
+	static const uint COLLISION();
 	static const uint FANFARE();
-	static const uint START();
+	static const uint MOVE();
+	static const uint FIRE();
+	static const uint SIREN();
+
 
 	static const uint SUM();
 };
@@ -20,13 +22,14 @@ public:
 class SOUNDPATH
 {
 public:
-	static char* BGM1();
-	static char* COLLITANKTOTANK();
-	static char* ENGILE();
-	static char* FIRE();
-	static char* HITSHELL();
+	static char* GAMEBGM();
+	static char* LOSEBGM();
+	static char* TITLEBGM();
+	static char* COLLISION();
 	static char* FANFARE();
-	static char* START();
+	static char* MOVE();
+	static char* FIRE();
+	static char* SIREN();
 };
 
 #endif
