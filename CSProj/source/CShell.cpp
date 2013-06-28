@@ -14,7 +14,9 @@
 #include"CTank.h"
 #include"ObjKey.h"
 
+
 #include"StageData.h"
+#include"CCamera.h"
 
 CStageData* CShell::_StageData = 0;
 
@@ -135,6 +137,18 @@ void CShell::disableTask()
 /***********************************************************************/
 void CShell::draw()
 {
+
+
+	const int camx = YOUSO(CCamera::getAt().x);
+	const int camy = YOUSO(CCamera::getAt().z);
+
+	const int x = YOUSO(_WMat._41);
+	const int y = YOUSO(_WMat._43);
+
+	if(abs(x - camx) > 1 || abs(y - camy) > 1)
+	{
+		return;
+	}
 	_pMesh->draw(&_WMat);
 }
 

@@ -1,7 +1,10 @@
 #include"TextureKey.h"
 
 enum eTEXKEY{
+	TEX_SIGHT,
+	TEX_TANK_EXPLOAD,
 	TEX_MINIDOT,
+	TEX_MINIMAP,
 	TEX_GAME_BG,
 	TEX_CIRCLE,
 	TEX_TANK,
@@ -64,8 +67,10 @@ enum eTEXKEY{
 	TEX_SUM,		//
 };
 
-
+const uint TEXKEY::SIGHT()	{	return TEX_SIGHT;	}
+const uint TEXKEY::TANK_EXPLOAD()	{	return TEX_TANK_EXPLOAD;	}
 const uint TEXKEY::MINIDOT()		{	return TEX_MINIDOT;			}
+const uint TEXKEY::MINIMAP()		{	return TEX_MINIMAP;			}
 const uint TEXKEY::GAME_BG()		{	return TEX_GAME_BG;			}
 const uint TEXKEY::CIRCLE()			{	return TEX_CIRCLE;			}
 const uint TEXKEY::TANK()			{	return TEX_TANK;			}
@@ -74,7 +79,6 @@ const uint TEXKEY::START()			{	return TEX_START;			}
 const uint TEXKEY::READY()			{	return TEX_READY;			}
 const uint TEXKEY::GO()				{	return TEX_GO;				}
 const uint TEXKEY::EXIT()			{	return TEX_EXIT;			}
-const uint TEXKEY::VICTORY()		{	return TEX_VICTORY;			}
 const uint TEXKEY::LOSE()			{	return TEX_LOSE;			}
 const uint TEXKEY::FADEMASK()		{	return TEX_FADEMASK;		}
 const uint TEXKEY::BACK_BUTTON()	{	return TEX_BACK_BUTTON;		}
@@ -125,7 +129,11 @@ const uint TEXKEY::NUM_TH()			{	return TEX_NUM_TH;			}
 const uint TEXKEY::ANIMETEST()		{	return TEX_ANIMETEST;		}
 const uint TEXKEY::SUM()			{	return TEX_SUM;				}
 
+
+const char* TEXPATH::SIGHT()		{ return "data/texture/sight.png";}
 const char* TEXPATH::MINIDOT()		{ return "data/texture/minidot.png";}
+const char* TEXPATH::MINIMAP()		{ return "data/texture/minimap.png";}
+const char* TEXPATH::TANK_EXPLOAD()		{ return "data/texture/burn.png";}
 const char* TEXPATH::CIRCLE()		{ return "data/texture/ziki_zyoutai_circle.png";}
 const char* TEXPATH::TANK()			{ return "data/texture/ziki_zyoutai.png";		}
 const char* TEXPATH::GAME_BG()			{ return "data/model/course_BG.tga";	}
@@ -134,7 +142,6 @@ const char* TEXPATH::START()			{ return "data/texture/sz/start.png";		}
 const char* TEXPATH::READY()			{ return "data/texture/sz/reAdy.png";		}
 const char* TEXPATH::GO()				{ return "data/texture/sz/go!!.png";		}
 const char* TEXPATH::EXIT()				{ return "data/texture/sz/exit.png";		}
-const char* TEXPATH::VICTORY()			{ return "data/texture/win.bmp";			}
 const char* TEXPATH::LOSE()				{ return "data/texture/sz/lose.png";			}
 const char* TEXPATH::FADEMASK()			{ return "data/texture/fademask.jpg";		}
 const char* TEXPATH::BACK_BUTTON()		{ return "data/texture/back_button.png";	}
@@ -151,7 +158,7 @@ const char* TEXPATH::RETRY_BUTTON02()	{ return "data/texture/retry_button02.png"
 const char* TEXPATH::START_BUTTON01()	{ return "data/texture/start_button01.png";	}
 const char* TEXPATH::START_BUTTON02()	{ return "data/texture/start_button02.png";	}
 const char* TEXPATH::SELECT_BG()		{ return "data/texture/select_bg.jpg";		}
-const char* TEXPATH::SELECT_COURSE1()	{ return "data/texture/minimap.png";	}
+const char* TEXPATH::SELECT_COURSE1()	{ return "data/texture/select_course1.png";	}
 const char* TEXPATH::SELECT_COURSE2()	{ return "data/texture/select_course2.jpg";	}
 const char* TEXPATH::SELECT_COURSE3()	{ return "data/texture/select_course3.jpg";	}
 const char* TEXPATH::RESULT_BG()		{ return "data/texture/result_bg.jpg";		}

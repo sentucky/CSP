@@ -42,6 +42,13 @@
 #include"CScreen.h"
 #include"CFont.h"
 #include"CInputCommon.h"
+
+#include"CSprite.h"
+#include"CSpriteFactory.h"
+#include"TextureKey.h"
+#include"CAnimeParam.h"
+#include"AnimeKey.h"
+
 #endif
 
 #ifdef _DEBUG
@@ -94,7 +101,9 @@ CTank::CTank(
 	_FlgGoal			( FALSE			),
 	_lap				(-1),
 	_lapVal				(0),
-	_Rank				(0)
+	_Rank				(0),
+	_SpriteExpload		(NULL			),
+	_effectMatrix		(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
 	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
@@ -152,7 +161,9 @@ CTank::CTank(const CTank& src)
 	_FlgGoal			( FALSE								),
 	_lap				(-1									),
 	_lapVal				(0									),
-	_Rank				(0									)
+	_Rank				(0									),
+	_SpriteExpload		(NULL								),
+	_effectMatrix		(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 {
 	//	思考設定
 	switch(_unThisType)
@@ -177,6 +188,12 @@ CTank::CTank(const CTank& src)
 	_Panel = NULL;
 	_prevPanel = NULL;
 
+	_SpriteExpload = SPRITEFACTORY->create(TEXKEY::TANK_EXPLOAD());
+	//_SpriteExpload->createAnimeParam(ANIMEPATH::BARN());
+	//_SpriteExpload->setCatAnime(0);
+	//_SpriteExpload->updateAnime();
+
+	D3DXMatrixIdentity(&_effectMatrix);
 #ifdef _DEBUG
 	debugMesh = NULL;
 	D3DXCreateSphere(D3DDEVICE,_fRadius,10,5,&debugMesh,NULL);
@@ -497,13 +514,21 @@ void CTank::pRap()				///<	自機ラップ
 void CTank::destroyed()
 {
 	//爆発演出
-
+	const D3DXVECTOR3 pos = _pTankBottom->getPos();
+	_effectMatrix._41 = 720;//pos.x;
+	_effectMatrix._42 = 510;//pos.y;
+	//_effectMatrix._43 = 0.01f;//pos.z;
+	
+	//_SpriteExpload->setCatAnime(5 - int(5 * (_deldelayCount / _maxdeldelayCount)));
+	//_SpriteExpload->updateAnime();
+	_SpriteExpload->draw(0,&_effectMatrix);
 
 	--_deldelayCount;
 
 	if(_deldelayCount < 0)
 	{
 		CTaskMng::erase(&_pTaskDestroyed);
+		if(_unThisType != TYPE_PLAYER)
 		_DeleteFlg = TRUE;
 	}
 }

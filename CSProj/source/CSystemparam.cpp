@@ -21,6 +21,7 @@
 #include"CTaskList.h"
 #include"CSpriteFactory.h"
 #include"CSprite.h"
+#include"CInputCommon.h"
 
 #include"CSound.h"
 #include"CSoundKey.h"
@@ -39,8 +40,13 @@ int CSystemparam::_MaxGoalCount = 300;
 CSystemparam::CSystemparam()
 	:CObjBase(OBJGROUPKEY::GAMESYSTEM()),
 	_flgRaceResult(0),
+	_gotoscene(0),
 	_flgEnd(FALSE),
 	_Sprite(NULL),
+	_retrySpriteA(NULL),
+	_retrySpriteB(NULL),
+	_titleSpriteA(NULL),
+	_titleSpriteB(NULL),
 	_playerTank(NULL),
 	_TaskList(NULL),
 	_TaskEndCount(NULL),
@@ -62,6 +68,10 @@ CSystemparam::~CSystemparam()
 {
 	disableTask();
 	SAFE_DELETE(_Sprite);
+	SAFE_DELETE(_retrySpriteA);
+	SAFE_DELETE(_retrySpriteB);
+	SAFE_DELETE(_titleSpriteA);
+	SAFE_DELETE(_titleSpriteB);
 }
 
 /***********************************************************************/
@@ -74,8 +84,13 @@ CSystemparam::~CSystemparam()
 CSystemparam::CSystemparam(const CSystemparam& src)
 	:CObjBase(OBJGROUPKEY::GAMESYSTEM()),
 	_flgRaceResult(0),
+	_gotoscene(0),
 	_flgEnd(FALSE),
 	_Sprite(NULL),
+	_retrySpriteA(NULL),
+	_retrySpriteB(NULL),
+	_titleSpriteA(NULL),
+	_titleSpriteB(NULL),
 	_playerTank(NULL),
 	_TaskEndCount(NULL),
 	_TaskList(NULL),
@@ -88,10 +103,14 @@ CSystemparam::CSystemparam(const CSystemparam& src)
 	TankList = OBJMNG->getList(OBJGROUPKEY::TANK());
 	D3DXMatrixIdentity(&_spriteMatrix);
 	_spriteMatrix._41 = 400;
-	_spriteMatrix._42 = 320;
+	_spriteMatrix._42 = 150;
 	enableTask();
 	_Sprite = SPRITEFACTORY->create(TEXKEY::READY());
 	CSOUND->GetSound(SOUNDKEY::FANFARE())->Play(0,0,0);
+	_retrySpriteA = SPRITEFACTORY->create(TEXKEY::RETRY_BUTTON01());
+	_retrySpriteB = SPRITEFACTORY->create(TEXKEY::RETRY_BUTTON02());
+	_titleSpriteA = SPRITEFACTORY->create(TEXKEY::TITLE_BUTTON01());
+	_titleSpriteB = SPRITEFACTORY->create(TEXKEY::TITLE_BUTTON02());
 }
 
 /***********************************************************************/
@@ -152,7 +171,6 @@ void CSystemparam::endCount()
 	--_goalCount;
 
 	_flgEnd = _goalCount <= 0 ? TRUE : FALSE;
-
 }
 
 /***********************************************************************/
@@ -201,10 +219,12 @@ void CSystemparam::endcheck()
 	CTaskMng::erase(&_TaskEndCheck);
 	CSOUND->GetSound(SOUNDKEY::GAMEBGM())->Stop();
 	SAFE_DELETE(_Sprite);
-	if(_flgRaceResult == 1){
-		_Sprite = SPRITEFACTORY->create(TEXKEY::VICTORY());
+	if(_flgRaceResult == 1)
+	{
+		_Sprite = SPRITEFACTORY->create(TEXKEY::RESULT_RANK());
 	}
-	else	{
+	else
+	{
 		_Sprite = SPRITEFACTORY->create(TEXKEY::LOSE());
 		CSOUND->GetSound(SOUNDKEY::LOSEBGM())->Play(0,0,1);
 	}
@@ -252,7 +272,56 @@ void CSystemparam::Ranking()
 
 void CSystemparam::drawResult()
 {
+	const RECTEX *sizeretry, *sizetitle;
+	D3DXVECTOR2 colpos;
+	POINT ResultClickpos;
+
+	ResultClickpos = MOUSE.getPointWindow();
+
+	sizeretry = _retrySpriteA->getUV();
+	sizetitle = _titleSpriteA->getUV();
+
+
+	_spriteMatrix._41 = 400;
+	_spriteMatrix._42 = 150;
 	_Sprite->draw(0,&_spriteMatrix);
+
+	_spriteMatrix._41 = 400;
+	_spriteMatrix._42 = 370;
+	colpos.x = 400 - sizeretry->right / 2;
+	colpos.y = 370 - sizeretry->bottom / 2;
+	if(bindRect(&colpos, (RECT *) sizeretry, &D3DXVECTOR2(ResultClickpos.x, ResultClickpos.y)))
+	{
+		_retrySpriteB->draw(0,&_spriteMatrix);
+		if(MOUSE.getTrgMouseButton(0))
+		{	
+			_gotoscene = 1;
+			_goalCount = 0;
+		}
+	}
+	else
+	{
+		_retrySpriteA->draw(0,&_spriteMatrix);
+	}
+
+	_spriteMatrix._41 = 400;
+	_spriteMatrix._42 = 515;
+	colpos.x = 400 - sizetitle->right / 2;
+	colpos.y = 515 - sizetitle->bottom / 2;
+	if(bindRect(&colpos, (RECT *) sizetitle, &D3DXVECTOR2(ResultClickpos.x, ResultClickpos.y)))
+	{
+		_titleSpriteB->draw(0,&_spriteMatrix);
+		if(MOUSE.getTrgMouseButton(0))
+		{	
+			_gotoscene = 2;
+			_goalCount = 0;
+		}
+	}
+	else
+	{
+		_titleSpriteA->draw(0,&_spriteMatrix);
+	}
+	
 }
 
 void CSystemparam::drawStart()
@@ -309,7 +378,6 @@ BOOL CSystemparam::endcheckGoal(CTank** GoalTank,CListItem<CObjBase*>* begin,con
 				_flgRaceResult = 1;
 				*GoalTank = pTank;
 				SAFE_DELETE(_Sprite);
-				_Sprite = SPRITEFACTORY->create(TEXKEY::VICTORY());
 				return TRUE;
 			}
 			++sumGoals;
@@ -358,7 +426,6 @@ BOOL CSystemparam::endcheckDestroy(CTank** DestroyerTank,CListItem<CObjBase*>* b
 		{
 			*DestroyerTank = static_cast<CTank*>(begin->getInst());
 			SAFE_DELETE(_Sprite);
-			_Sprite = SPRITEFACTORY->create(TEXKEY::VICTORY());
 			_flgRaceResult = 1;
 		}
 		return TRUE;

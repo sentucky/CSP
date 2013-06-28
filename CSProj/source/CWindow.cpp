@@ -26,6 +26,9 @@ LRESULT CALLBACK WndProc( HWND hWnd , UINT msg , WPARAM wParam , LPARAM lp )
 	case WM_DESTROY:
 		PostQuitMessage( 0 );
 		break;
+	case WM_SETCURSOR:
+	while(ShowCursor(FALSE) < 0 )
+	break;
 	case WM_KEYDOWN:
 		switch(wParam)
 		{
@@ -65,7 +68,7 @@ BOOL CWindow::init(HINSTANCE hInst, int nCmdShow)
 {
 	WNDCLASS wc;
 	_hInst = hInst;
-	char szClassName[] = "GMSum";
+	char szClassName[] = "Tank-1";
 	
 	wc.style         = CS_HREDRAW | CS_VREDRAW;
 	wc.hInstance     = _hInst;

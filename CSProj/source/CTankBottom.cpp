@@ -113,11 +113,13 @@ void CTankBottom::clacMove(const uint rank)
 	const float rankPar = static_cast<float>(rank) / static_cast<float>(size) - 0.5f;
 
 	const D3DXVECTOR2* pMoveVec = _pIntelligence->getModeDir();
+	
 	if(abs(pMoveVec->x) + abs(pMoveVec->y) != 0)
 	{
 		D3DXVec3Normalize(&_Dir,&_Dir);
-		_MoveVec += _Dir *( _fSpeedMove  + _fSpeedMove * rankPar);
+		_MoveVec += _Dir *( _fSpeedMove + _fSpeedMove * rankPar);
 	}
+	
 }
 
 

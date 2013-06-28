@@ -80,7 +80,7 @@ void CSceneStageSelect::init()
 	pSprite[0] = SPRITEFACTORY->create(TEXKEY::TITLE_BG());
 	vecPos[0] = D3DXVECTOR2(400.0f, 320.0f);
 	pSprite[1] = SPRITEFACTORY->create(TEXKEY::SELECT_COURSE1());
-	vecPos[1] = D3DXVECTOR2(400.0f, 200.0f);
+	vecPos[1] = D3DXVECTOR2(400.0f, 220.0f);
 	pSprite[2] = SPRITEFACTORY->create(TEXKEY::BACK_BUTTON());
 	vecPos[2] = D3DXVECTOR2(100.0f, 560.0f);
 	pSprite[3] = SPRITEFACTORY->create(TEXKEY::START_BUTTON01());

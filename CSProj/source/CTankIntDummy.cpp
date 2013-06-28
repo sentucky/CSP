@@ -27,6 +27,7 @@ CTankIntDummy::CTankIntDummy(CTank* pTank)
 	_pMyTank = pTank;
 	_point = 1;
 	_MoveDir = D3DXVECTOR2(0,1);
+	_pointError = (rand()%POINT_ERROR_NUM) - POINT_ERROR_NUM / 2;	// 誤差設定
 
 }
 
@@ -82,11 +83,11 @@ void CTankIntDummy::root(){
 	static float dot;
 	// 現在位置から目的ナビポイントまで
 	
-	TanktoNaviPoint.x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_pMyTank->getMatBottom()->_41;
-	TanktoNaviPoint.y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_pMyTank->getMatBottom()->_43;
+	TanktoNaviPoint.x = (CTankIntDummy::_StageData->getRoot()[_point].x + _pointError) - CTankIntDummy::_pMyTank->getMatBottom()->_41;
+	TanktoNaviPoint.y = (CTankIntDummy::_StageData->getRoot()[_point].y + _pointError) - CTankIntDummy::_pMyTank->getMatBottom()->_43;
 	//前ナビポイントから目的ナビポイントまで
-	NaviToNavi.x = CTankIntDummy::_StageData->getRoot()[_point].x - CTankIntDummy::_StageData->getRoot()[_point-1].x;
-	NaviToNavi.y = CTankIntDummy::_StageData->getRoot()[_point].y - CTankIntDummy::_StageData->getRoot()[_point-1].y;
+	NaviToNavi.x = (CTankIntDummy::_StageData->getRoot()[_point].x + _pointError) - (CTankIntDummy::_StageData->getRoot()[_point-1].x + _pointError);
+	NaviToNavi.y = (CTankIntDummy::_StageData->getRoot()[_point].y + _pointError) - (CTankIntDummy::_StageData->getRoot()[_point-1].y + _pointError);
 	
 	// 性器化
 	D3DXVec2Normalize(&TtoNUnitVec,&TanktoNaviPoint);

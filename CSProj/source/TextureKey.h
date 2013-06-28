@@ -14,6 +14,7 @@
 class TEXPATH
 {
 public:
+	static const char* TANK_EXPLOAD();
 	static const char* CIRCLE();
 	static const char* TANK();
 	static const char* STAGESELECT();
@@ -22,9 +23,10 @@ public:
 	static const char* GO();
 	static const char* EXIT();
 	
+	static const char* SIGHT();
 	static const char* MINIDOT();
+	static const char* MINIMAP();
 	static const char* GAME_BG();
-	static const char* VICTORY();
 	static const char* LOSE();
 	static const char* FADEMASK();
 	static const char* BACK_BUTTON();
@@ -78,6 +80,7 @@ public:
 class TEXKEY
 {
 public:
+	static const uint TANK_EXPLOAD();
 	static const uint CIRCLE();
 	static const uint TANK();
 	static const uint STAGESELECT();
@@ -86,9 +89,10 @@ public:
 	static const uint GO();
 	static const uint EXIT();
 
+	static const uint SIGHT();
 	static const uint MINIDOT();
+	static const uint MINIMAP();
 	static const uint GAME_BG();
-	static const uint VICTORY();
 	static const uint LOSE();
 	static const uint FADEMASK();
 	static const uint BACK_BUTTON();

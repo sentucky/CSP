@@ -86,7 +86,7 @@ CCockpit::CCockpit(const CCockpit& src)
 	_SpriteStatus->setCatAnime(0);
 	_SpriteStatus->updateAnime();
 
-	_spriteMiniMap = SPRITEFACTORY->create(TEXKEY::SELECT_COURSE1());
+	_spriteMiniMap = SPRITEFACTORY->create(TEXKEY::MINIMAP());
 	_spriteDot	   = SPRITEFACTORY->create(TEXKEY::MINIDOT());
 
 	_spriteThMatrix._41 = 720;
@@ -122,7 +122,7 @@ void CCockpit::disableTask()
 	CTaskMng::erase(&_TaskUpdate);
 }
 
-
+#include"CCamera.h"
 void CCockpit::draw()
 {
 	_Num->draw();
@@ -137,15 +137,28 @@ void CCockpit::update()
 {
 	float life;
 	float maxlife;
+	float rag;
+	float maxrag;
 
 	life = _Tank->getlife();
 	maxlife = _Tank->getmaxlife();
-
-	//_SpriteCircle->setColorRevision(D3DXCOLOR();
+	rag = _Tank->getradiate();
+	maxrag = _Tank->getMaxradiateTime();
+	
+	if(rag > 0.0f)
+	{
+//		_SpriteCircle->setColorRevision(D3DXCOLOR(1.0f - (rag / maxrag), 0.0f, 0.0f, 1.0f));
+	}
+	else
+	{
+		_SpriteCircle->setColorRevision(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 
 	_Num->setNum(_Tank->getRank()+1);
 	_SpriteStatus->setCatAnime(5 - int(5 * (life / maxlife)));
 	_SpriteStatus->updateAnime();
+
+
 
 	updateMiniMap();
 }
@@ -163,7 +176,12 @@ void CCockpit::updateMiniMap()
 
 	const float vx = (_Tank->getMatBottom()->_41) * 0.5f * a;
 	const float vy = -(_Tank->getMatBottom()->_43) * 0.5f * b;
-
 	_spriteDotMatrix._41 = vx + _spriteMiniMapMatrix._41;
 	_spriteDotMatrix._42 = vy + _spriteMiniMapMatrix._42;
+
+	if(_Tank->getDestroyed() == TRUE)
+	{
+		CTaskMng::erase(&_TaskUpdate);
+	}
+
 }

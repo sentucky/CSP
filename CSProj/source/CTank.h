@@ -147,6 +147,9 @@ private:
 	OUTPUT*         _Panel;				//
 	OUTPUT*         _prevPanel;			//
 
+	CSprite*		_SpriteExpload;
+	D3DXMATRIXA16	_effectMatrix;
+
 	static CTank* _Player;
 
 public:

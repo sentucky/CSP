@@ -75,7 +75,7 @@ void CRect::Draw()
 	//更新
 	if (mIsUpdate)
 		this->Update();
-
+//	/*
 	D3DMATERIAL9 materials2;
 	materials2.Specular.a = 1.0f;
 	materials2.Ambient .a = 1.0f;
@@ -91,7 +91,7 @@ void CRect::Draw()
 	//テクスチャ設定
 	mDevice_pr->SetTexture(0,mTexture_pr);
 
-	mDevice_pr->SetMaterial((D3DMATERIAL9*)&materials2);
+//	mDevice_pr->SetMaterial((D3DMATERIAL9*)&materials2);
 
 	//ポリゴン描画
 	mDevice_pr->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP,2,mVtx,sizeof(VERTEX_RECT));

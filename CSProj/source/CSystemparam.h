@@ -53,6 +53,7 @@ public:
 
 	const uint getFlgResult(){return _flgRaceResult;}
 	const BOOL getFlgEnd(){return _flgEnd;}
+	const int getgotoscene(){return _gotoscene;}
 private:
 	CTaskList* _TaskList;
 	CTaskList* _TaskEndCount;
@@ -63,8 +64,13 @@ private:
 
 	uint _flgRaceResult;	//	0:レース中	1:プレイヤー勝利 2:プレイヤー負け
 	BOOL _flgEnd;
+	int  _gotoscene;
 
 	CSprite* _Sprite;
+	CSprite* _retrySpriteA;
+	CSprite* _retrySpriteB;
+	CSprite* _titleSpriteA;
+	CSprite* _titleSpriteB;
 
 	int _startCount;
 	static const int MaxStartCount = 60;

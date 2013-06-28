@@ -70,6 +70,7 @@ void CFont::init(
 		UINT              Weight
 )
 {
+	/*
 		_LogFont.Height				= Height;
 		_LogFont.Width				= Width;
 		_LogFont.Weight				= FW_NORMAL;
@@ -82,6 +83,7 @@ void CFont::init(
 		lstrcpy( _LogFont.FaceName,"ƒSƒVƒbƒN");
 
 		D3DXCreateFontIndirect(D3DDEVICE, &_LogFont, &_pFont);
+		*/
 }
 
 /***********************************************************************/
@@ -129,7 +131,7 @@ void CFont::DrawInt(char pStr[MAX_PATH], int nNum, RECT& rect)
 {
 	char pStr2[MAX_PATH] = {0,};
 	sprintf_s(pStr2,"%s:%04d",pStr,nNum);
-
+/*
 	_pFont->DrawText(
 		NULL,
 		pStr2,
@@ -138,7 +140,7 @@ void CFont::DrawInt(char pStr[MAX_PATH], int nNum, RECT& rect)
 		DT_LEFT | DT_NOCLIP,
 		_Color
 		);
-
+		*/
 }
 /***********************************************************************/
 /*! @brief 
@@ -151,6 +153,7 @@ void CFont::DrawInt(char pStr[MAX_PATH], int nNum, RECT& rect)
 /***********************************************************************/
 void CFont::DrawFloat(char pStr[MAX_PATH], float fNum, RECT& rect)
 {
+	/*
 	char pStr2[MAX_PATH] = {0,};
 	sprintf_s(pStr2,"%s:%04f",pStr,fNum);
 
@@ -162,6 +165,7 @@ void CFont::DrawFloat(char pStr[MAX_PATH], float fNum, RECT& rect)
 		DT_LEFT | DT_NOCLIP,
 		_Color
 		);
+		*/
 }
 
 /***********************************************************************/
@@ -175,6 +179,7 @@ void CFont::DrawFloat(char pStr[MAX_PATH], float fNum, RECT& rect)
 /***********************************************************************/
 void CFont::DrawLong(char pStr[MAX_PATH], long lNum, RECT& rect)
 {
+	/*
 	char pStr2[MAX_PATH] = {0,};
 	sprintf_s(pStr2,"%s:%d",pStr,lNum);
 
@@ -186,5 +191,5 @@ void CFont::DrawLong(char pStr[MAX_PATH], long lNum, RECT& rect)
 		DT_LEFT | DT_NOCLIP,
 		_Color
 		);
-
+		*/
 }

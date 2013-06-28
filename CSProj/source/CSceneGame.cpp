@@ -110,11 +110,10 @@ void CSceneGame::init()
 
 	_DrawFlg = FALSE;
 
-
 	GLight  = new CLight;
 	GLight->lightON();
 	GLight->setDirectionalLight(
-		COLORVALUE(1.0f,1.0f,1.0f,1.0f),
+		COLORVALUE(1.0f,0.0f,0.0f,1.0f),
 		D3DXVECTOR3(0.0,-1.0f,5.0f)
 		);
 
@@ -147,7 +146,7 @@ void CSceneGame::init()
 	int n2 = 0;
 //*	
 	CTankIntInter::setPlayerTank(pTank);
-	for(int n = 0; n < 200; n++)
+	for(int n = 0; n < 99; n++)
 	{
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
 	}
@@ -166,7 +165,6 @@ void CSceneGame::init()
 
 
 	//...ƒsƒ“
-	OBJMNG->push(OBJGROUPKEY::PIN(),OBJFACTORY->create(OBJKEY::PIN()),NULL);
 #ifdef _DEBUG
 
 #endif
@@ -242,10 +240,6 @@ void CSceneGame::init()
 	LPDIRECTSOUNDBUFFER bgm = CSOUND->GetSound(SOUNDKEY::GAMEBGM());
 	//*/
 	SysParam->setCamStart(pSTCam);
-
-
-	
-
 }
 
 /***********************************************************************/
@@ -271,7 +265,6 @@ void CSceneGame::update()
 	{
 		_EndFlg = TRUE;
 	}
-
 }
 
 /***********************************************************************/
@@ -284,7 +277,6 @@ void CSceneGame::draw()
 {
 	CHECK_DRAW;
 	CTaskMng::draw();
-
 
 
 	static RECTEX fpspos(0,0,0,0);
@@ -326,7 +318,19 @@ void CSceneGame::release()
 CSceneBase * CSceneGame::nextScene()
 {
 	CSOUND->GetSound(SOUNDKEY::LOSEBGM())->Stop();
-	return new CSceneTitle;
+	switch(_SysPara->getgotoscene())
+	{
+	case 1:
+//		return new CSceneGame;
+//		delete this;
+		return new CSceneGame;
+		break;
+	case 2:
+		return new CSceneTitle;
+		break;
+	}
+
+	return this;
 }
 
 /***********************************************************************/
@@ -350,14 +354,14 @@ void CSceneGame::standby(CStage* pStage)
 
 	const float rotStartTile = pStTile->rot;
 
-	float moveX = 2.0f;
-	float moveY = 2.0f;
+	float moveX = 5.0f;
+	float moveY = 5.0f;
 
 
 	float pointX = pStTile->posX;
 	float pointY = pStTile->posY;
 
-	const int div = 7;
+	const int div = 4;
 
 
 	//....Šî“_Žæ“¾

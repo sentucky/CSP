@@ -36,6 +36,7 @@
 #include"CSystemparam.h"
 
 
+#include"CSprite.h"
 #include"CSound.h"
 
 #include"CNum.h"
@@ -55,6 +56,8 @@ CSceneBase* pScene		= NULL;
 CSceneBase* pLastScene	= NULL;	//	ÅŒã‚Éˆµ‚Á‚½ƒV[ƒ“
 uint		Phase		= 0;
 
+CSprite* spriteSight;
+D3DXMATRIXA16 matSight;
 
 /***********************************************************************/
 //	æséŒ¾
@@ -91,12 +94,16 @@ void gameInit()
 //	ps = new CSceneTestSpace;
 	pScene = ps;
 
+	D3DXMatrixIdentity(&matSight);
+
 	TEXTUREFACTORY->reserve(TEXKEY::SUM());
+	SPRITEFACTORY->registTexture(TEXKEY::SIGHT(),			TEXPATH::SIGHT()			);
+	SPRITEFACTORY->registTexture(TEXKEY::MINIMAP(),			TEXPATH::MINIMAP());
 	SPRITEFACTORY->registTexture(TEXKEY::MINIDOT(),			TEXPATH::MINIDOT()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TANK_EXPLOAD(),	TEXPATH::TANK_EXPLOAD()		);
 	SPRITEFACTORY->registTexture(TEXKEY::GAME_BG(),			TEXPATH::GAME_BG()			);
 	SPRITEFACTORY->registTexture(TEXKEY::CIRCLE(),			TEXPATH::CIRCLE()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TANK(),			TEXPATH::TANK()				);
-	SPRITEFACTORY->registTexture(TEXKEY::VICTORY(),			TEXPATH::VICTORY()			);
 	SPRITEFACTORY->registTexture(TEXKEY::LOSE(),			TEXPATH::LOSE()				);
 	SPRITEFACTORY->registTexture(TEXKEY::FADEMASK(),		TEXPATH::FADEMASK()			);
 	SPRITEFACTORY->registTexture(TEXKEY::BACK_BUTTON(),		TEXPATH::BACK_BUTTON()		);
@@ -183,9 +190,9 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM()),
 		0,
 		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1),
+		0.1f,
 		0.05f,
-		0.05f,
-		50
+		10
 		);
 	CStage* pStage = new CStage(STAGEPATH::NO_01(),MESHFACTORY->create(MESHKEY::DOME()));
 
@@ -194,9 +201,9 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM()),
 		-1,
 		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::SHELL01()),1),
-		0.05f,
-		0.05f,
-		10);
+		0.1f,
+		0.1f,
+		5);
 
 	OBJFACTORY->reserve(OBJKEY::SUM());
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANK01(),pObj);
@@ -221,13 +228,16 @@ void gameInit()
 	pSound->Init();
 	pSound->LoadSoundFile(SOUNDKEY::COLLISION(),	SOUNDPATH::COLLISION()	);
 	pSound->LoadSoundFile(SOUNDKEY::FANFARE(),		SOUNDPATH::FANFARE()	);
-	pSound->LoadSoundFile(SOUNDKEY::MOVE(),			SOUNDPATH::MOVE()	);
-	pSound->LoadSoundFile(SOUNDKEY::FIRE(),			SOUNDPATH::FIRE()	);
+	pSound->LoadSoundFile(SOUNDKEY::MOVE(),			SOUNDPATH::MOVE()		);
+	pSound->LoadSoundFile(SOUNDKEY::FIRE(),			SOUNDPATH::FIRE()		);
 	pSound->LoadSoundFile(SOUNDKEY::GAMEBGM(),		SOUNDPATH::GAMEBGM()	);
 	pSound->LoadSoundFile(SOUNDKEY::LOSEBGM(),		SOUNDPATH::LOSEBGM()	);
 	pSound->LoadSoundFile(SOUNDKEY::TITLEBGM(),		SOUNDPATH::TITLEBGM()	);
 	CTank::setSoundFire(pSound->GetSound(SOUNDKEY::FIRE()));
-//*/	
+//*/
+	spriteSight = SPRITEFACTORY->create(TEXKEY::SIGHT());
+
+	while(!(ShowCursor(FALSE) < 0));
 }
 
 
@@ -248,6 +258,8 @@ bool gameLoop()
 		SAFE_DELETE(pLastScene);
 	}
 	pLastScene = pScene;
+	matSight._41 = MOUSE.getPointWindow().x;
+	matSight._42 = MOUSE.getPointWindow().y;
 
 	switch(Phase)
 	{
@@ -299,6 +311,7 @@ bool gameLoop()
 	{
 		pLastScene->draw();
 		FADEINOUT->draw();
+		spriteSight->draw(0,&matSight);
 		drawEnd();
 		D3DDEVICE->Present(0,0,0,0);
 	}
@@ -354,6 +367,7 @@ void drawEnd()
 void gameRelease()
 {
 	delete pScene;
+	SAFE_DELETE(spriteSight);
 
 	OBJFACTORY->release();
 	MESHFACTORY->release();
