@@ -315,7 +315,7 @@ void CalcParticleColliAfterPos(
    D3DXVec3Normalize(&C, &C);
    FLOAT Dot = D3DXVec3Dot( &(*pVelo_A-*pVelo_B), &C ); // 内積算出
    D3DXVECTOR3 ConstVec = RefRate*Dot/TotalWeight * C; // 定数ベクトル
-
+   
    // 衝突後速度ベクトルの算出
    *pOut_velo_A = -weight_B * ConstVec + *pVelo_A;
    *pOut_velo_B = weight_A * ConstVec + *pVelo_B;

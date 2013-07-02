@@ -110,10 +110,11 @@ void CSceneGame::init()
 
 	_DrawFlg = FALSE;
 
+
 	GLight  = new CLight;
 	GLight->lightON();
 	GLight->setDirectionalLight(
-		COLORVALUE(1.0f,0.0f,0.0f,1.0f),
+		COLORVALUE(1.0f,1.0f,1.0f,1.0f),
 		D3DXVECTOR3(0.0,-1.0f,5.0f)
 		);
 
@@ -138,20 +139,13 @@ void CSceneGame::init()
 	OBJMNG->push(OBJGROUPKEY::TANK(),pTank = static_cast<CTank*>(OBJFACTORY->create(OBJKEY::TANK01())),NULL);
 	CTank::setTankPlayer(pTank);
 
-#ifdef _DEBUG
 	CTank*			pTank2 = NULL;
-	//*
-	OUTPUT t[16][16];
-	pStage->getStageData()->getTile(t);
 	int n2 = 0;
-//*	
 	CTankIntInter::setPlayerTank(pTank);
 	for(int n = 0; n < 99; n++)
 	{
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
 	}
-	//*/
-#endif
 
 	//...’ÇÕƒJƒƒ‰
 	OBJMNG->push(OBJGROUPKEY::CAMERA(),_FollowCamera = static_cast<CFollowCamera*>(OBJFACTORY->create(OBJKEY::FOLLOWCAMERA())),NULL);
@@ -163,11 +157,6 @@ void CSceneGame::init()
 	pSTCam->reset();
 
 
-
-	//...ƒsƒ“
-#ifdef _DEBUG
-
-#endif
 	CSystemparam* SysParam;
 	OBJMNG->push(OBJGROUPKEY::COCKPIT(),SysParam = OBJFACTORY->create<CSystemparam>(OBJKEY::SYSTEMPARAM()),NULL);
 	_SysPara = SysParam;
@@ -200,8 +189,13 @@ void CSceneGame::init()
 	standby(pStage);
 	_DrawFlg = TRUE;
 
+#ifdef _DEBUG
+	pSTCam->count(0,30);
+	pSTCam->count(1,30);
+#else
 	pSTCam->count(0,215);
 	pSTCam->count(1,30);
+#endif
 	pSTCam->point(
 		0,
 		pStage->getStageData()->getStartTile()->posX + _FollowCamera->getDistance() * _FollowCamera->getNAtToEye()->x,
@@ -279,9 +273,9 @@ void CSceneGame::draw()
 	CTaskMng::draw();
 
 
+#ifdef _DEBUG
 	static RECTEX fpspos(0,0,0,0);
 	FONT->DrawInt("FPS:",CTIMER->getFPS(),fpspos);
-#ifdef _DEBUG
 	static RECTEX ps(0,16,0,0);
 	static D3DXVECTOR3 Mouse3DPos;
 	MOUSE.mousePoint3D(&Mouse3DPos,0);
@@ -322,7 +316,7 @@ CSceneBase * CSceneGame::nextScene()
 	{
 	case 1:
 //		return new CSceneGame;
-//		delete this;
+		delete this;
 		return new CSceneGame;
 		break;
 	case 2:

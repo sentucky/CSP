@@ -6,6 +6,7 @@
  *  @date 
  */
 /***********************************************************************/
+#ifdef _DEBUG
 #include"CSceneTestSpace.h"
 #include"const.h"
 #include"CSpriteFactory.h"
@@ -94,7 +95,7 @@ void CSceneTestSpace::init()
 {
 
 	release();
-
+	/*
 	pSprite = SPRITEFACTORY->create(TEXKEY::ANIMETEST());
 	pSprite->createAnimeParam(ANIMEPATH::TEST());
 	pSprite->getAnimeParam()->setState(ANIME_STATE::PLAY_LOOP);
@@ -130,7 +131,7 @@ void CSceneTestSpace::init()
 	TestMesh[1]->setEffect(pEffect2);
 
 	pLight->lightON();
-	*/
+//	*/
 
 //	CSOUND->LoadSoundFile()
 	/*
@@ -143,7 +144,7 @@ void CSceneTestSpace::init()
 	stest::aparam = new CAnimeParam(ANIMEPATH::TEST());
 	stest::aparam->setState(PLAY_LOOP);
 	stest::pSprite = SPRITEFACTORY->create(TEXKEY::ANIMETEST());
-	
+//*/	
 	CCamera::init();
 	Shadow = new CShadowMap("0","data/fx/shadowmap.fx");
 
@@ -151,7 +152,7 @@ void CSceneTestSpace::init()
 	D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
 	D3DXMatrixScaling(&mat,0.1,0.1,0.1);
-	/*
+	//*
 	mat._41 = -100;
 	mat._42 = 80;
 	mat._43 = -100;
@@ -159,9 +160,8 @@ void CSceneTestSpace::init()
 	Shadow->landMat = mat;
 
 	CCamera::setEye(D3DXVECTOR3(0,200,-300));
-	/*
+
 	pMesh = MESHFACTORY->create(MESHKEY::RING());
-	*/
 
 
 //	light = new CLight;
@@ -178,8 +178,8 @@ void CSceneTestSpace::init()
 void CSceneTestSpace::update()
 {
 	CHECK_UPDATE;
-	pSprite->updateAnime();
-	/*
+	//pSprite->updateAnime();
+	//*
 	D3DXVECTOR3 Eye = pCamera->getEye();
 	if(GetAsyncKeyState('S'))
 	{
@@ -199,7 +199,7 @@ void CSceneTestSpace::update()
 	}
 
 	
-	*/
+	//*/
 	/*
 	stest::aparam->update();
 	stest::pSprite->setUV(stest::aparam->getUV());
@@ -217,8 +217,9 @@ void CSceneTestSpace::update()
 	}
 	
 //	light->update();
+*/
 	CCamera::update();
-
+	//*
 	D3DXVECTOR3 eye = CCamera::getEye();
 	int move = 100;
 	if(GetAsyncKeyState('W'))
@@ -247,7 +248,8 @@ void CSceneTestSpace::update()
 	{
 		eye.y+=move;
 	}
-	CCamera::setEye(eye);*/
+	CCamera::setEye(eye);
+	//*/
 }
 
 
@@ -258,7 +260,7 @@ void CSceneTestSpace::update()
  */
 /***********************************************************************/
 void CSceneTestSpace::draw()
-{
+{/*
 	CHECK_DRAW;
 	pSprite->draw(
 		0,
@@ -275,7 +277,7 @@ void CSceneTestSpace::draw()
 
 	stest::pNum->draw();
 	stest::pNum2->draw();
-	
+	*/
 	D3DXMATRIXA16 MAT;
 	D3DXMatrixIdentity(&MAT);
 	D3DXMatrixScaling(&MAT,0.1f,0.1f,0.1f);
@@ -359,3 +361,5 @@ CSceneBase * CSceneTestSpace::nextScene()
 {
 	return this;
 }
+
+#endif

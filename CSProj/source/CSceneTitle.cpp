@@ -91,7 +91,9 @@ void CSceneTitle::init()
 	{
 		changebutton[i] = false;
 	}
+#ifndef _DEBUG
 	CSOUND->GetSound(SOUNDKEY::TITLEBGM())->Play(0,0,1);
+#endif
 }
 /***********************************************************************/
 /*! @brief 

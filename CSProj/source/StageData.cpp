@@ -103,6 +103,7 @@ void CStageData::Draw()
 	D3DXMATRIXA16 matRot;
 	int i,j;
 
+	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,FALSE);
 	D3DDEVICE->SetFVF(FVF_VERTEX_RECT);
 	for (i = 0 ; i < MAX_DATA ; i++){
 		for (j = 0 ; j < MAX_DATA ; j++){
@@ -129,7 +130,6 @@ void CStageData::Draw()
 		line[i].diffuse = D3DXCOLOR(1.0f,0.0f,0.0f,1.0f);
 	}
 	
-	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,FALSE);
 	D3DDEVICE->SetFVF(FVF_LINE);
 	D3DDEVICE->SetTexture(0,NULL);
 	static float size = 5.0f;
@@ -138,8 +138,8 @@ void CStageData::Draw()
 	D3DDEVICE->SetRenderState(D3DRS_POINTSIZE,*((DWORD*)&size));
 	D3DDEVICE->DrawPrimitiveUP(D3DPT_LINESTRIP,rootNum - 1,&line[0],sizeof(LINE));
 	D3DDEVICE->DrawPrimitiveUP(D3DPT_POINTLIST,rootNum,&line[0],sizeof(LINE));
-	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,TRUE);
 #endif
+	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,TRUE);
 
 }
 
@@ -500,11 +500,9 @@ void CStageData::step(
 	static const float kankaku = 500.0f / MAX_DATA;
 
 	static float ary[17]={0,};
-	if(ary[0] == 0)
-	{
+	if(ary[0] == 0){
 		ary[0] = -250.0f;
-		for(uint Cnt = 1; Cnt < MAX_DATA+1; Cnt+=1)
-		{
+		for(uint Cnt = 1; Cnt < MAX_DATA+1; Cnt+=1){
 			ary[Cnt] = kankaku * Cnt + ary[0];
 		}
 	}
@@ -513,20 +511,16 @@ void CStageData::step(
 	int max = MAX_DATA;
 	int mid;
 
-	while(min<=max )
-	{
+	while(min<=max ){
 		mid = (min + max) / 2;
 		//	ˆê’v
-		if(ary[mid] <= tX && ary[mid + 1] > tX )
-		{
+		if(ary[mid] <= tX && ary[mid + 1] > tX ){
 			break;
 		}
-		else if(ary[mid+1] < tX)
-		{
+		else if(ary[mid+1] < tX){
 			min = mid+1;
 		}
-		else
-		{
+		else{
 			max = mid-1;
 		}
 	}
@@ -535,26 +529,21 @@ void CStageData::step(
 	min = 0;
 	max = MAX_DATA;
 
-	while(min<=max )
-	{
+	while(min<=max ){
 		//	ˆê’v
 		mid = (min + max) / 2;
 		//	ˆê’v
-		if(ary[mid] <= tZ && ary[mid + 1] > tZ )
-		{
+		if(ary[mid] <= tZ && ary[mid + 1] > tZ ){
 			break;
 		}
-		else if(ary[mid+1] < tZ)
-		{
+		else if(ary[mid+1] < tZ){
 			min = mid+1;
 		}
-		else
-		{
+		else{
 			max = mid-1;
 		}
 	}
 	*zOut = 15 - mid;
-
 }
 
 

@@ -1,10 +1,10 @@
 /***********************************************************************/
 /*! @file  CFollowCamera.cpp
- *  @brief
- *  
- *  @author 
- *  @date 
- */
+*  @brief
+*  
+*  @author 
+*  @date 
+*/
 /***********************************************************************/
 #include"CFollowCamera.h"
 #include"CCamera.h"
@@ -19,10 +19,10 @@
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @param[in,out]  
- *  @retval  
- */
+* 
+*  @param[in,out]  
+*  @retval  
+*/
 /***********************************************************************/
 CFollowCamera::CFollowCamera(
 	)
@@ -37,9 +37,9 @@ CFollowCamera::CFollowCamera(
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval  
- */
+* 
+*  @retval  
+*/
 /***********************************************************************/
 CFollowCamera::~CFollowCamera()
 {
@@ -49,10 +49,10 @@ CFollowCamera::~CFollowCamera()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @param[in,out] src 
- *  @retval  
- */
+* 
+*  @param[in,out] src 
+*  @retval  
+*/
 /***********************************************************************/
 CFollowCamera::CFollowCamera(
 	const CFollowCamera& src
@@ -60,8 +60,8 @@ CFollowCamera::CFollowCamera(
 	:CObjBase(src._GroupID),
 	_fDistance(	src._fDistance	),	
 	_NAtToEye	(	src._NAtToEye	),
-	  _pTank	(	NULL			),
-	  _pUpdate	(	NULL			)
+	_pTank	(	NULL			),
+	_pUpdate	(	NULL			)
 {
 	D3DXVec3Normalize(&_NAtToEye,&_NAtToEye);
 	enableTask();
@@ -70,9 +70,9 @@ CFollowCamera::CFollowCamera(
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CFollowCamera::enableTask()
 {
@@ -82,9 +82,9 @@ void CFollowCamera::enableTask()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CFollowCamera::disableTask()
 {
@@ -94,9 +94,9 @@ void CFollowCamera::disableTask()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @retval void
- */
+* 
+*  @retval void
+*/
 /***********************************************************************/
 void CFollowCamera::update()
 {
@@ -108,13 +108,13 @@ void CFollowCamera::update()
 	const float z = _pTank->getMatBottom()->_43;
 
 #ifdef _DEBUG
-	if(KEYBOARD.getTrgKey(DIK_P))
+	if(KEYBOARD.getPrsKey(DIK_P))
 	{
-		_NAtToEye.z += 1.0f;
+		_fDistance+=1;
 	}
-	else if(KEYBOARD.getTrgKey(DIK_O))
+	else if(KEYBOARD.getPrsKey(DIK_O))
 	{
-
+		_fDistance-=1;
 	}
 #endif
 
@@ -134,10 +134,10 @@ void CFollowCamera::update()
 
 /***********************************************************************/
 /*! @brief 
- * 
- *  @param[in,out] pTank 
- *  @retval void
- */
+* 
+*  @param[in,out] pTank 
+*  @retval void
+*/
 /***********************************************************************/
 void CFollowCamera::setTank(CTank* pTank)
 {

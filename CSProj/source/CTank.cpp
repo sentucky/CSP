@@ -30,6 +30,8 @@
 #include"CObjMng.h"
 
 #include"StageData.h"
+#include"Rect.h"
+
 #include"CFollowCamera.h"
 
 #include"CSound.h"
@@ -37,17 +39,20 @@
 
 #include"CTankIntDummy.h"
 
-#ifdef _DEBUG
-#include"CCamera.h"
-#include"CScreen.h"
-#include"CFont.h"
-#include"CInputCommon.h"
 
 #include"CSprite.h"
 #include"CSpriteFactory.h"
 #include"TextureKey.h"
 #include"CAnimeParam.h"
 #include"AnimeKey.h"
+
+#ifdef _DEBUG
+#include"CCamera.h"
+#include"CScreen.h"
+#include"CFont.h"
+#include"CInputCommon.h"
+
+#include"CTextureFactory.h"
 
 #endif
 
@@ -58,6 +63,37 @@ LPD3DXMESH debugMesh = NULL;
 CTank* CTank::_Player = NULL;
 const CStageData* CTank::_StageData = NULL;
 LPDIRECTSOUNDBUFFER CTank::_SoundFire	= NULL;
+
+
+void billboard(D3DXMATRIXA16* Out,const D3DXMATRIXA16* In)
+{
+		//	逆ビューの作成
+		D3DXMATRIXA16 trance;
+		D3DXMatrixIdentity(&trance);
+		trance._41 = In->_41;
+		trance._42 = In->_42;
+		trance._43 = In->_43;
+
+		D3DXMATRIXA16 scale;
+		D3DXMatrixIdentity(&scale);
+		scale._11 = In->_11;
+		scale._22 = In->_22;
+		scale._33 = In->_33;
+
+
+		D3DXMATRIXA16 inv;
+		D3DXMatrixIdentity(&inv);
+		D3DXMatrixInverse(&inv,0,CCamera::getMatView());
+		inv._41 = inv._42 = inv._43 = 0;
+
+
+		D3DXMatrixIdentity(Out);
+		*Out = inv * trance;
+}
+
+
+
+
 /***********************************************************************/
 /*! @brief コンストラクタ
  * 
@@ -87,6 +123,7 @@ CTank::CTank(
 	_pTaskCalcAM		( NULL			),
 	_pTaskRap			( NULL			),
 	_pTaskDestroyed		( NULL			),
+	_pTaskStepReset		( NULL			),
 	_pTankTop			( NULL			),
 	_pTankBottom		( NULL			),
 	_pIntelligence		( NULL			),
@@ -99,10 +136,12 @@ CTank::CTank(
 	_deldelayCount		( 0				),
 	_Destroyed			( FALSE			),
 	_FlgGoal			( FALSE			),
-	_lap				(-1),
-	_lapVal				(0),
-	_Rank				(0),
+	_lap				(-1				),
+	_lapVal				(0				),
+	_Rank				(0				),
+	_CurStep			(),
 	_SpriteExpload		(NULL			),
+	_expflag			(false			),
 	_effectMatrix		(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
@@ -121,6 +160,7 @@ CTank::~CTank()
 	disableTask();
 	SAFE_DELETE(_pTankTop);
 	SAFE_DELETE(_pTankBottom);
+	SAFE_DELETE(_SpriteExpload);
 	release();
 #ifdef _DEBUG
 	if(debugMesh != 0)
@@ -147,6 +187,7 @@ CTank::CTank(const CTank& src)
 	_pTaskCalcAM		( NULL								),
 	_pTaskRap			( NULL								),
 	_pTaskDestroyed		( NULL								),
+	_pTaskStepReset		( NULL								),
 	_pTankTop			( new CTankTop(*src._pTankTop)		),
 	_pTankBottom		( new CTankBottom(*src._pTankBottom)),
 	_pIntelligence		( NULL								),
@@ -162,8 +203,10 @@ CTank::CTank(const CTank& src)
 	_lap				(-1									),
 	_lapVal				(0									),
 	_Rank				(0									),
+	_CurStep			(									),
 	_SpriteExpload		(NULL								),
-	_effectMatrix		(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
+	_expflag			(false								),
+	_effectMatrix		(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0	)
 {
 	//	思考設定
 	switch(_unThisType)
@@ -171,7 +214,10 @@ CTank::CTank(const CTank& src)
 	case  TYPE_PLAYER:
 		_pIntelligence = new CTankIntPlayer(this);
 		break;
-	case TYPE_ENEMY01:_pIntelligence = new CTankIntDummy(this);	break;
+	case TYPE_ENEMY01:
+//		_pIntelligence = new CTankIntDummy(this);	
+		_pIntelligence = new CTankIntStop(this);
+		break;
 	}
 	_pTankTop->setIntelligence(_pIntelligence);
 	_pTankBottom->setIntelligence(_pIntelligence);
@@ -183,17 +229,19 @@ CTank::CTank(const CTank& src)
 //	enableTask();
 	CTaskMng::push<CTank>(TASKKEY::DRAW(),			this,&CTank::draw,	&_pTaskDraw			);
 
-	_lapVal = 0.0f;
-	_lap = 0;
-	_Panel = NULL;
-	_prevPanel = NULL;
+	_Panel		= NULL;
+	_prevPanel	= NULL;
+
+	memset(&_CurStep,0,sizeof(_CurStep));
 
 	_SpriteExpload = SPRITEFACTORY->create(TEXKEY::TANK_EXPLOAD());
-	//_SpriteExpload->createAnimeParam(ANIMEPATH::BARN());
-	//_SpriteExpload->setCatAnime(0);
-	//_SpriteExpload->updateAnime();
+	_SpriteExpload->createAnimeParam(ANIMEPATH::BARN());
+	_SpriteExpload->setCatAnime(0);
+	_SpriteExpload->updateAnime();
 
 	D3DXMatrixIdentity(&_effectMatrix);
+
+	CTaskMng::push<CTank>(TASKKEY::TANKSETPSET(),	this,&CTank::stepReset,		&_pTaskStepReset	);
 #ifdef _DEBUG
 	debugMesh = NULL;
 	D3DXCreateSphere(D3DDEVICE,_fRadius,10,5,&debugMesh,NULL);
@@ -221,12 +269,13 @@ void CTank::release()
 /***********************************************************************/
 void CTank::enableTask()
 {
-	CTaskMng::push<CTank>(TASKKEY::PAUSE(),			this,&CTank::pause,	&_pTaskPause		);
-	CTaskMng::push<CTank>(TASKKEY::MOVE(),			this,&CTank::move,	&_pTaskMove			);
+	CTaskMng::push<CTank>(TASKKEY::PAUSE(),			this,&CTank::pause,			&_pTaskPause		);
+	CTaskMng::push<CTank>(TASKKEY::MOVE(),			this,&CTank::move,			&_pTaskMove			);
 	CTaskMng::push<CTank>(TASKKEY::INTELLIGENCE(),	this,&CTank::intelligence,	&_pTaskIntelligence	);
-	CTaskMng::push<CTank>(TASKKEY::FIRE(),			this,&CTank::fire,	&_pTaskFire);
-	CTaskMng::push<CTank>(TASKKEY::CALCACTIVEMOVE(),this,&CTank::calcMove,&_pTaskCalcAM);
-	CTaskMng::push<CTank>(TASKKEY::RAP(),			this,&CTank::pRap, &_pTaskRap);
+	CTaskMng::push<CTank>(TASKKEY::FIRE(),			this,&CTank::fire,			&_pTaskFire);
+	CTaskMng::push<CTank>(TASKKEY::CALCACTIVEMOVE(),this,&CTank::calcMove,		&_pTaskCalcAM);
+	CTaskMng::push<CTank>(TASKKEY::RAP(),			this,&CTank::pRap,			&_pTaskRap);
+	CTaskMng::push<CTank>(TASKKEY::TANKSETPSET(),	this,&CTank::stepReset,		&_pTaskStepReset	);
 }
 
 /***********************************************************************/
@@ -245,6 +294,7 @@ void CTank::disableTask()
 	CTaskMng::erase(&_pTaskCalcAM);
 	CTaskMng::erase(&_pTaskRap);
 	CTaskMng::erase(&_pTaskDestroyed);
+	CTaskMng::erase(&_pTaskStepReset);
 }
 
 const bool CTank::lower(const CTank* A,const CTank* B)
@@ -272,48 +322,44 @@ void CTank::intelligence()
 /***********************************************************************/
 void CTank::draw()
 {
-	int x;
-	int y;
+	int x,y;
+	int playerx, playery;
 
-	int playerx;
-	int playery;
-
+	//	隣接タイル以内になければ描画しない
 	x = YOUSO(_pTankBottom->getWMat()->_41);
 	y = YOUSO(_pTankBottom->getWMat()->_43);
-
 	playerx = YOUSO(CCamera::getAt().x);
 	playery = YOUSO(CCamera::getAt().z);
-
 	if(abs(x - playerx) > 1 || abs(y - playery) > 1)
 	{
 		return;
 	}
+
 	_pTankTop->draw();
 	_pTankBottom->draw();
 
+	if(_expflag)
+	{
+		drawDestroyed();
+	}
 
+#ifdef _DEBUG
 	if(_unThisType == 0)
 	{
 		FONT->DrawFloat("lapval,",this->_lapVal,RECTEX(400,0,0,0));
 		FONT->DrawInt("lap,",this->_lap,RECTEX(400,16,0,0));
 	}
 
-	//煙のエフェクト
-
-
-#ifdef _DEBUG
 	/*
 	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
-	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatViewOUSO());			//カメラ座標変換
+	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatViewOUSO());		//カメラ座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());	//ワールド座標変換
-
 //	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
-
 	debugMesh->DrawSubset(0);
 	*/
 
 	static BOOL flg = TRUE;
-//	_StageData->step(&x,&y,_pTankBottom->getWMat()->_41,_pTankBottom->getWMat()->_43);
+
 	FONT->DrawInt("step",x,RECTEX(0,32,0,0));
 	FONT->DrawInt("step",y,RECTEX(100,32,0,0));
 
@@ -362,13 +408,14 @@ void CTank::move()
 
 	_pTankBottom->move();
 
-	//	移動加算さん
+	//	移動加算さん/
 	const D3DXMATRIXA16* pMatTank = _pTankBottom->getWMat();
+
 	_pTankTop->setPos(
 		pMatTank->_41,
 		pMatTank->_42,
 		pMatTank->_43
-		);
+		);		
 }
 
 
@@ -413,28 +460,8 @@ void CTank::calcMove()
  *  @retval  
  */
 /***********************************************************************/
-void CTank::eRap()				///<	敵ラップ
-{
-	/*
-	 *	ここに処理
-	 */
-	const OUTPUT* StData = _StageData->getStartTile();
-	const OUTPUT* ScData = _StageData->getSecondTile();
-	const OUTPUT* LaData = _StageData->getLastTile();
-	const D3DXVECTOR2* root = _StageData->getRoot();
-}
-
-/***********************************************************************/
-/*! @brief 
- * 
- *  @retval  
- */
-/***********************************************************************/
 void CTank::pRap()				///<	自機ラップ
 {
-	/*
-	 *	ここに処理
-	 */
 	const OUTPUT* StData = _StageData->getStartTile();
 	const OUTPUT* ScData = _StageData->getSecondTile();
 	const OUTPUT* LaData = _StageData->getLastTile();
@@ -513,24 +540,37 @@ void CTank::pRap()				///<	自機ラップ
 /***********************************************************************/
 void CTank::destroyed()
 {
-	//爆発演出
-	const D3DXVECTOR3 pos = _pTankBottom->getPos();
-	_effectMatrix._41 = 720;//pos.x;
-	_effectMatrix._42 = 510;//pos.y;
-	//_effectMatrix._43 = 0.01f;//pos.z;
-	
-	//_SpriteExpload->setCatAnime(5 - int(5 * (_deldelayCount / _maxdeldelayCount)));
-	//_SpriteExpload->updateAnime();
-	_SpriteExpload->draw(0,&_effectMatrix);
+	_expflag = true;
+
+	float count;
+	count = _deldelayCount;
+
+	_SpriteExpload->setCatAnime(6 - int(6 * (_deldelayCount / 60.0f)));
+	_SpriteExpload->updateAnime();
 
 	--_deldelayCount;
 
 	if(_deldelayCount < 0)
 	{
 		CTaskMng::erase(&_pTaskDestroyed);
+		SAFE_DELETE(_pIntelligence);
+		_pIntelligence = new CTankIntStop(this);
 		if(_unThisType != TYPE_PLAYER)
-		_DeleteFlg = TRUE;
+			_DeleteFlg = TRUE;
+		_expflag = false;
 	}
+}
+
+/***********************************************************************/
+/*! @brief 足場情報の取得
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
+void CTank::stepReset()
+{
+	_CurStep[0] = YOUSO(_pTankBottom->getWMat()->_41);
+	_CurStep[1] = YOUSO(_pTankBottom->getWMat()->_43);
 }
 
 
@@ -546,26 +586,70 @@ void CTank::hitTestTank( CTank* pTank)
 	if(pTank == this)
 		return;
 
+
 	D3DXVECTOR3 v1ref[2];
 	const D3DXVECTOR3* v1 = _pTankBottom->getMoveVec();
 	const D3DXVECTOR3* v2 = pTank->getMoveVec();
-	
 	const D3DXMATRIXA16* pmatW1 = _pTankBottom->getWMat();
 	const D3DXMATRIXA16* pmatW2 = pTank->getMatBottom();
 
+	/*
 	D3DXVECTOR3 pos1(pmatW1->_41,pmatW1->_42,pmatW1->_43);
 	D3DXVECTOR3 pos2(pmatW2->_41,pmatW2->_42,pmatW2->_43);
 
-	D3DXVECTOR3 v3 = pos1 - pos2;
+//	D3DXVec3Normalize(&v3,&v3);
 
-	D3DXVec3Normalize(&v3,&v3);
+	/*
 
-	float f = (sqrt(v1->x * v1->x + v1->z * v1->z) + sqrt(v2->x * v2->x + v2->z * v2->z))*0.5f;
-	v1ref[0] = v3 * f;
+	float f = sqrt(v1->x * v1->x + v1->z * v1->z + v2->x * v2->x + v2->z * v2->z) *0.5f;
+
+	v1ref[0] =  v3 * f;
 	v1ref[1] = -v3 * f;
 
 	_pTankBottom->setMoveVec(v1ref[0]);
 	pTank->setMoveVec(v1ref[1]);
+
+	*/
+	D3DXVECTOR3 vIn;
+
+	//	表面まで押し戻す
+	//	距離から半径を引いた数値 = めり込み度
+	//*
+	float distance = (pmatW1->_41 - pmatW2->_41) * (pmatW1->_41 - pmatW2->_41) + (pmatW1->_43 - pmatW2->_43) * (pmatW1->_43 - pmatW2->_43);
+	distance = sqrt(distance);
+
+	//物体１の離れる向き
+	float tx = pmatW1->_41 - pmatW2->_41;
+	float ty = pmatW1->_43 - pmatW2->_43;
+
+	float t = _fRadius + pTank->getRadius() - distance;
+
+	tx = tx >= 0 ? 1.0f : -1.0f;
+	ty = ty >= 0 ? 1.0f : -1.0f;
+
+	tx *= t * 0.5f;
+	ty *= t * 0.5f;
+	//*
+	setPos(pmatW1->_41 + tx ,pmatW1->_43 + ty);
+	pTank->setPos(pmatW2->_41 + -tx ,pmatW2->_43 + -ty);
+	//*/
+	float vox1,voy1;
+	float vox2,voy2;
+	
+	commonfunc::repulsion(&vox1,v1->x,v2->x,1,1,1,1);
+	commonfunc::repulsion(&voy1,v1->z,v2->z,1,1,1,1);
+
+	commonfunc::repulsion(&vox2,v2->x,v1->x,1,1,1,1);
+	commonfunc::repulsion(&voy2,v2->z,v1->z,1,1,1,1);
+
+	vIn.y = 0;
+	vIn.x = vox1;
+	vIn.z = voy1;
+	setMoveVec(vIn);
+
+	vIn.x = vox2;
+	vIn.z = voy2;
+	pTank->setMoveVec(vIn);
 }
 
 
@@ -608,6 +692,11 @@ void CTank::hitTestWall()
 }
 
 
+/***********************************************************************/
+/*!	@brift	レース終了時処理
+ *	@retval	void
+ */
+/***********************************************************************/
 void CTank::raceEnd()
 {
 	CTaskMng::erase(&_pTaskRap);
@@ -617,6 +706,52 @@ void CTank::raceEnd()
 		SAFE_DELETE(_pIntelligence);
 		_pIntelligence = new CTankIntDummy(this);
 	}
+}
+
+/***********************************************************************/
+/*!	@brift	非破壊時演出
+ *	@retval	void
+ */
+/***********************************************************************/
+void CTank::drawDestroyed()
+{
+		//爆発演出
+		/*
+		D3DDEVICE->SetTransform(D3DTS_WORLD, &_effectMatrix);
+		D3DDEVICE->SetRenderState(D3DRS_ZENABLE,FALSE);	
+		D3DDEVICE->SetRenderState(D3DRS_LIGHTING,FALSE);	
+		
+		CRect rect;
+		rect.SetSize(4.0f, 4.0f);
+
+		rect.SetTexture( (TEXTUREFACTORY->getTexture(TEXKEY::TANK_EXPLOAD()))->getTexture());
+		rect.SetUV(0,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / 384.0f , _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
+		rect.SetUV(1,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / 384.0f, _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
+		rect.SetUV(2,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / 384.0f , _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
+		rect.SetUV(3,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / 384.0f, _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
+
+		rect.Draw();
+		*/
+
+		D3DXMATRIXA16 scale;
+		D3DXMATRIXA16 mat2;
+		D3DXMatrixIdentity(&scale);
+		D3DXMatrixScaling(&scale,1.0f / 16.0f,1.0f / 16.0f,1.0f / 16.0f);
+		D3DXMatrixIdentity(&mat2);
+
+		billboard(&mat2,_pTankBottom->getWMat());
+
+		D3DXMATRIXA16 rot;
+		D3DXMatrixIdentity(&rot);
+		D3DXMatrixRotationZ(&rot,D3DXToRadian(180.0f));
+
+		D3DXMATRIXA16 trance = mat2;
+		mat2._41 = mat2._42 = mat2._43 = 0;
+		mat2 *= scale;
+		mat2._41 = trance._41;
+		mat2._42 = trance._42 + 1.0f;
+		mat2._43 = trance._43;
+		_SpriteExpload->draw(D3DXSPRITE_ALPHABLEND,&mat2,CCamera::getMatView());
 }
 
 /***********************************************************************/

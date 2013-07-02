@@ -89,8 +89,8 @@ void gameInit()
 	INPUTCOMMON->createKeyboard();
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
-//	ps = new CSceneGame;
-	ps = new CSceneTitle;
+	ps = new CSceneGame;
+//	ps = new CSceneTitle;
 //	ps = new CSceneTestSpace;
 	pScene = ps;
 
@@ -190,7 +190,7 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM()),
 		0,
 		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1),
-		0.1f,
+		0.01f,
 		0.05f,
 		10
 		);
@@ -201,8 +201,8 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM()),
 		-1,
 		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::SHELL01()),1),
-		0.1f,
-		0.1f,
+		0.025f,
+		0.05f,
 		5);
 
 	OBJFACTORY->reserve(OBJKEY::SUM());
@@ -310,7 +310,7 @@ bool gameLoop()
 	if(drawBegin())
 	{
 		pLastScene->draw();
-		FADEINOUT->draw();
+//		FADEINOUT->draw();
 		spriteSight->draw(0,&matSight);
 		drawEnd();
 		D3DDEVICE->Present(0,0,0,0);

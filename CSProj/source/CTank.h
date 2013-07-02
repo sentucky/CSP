@@ -55,6 +55,7 @@ public:
 
 private:
 	void release();				///<	解放処理
+
 public:
 	//	タスク
 	void draw();				///<	描画処理
@@ -63,11 +64,9 @@ public:
 	void move();				///<	移動処理
 	void fire();				///<	発砲
 	void calcMove();			///<	移動量計算
-	void eRap();				///<	敵ラップ
 	void pRap();				///<	自機ラップ
 	void destroyed();			///<	非破壊
-
-
+	void stepReset();			///<	足下情報更新
 
 	//	呼出し
 	void hitTestTank(CTank* pTank);		///<	あたり判定
@@ -77,7 +76,7 @@ public:
 
 private:
 	void turnTop();				///<	上部の回転
-
+	void drawDestroyed();		///<	非破壊時の描画処理
 
 public:
 	void enableTask();			///<	タスク有効化
@@ -86,24 +85,26 @@ public:
 	static const bool lower(const CTank* A,const CTank* B);
 	void rotationY(const float fY);	
 
+
+	///	ゲッタ
 	const D3DXMATRIXA16*	getMatBottom();	///<	ボトムのマトリクス取得
 	const D3DXVECTOR3*		getMoveVec();	///<	移動ベクトル
 	const float				getRadius();	///<	半径の取得
-	const BOOL				getDestroyed(){return _Destroyed;}	///<	被破壊フラグ取得
-	const BOOL				getFlgGoal(){return _FlgGoal;}
-	const uint				getThisType(){return _unThisType;}
+	const BOOL				getDestroyed()		{return _Destroyed;		}	///<	被破壊フラグ取得
+	const BOOL				getFlgGoal()		{return _FlgGoal;		}
+	const uint				getThisType()		{return _unThisType;	}
+	const float				getlapVal()			{return _lapVal;		}
+	const int				getlap()			{return _lap;			}
+	const int				getradiate()		{return _radiate;		}
+	const int				getMaxradiateTime()	{return _MaxRadiateTime;}
+	const int				getlife()			{return _life;			}
+	const int				getmaxlife()		{return _Maxlife;		}
+	const uint				getRank()			{return _Rank;			}
+	const uint*				getCurStep()		{return _CurStep;		}
+	const uint				getTankType()		{return _unThisType;	}
+	const CTankIntInter*	getIntelligence()	{return _pIntelligence;	}		// 施行取得
 
-	const float				getlapVal(){return _lapVal;}
-	const int				getradiate(){return _radiate;}
-	const int				getMaxradiateTime(){return _MaxRadiateTime;}
-	const int				getlife(){return _life;}
-	const int				getmaxlife(){return _Maxlife;}
-	const int				getlap(){return _lap;}
-	const uint				getRank(){return _Rank;}
-	const uint				getTankType(){return _unThisType;}
-	const CTankIntInter*	getIntelligence(){return _pIntelligence;}		// 施行取得
-
-
+	///	セッタ
 	void setMoveVec( D3DXVECTOR3& MoveVec );
 	void setMoveVec( const D3DXVECTOR3 *MoveVec );
 	void setPos(const float x,const float z);
@@ -121,34 +122,33 @@ private:
 	CTaskList*		_pTaskCalcAM;
 	CTaskList*		_pTaskRap;
 	CTaskList*		_pTaskDestroyed;
+	CTaskList*		_pTaskStepReset;
 
 	CTankTop*		_pTankTop;			///<	戦車の上部
 	CTankBottom*	_pTankBottom;		///<	戦車の下部
-
 	CTankIntInter*	_pIntelligence;		///<	思考
 
 	float			_fRadius;			///<	半径
-	uint			_unThisType;		///<	タイプ
-
-	int				_life;				///<	耐久力
-	const int		_Maxlife;				///<	耐久力
-
-	int				_radiate;			///<	放熱状況
-	int				_MaxRadiateTime;	///<	放熱時間の最大値
-
-	int				_deldelayCount;
-
 	BOOL			_Destroyed;			///<	破壊判定フラグ
 	BOOL			_FlgGoal;			///<	ゴールフラグ
-
-	uint			_Rank;
+	uint			_unThisType;		///<	タイプ
 	float			_lapVal;			//	進行状態
 	int				_lap;				//	ラップ数	
+	int				_radiate;			///<	放熱状況
+	int				_MaxRadiateTime;	///<	放熱時間の最大値
+	int				_life;				///<	耐久力
+	const int		_Maxlife;			///<	耐久力
+	uint			_Rank;				///<	ランク
+	uint			_CurStep[2];		///<	現在の足下タイル
+
+	int				_deldelayCount;	
 	OUTPUT*         _Panel;				//
 	OUTPUT*         _prevPanel;			//
 
+
 	CSprite*		_SpriteExpload;
 	D3DXMATRIXA16	_effectMatrix;
+	bool			_expflag;
 
 	static CTank* _Player;
 
@@ -158,11 +158,10 @@ public:
 private:
 	static LPDIRECTSOUNDBUFFER _SoundFire;
 	static const int _maxdeldelayCount = 60;
+	static const CStageData* _StageData;
 
 #ifdef _DEBUG
-LPD3DXMESH debugMesh;;
+LPD3DXMESH debugMesh;
 #endif
-
-	static const CStageData* _StageData;
 };
 #endif

@@ -75,7 +75,7 @@ void CRect::Draw()
 	//XV
 	if (mIsUpdate)
 		this->Update();
-//	/*
+	/*
 	D3DMATERIAL9 materials2;
 	materials2.Specular.a = 1.0f;
 	materials2.Ambient .a = 1.0f;
@@ -83,7 +83,7 @@ void CRect::Draw()
 	materials2.Power = 1.0f;
 	materials2.Emissive.b = materials2.Emissive.g = materials2.Emissive.r = 0.25f;
 	materials2.Emissive.a = 1.0f;
-
+	*/
 
 	//FVF‚ÌÝ’è
 	mDevice_pr->SetFVF(FVF_VERTEX_RECT);
@@ -123,4 +123,18 @@ void CRect::Update(){
 		mDevice_pr  = D3DDEVICE;
 
 	mIsUpdate = false;
+}
+
+
+void MakeBillboardMat(D3DXMATRIX* out,D3DXMATRIX* pos)
+{
+	D3DXVECTOR3 camera;
+	camera = CCamera::getAt() - CCamera::getEye();
+	D3DXVec3Normalize(&camera,&camera);
+	camera *= -1;
+
+	D3DXMatrixIdentity(out);
+	D3DXMatrixLookAtLH(out,&D3DXVECTOR3(0.0f,0.0f,0.0f),&camera,&D3DXVECTOR3(0.0f,1.0f,0.0f));
+	D3DXMatrixInverse(out,NULL,out);
+	*out = (*out) * (*pos);
 }

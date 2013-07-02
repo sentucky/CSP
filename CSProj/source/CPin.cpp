@@ -103,8 +103,6 @@ void CPin::disableTask()
 void CPin::draw()
 {
 	_pMesh->draw(&_WMat);
-#ifdef _DEBUG
-#endif
 }
 
 /***********************************************************************/

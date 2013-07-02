@@ -13,6 +13,7 @@
 #include"CScreen.h"
 #include"common.h"
 #include"CAnimeParam.h"
+#include"CCamera.h"
 
 /***********************************************************************/
 //	マクロ定義
@@ -133,9 +134,14 @@ HRESULT CSprite::create()
 /***********************************************************************/
 void CSprite::calcCenter()
 {
+/*	if(_AnimeParam != NULL)
+	{
+		_vecCenter.x = (float)(_UV.right - _UV.left) * 0.5f + _AnimeParam->getUV().left;
+		_vecCenter.y = (float)(_UV.bottom - _UV.top) * 0.5f + _AnimeParam->getUV().top;
+		return;
+	}*/
 	_vecCenter.x = (float)(_UV.right - _UV.left) * 0.5f;
 	_vecCenter.y = (float)(_UV.bottom - _UV.top) * 0.5f;
-
 }
 
 /***********************************************************************/
@@ -187,12 +193,7 @@ void CSprite::draw(DWORD SpriteType,const D3DXVECTOR3* vec3Pos,const D3DXVECTOR3
 	}
 	if(vec3Rot != 0)
 	{//回転処理
-		D3DXMatrixRotationYawPitchRoll( 
-			&rot,
-			D3DXToRadian(vec3Rot->y),
-			D3DXToRadian(vec3Rot->x),
-			D3DXToRadian(vec3Rot->z)
-			);	
+		D3DXMatrixRotationYawPitchRoll(&rot,D3DXToRadian(vec3Rot->y),D3DXToRadian(vec3Rot->x),D3DXToRadian(vec3Rot->z));	
 		matWorld *= rot;
 	}
 	
@@ -201,10 +202,11 @@ void CSprite::draw(DWORD SpriteType,const D3DXVECTOR3* vec3Pos,const D3DXVECTOR3
 		D3DXMatrixTranslation( &pos, vec3Pos->x, vec3Pos->y, vec3Pos->z );	//移動処理
 		matWorld *= pos;
 	}
-//	calcCenter();
+
 
 	D3DDEVICE->SetRenderState(D3DRS_ZWRITEENABLE,TRUE);		//レンダリング
 	_pD3DSprite->SetTransform(&matWorld);
+	D3DDEVICE->SetTransform(D3DTS_WORLD, &matWorld);					//ワールド座標変換
 	_pD3DSprite->Begin(SpriteType );	//描画開始
 	_pD3DSprite->Draw(_pTexture->getTexture(), &_UV, &_vecCenter,0, _colorRevision);
 	_pD3DSprite->End();	//描画終了
@@ -231,20 +233,26 @@ void CSprite::draw(DWORD SpriteType,const D3DXMATRIXA16* pmatWorld, const D3DXMA
 
 	////////////////////////////
 	//	座標変換
+	//*
 	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
+	
 	if(pmatView != NULL)
 	{
 		D3DDEVICE->SetTransform(D3DTS_VIEW, pmatView);					//カメラ座標変換
 	}
 	D3DDEVICE->SetTransform(D3DTS_WORLD, pmatWorld);					//ワールド座標変換
-	//	calcCenter();
 
+	//*/
 	////////////////////////////
 	//	描画処理
+	calcCenter();
+
 	D3DDEVICE->SetFVF(FVF_VERTEX_2D);
 	D3DDEVICE->SetRenderState(D3DRS_ZWRITEENABLE,TRUE);			//	レンダリング
-	_pD3DSprite->SetTransform(pmatWorld);						//
-	_pD3DSprite->Begin(SpriteType | D3DXSPRITE_OBJECTSPACE);	//	描画開始
+
+	_pD3DSprite->SetWorldViewLH(pmatWorld,pmatView);
+
+	_pD3DSprite->Begin(SpriteType | D3DXSPRITE_OBJECTSPACE | D3DXSPRITE_SORT_DEPTH_FRONTTOBACK);	//	描画開始
 	_pD3DSprite->Draw(_pTexture->getTexture(), &_UV, &_vecCenter,NULL, _colorRevision);
 	_pD3DSprite->End();	//描画終了
 }
@@ -268,15 +276,18 @@ void CSprite::draw(DWORD SpriteType,const D3DXMATRIXA16* pmatWorld)
 
 	////////////////////////////
 	//	座標変換
+	/*
+	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD, pmatWorld);					//ワールド座標変換
-
-//	calcCenter();
+	*/
+	//calcCenter();
 
 	////////////////////////////
 	//	描画処理
 	D3DDEVICE->SetFVF(FVF_VERTEX_2D);
 	D3DDEVICE->SetRenderState(D3DRS_ZWRITEENABLE,TRUE);					//レンダリング
 	_pD3DSprite->SetTransform(pmatWorld);
+	D3DDEVICE->SetTransform(D3DTS_WORLD, pmatWorld);					//ワールド座標変換
 	_pD3DSprite->Begin(SpriteType | D3DXSPRITE_SORT_DEPTH_FRONTTOBACK);			//描画開始
 	_pD3DSprite->Draw(_pTexture->getTexture(), &_UV, &_vecCenter,NULL, _colorRevision);
 	_pD3DSprite->End();	//描画終了
@@ -287,6 +298,7 @@ void CSprite::createAnimeParam(ANIMEPATH& AnimePath)
 {
 	_AnimeParam = new CAnimeParam(AnimePath);
 	_UV = _AnimeParam->getUV();
+//	calcCenter();
 }
 
 void CSprite::updateAnime()
@@ -296,15 +308,18 @@ void CSprite::updateAnime()
 
 	_AnimeParam->update();
 	_UV = _AnimeParam->getUV();
+//	calcCenter();
 }
 
 void CSprite::setCatAnime(const uint Cat)
 {
 	_AnimeParam->setCat(Cat);
+//	calcCenter();
 }
 void CSprite::setStateAniem(const uint State)
 {
 	_AnimeParam->setState(State);
+//	calcCenter();
 }
 
 

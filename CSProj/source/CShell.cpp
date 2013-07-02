@@ -95,10 +95,7 @@ CShell::CShell(
 {
 	D3DXMatrixIdentity(&_WMat);
 	enableTask();
-#ifdef _DEBUG
 	_fRad = 1.0f;
-#endif
-
 }
 
 /***********************************************************************/

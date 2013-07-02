@@ -113,8 +113,8 @@ void CHitTestTankToWall::hitTest()
 
 		uint x,y;
 		_StageData->step(&x,&y,tx,ty);
-
-
+		x = *pTank->getCurStep();
+		y = 15 - *(pTank->getCurStep()+1);
 		//	•Ç‚Ìî•ñ‚ðŽæ“¾
 		RECT WallFlg;
 		_StageData->wallFlg(&WallFlg,x,y);

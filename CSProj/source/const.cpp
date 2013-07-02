@@ -19,7 +19,7 @@ const char* MESHPATH::SHELL02(){		return "data/model/pin.x";		}
 const char* MESHPATH::SHELL03(){		return "data/model/pin.x";		}
 const char* MESHPATH::PIN(){			return "data/model/pin.x";		}
 const char* MESHPATH::YUKA(){			return "data/model/nanase_pose.x";		}
-const char* MESHPATH::STAGE01(){		return "data/model/curse_tmp.x";		}
+const char* MESHPATH::STAGE01(){		return "data/model/land2.x";		}
 const char* MESHPATH::TANK01_TOP(){		return "data/model/ziki_Lv1_up.x";		}
 const char* MESHPATH::TANK02_TOP(){		return "data/model/tekki_lv1_up.x";		}
 const char* MESHPATH::TANK03_TOP(){		return "data/model/tank03_top.x";		}
@@ -79,42 +79,44 @@ const char* EFFECTPATH::TOON(){return "A";}
 
 enum eTID
 {
-	TID_STARTCAMMOVE,
-	TID_SYSTEMPARAM,
-	TID_COCKPIT,
+	TID_STARTCAMMOVE,			//
+	TID_SYSTEMPARAM,			//
+	TID_TANKSETPSET,			//
+	TID_COCKPIT,				//
 	TID_INTELLIGENCE,			//
 	TID_RAP,					//
 	TID_FIRE,					//
 	TID_PAUSE,					//
 	TID_CALCACTIVEMOVE,			//
 	TID_HITTEST_TANK_AND_TANK,	//
-	TID_HITTEST_TANK_TO_SHELL,	//0
+	TID_HITTEST_TANK_TO_SHELL,	//
 	TID_HITTEST_WALL,			//
 	TID_MOVE,					//
 	TID_FOLLOW,					//	ÉJÉÅÉâí«îˆ
-	TID_RANKING,
+	TID_RANKING,				//
 	TID_EXPLOSION,				//
 	TID_CHECKALIVE,				//
 	TID_SUM,					//
 	TID_DRAW,					//
 };
 
-const uint TASKKEY::STARTCAMMOVE(){return TID_STARTCAMMOVE;}
-const uint TASKKEY::SYSTEMPARAM(){return TID_SYSTEMPARAM;}
-const uint TASKKEY::COCKPIT(){return TID_COCKPIT;}
-const uint TASKKEY::RANKING(){return TID_RANKING;}
-const uint TASKKEY::RAP(){return TID_RAP;}
-const uint TASKKEY::HITTEST_TANKADNTANK(){return TID_HITTEST_TANK_AND_TANK;}
-const uint TASKKEY::HITTEST_TANKTOSHELL(){return TID_HITTEST_TANK_TO_SHELL;}
-const uint TASKKEY::HITTEST_TANKTOWALL(){return TID_HITTEST_WALL;}
-const uint TASKKEY::CALCACTIVEMOVE(){return TID_CALCACTIVEMOVE;}
-const uint TASKKEY::CHECKALIVE(){return TID_CHECKALIVE;}
-const uint TASKKEY::INTELLIGENCE(){return TID_INTELLIGENCE;}
-const uint TASKKEY::UPDATECAMERA(){return TID_FOLLOW;}
-const uint TASKKEY::EXPLOSION(){return TID_EXPLOSION;}
-const uint TASKKEY::FIRE(){return TID_FIRE;}
-const uint TASKKEY::PAUSE(){return TID_PAUSE;}
-const uint TASKKEY::MOVE(){return TID_MOVE;}
-const uint TASKKEY::DRAW(){return TID_DRAW;}
-const uint TASKKEY::SUM(){return TID_SUM;}
+const uint TASKKEY::TANKSETPSET()			{return TID_TANKSETPSET;			}
+const uint TASKKEY::STARTCAMMOVE()			{return TID_STARTCAMMOVE;			}
+const uint TASKKEY::SYSTEMPARAM()			{return TID_SYSTEMPARAM;			}
+const uint TASKKEY::COCKPIT()				{return TID_COCKPIT;				}
+const uint TASKKEY::RANKING()				{return TID_RANKING;				}
+const uint TASKKEY::RAP()					{return TID_RAP;					}
+const uint TASKKEY::HITTEST_TANKADNTANK()	{return TID_HITTEST_TANK_AND_TANK;	}
+const uint TASKKEY::HITTEST_TANKTOSHELL()	{return TID_HITTEST_TANK_TO_SHELL;	}
+const uint TASKKEY::HITTEST_TANKTOWALL()	{return TID_HITTEST_WALL;			}
+const uint TASKKEY::CALCACTIVEMOVE()		{return TID_CALCACTIVEMOVE;			}
+const uint TASKKEY::CHECKALIVE()			{return TID_CHECKALIVE;				}
+const uint TASKKEY::INTELLIGENCE()			{return TID_INTELLIGENCE;			}
+const uint TASKKEY::UPDATECAMERA()			{return TID_FOLLOW;					}
+const uint TASKKEY::EXPLOSION()				{return TID_EXPLOSION;				}
+const uint TASKKEY::FIRE()					{return TID_FIRE;					}
+const uint TASKKEY::PAUSE()					{return TID_PAUSE;					}
+const uint TASKKEY::MOVE()					{return TID_MOVE;					}
+const uint TASKKEY::DRAW()					{return TID_DRAW;					}
+const uint TASKKEY::SUM()					{return TID_SUM;					}
 

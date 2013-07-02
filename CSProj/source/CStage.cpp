@@ -31,12 +31,12 @@ D3DXMATRIXA16 SpriteMat;
 CStage::CStage(
 	const char* StageFilePath,
 	CMesh* pMesh
-	):CObjBase(OBJGROUPKEY::STAGE()),
-	_pTaskDraw(NULL),
-	_StageDataPath(StageFilePath),
-	_StageData(new CStageData(_StageDataPath)),
-	_Mesh(pMesh),
-	_InstCnt(new int(0))
+	):CObjBase		(OBJGROUPKEY::STAGE()			),
+	_pTaskDraw		(NULL							),
+	_StageDataPath	(StageFilePath					),
+	_StageData		(new CStageData(_StageDataPath)	),
+	_Mesh			(pMesh							),
+	_InstCnt		(new int(0)						)
 {
 	++(*_InstCnt);
 	D3DXMatrixIdentity(&_WMat);
@@ -61,12 +61,12 @@ CStage::~CStage()
  */
 /***********************************************************************/
 CStage::CStage(const CStage& src)
-	:CObjBase		(src._GroupID			),
-	_pTaskDraw		(NULL					),
-	_StageDataPath	(src._StageDataPath		),
-	_StageData		(src._StageData			),
-	_Mesh			(new CMesh(*src._Mesh)	),
-	_InstCnt		(src._InstCnt			)
+	:CObjBase		(	src._GroupID			),
+	_pTaskDraw		(	NULL					),
+	_StageDataPath	(	src._StageDataPath		),
+	_StageData		(	src._StageData			),
+	_Mesh			(	new CMesh(*src._Mesh)	),
+	_InstCnt		(	src._InstCnt			)
 {
 	++(*_InstCnt);
 	D3DXMatrixIdentity(&_WMat);
@@ -89,11 +89,11 @@ CStage::CStage(const CStage& src)
 void CStage::release()
 {
 	SAFE_DELETE(_Mesh);
-	--*_InstCnt;
+	--(*_InstCnt);
 
-	if(*_InstCnt <= 0)
-	{
-		SAFE_DELETE(_StageData);
+	if((*_InstCnt) <= 0){
+		delete _StageData;
+		_StageData = NULL;
 		SAFE_DELETE(_InstCnt);
 	}
 }

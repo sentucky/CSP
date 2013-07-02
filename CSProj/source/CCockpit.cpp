@@ -155,6 +155,10 @@ void CCockpit::update()
 	}
 
 	_Num->setNum(_Tank->getRank()+1);
+	if(life < 0)
+	{
+		life = 0;
+	}
 	_SpriteStatus->setCatAnime(5 - int(5 * (life / maxlife)));
 	_SpriteStatus->updateAnime();
 
