@@ -31,15 +31,10 @@
 
 #include"StageData.h"
 #include"Rect.h"
-
 #include"CFollowCamera.h"
-
 #include"CSound.h"
 #include"CSoundKey.h"
-
 #include"CTankIntDummy.h"
-
-
 #include"CSprite.h"
 #include"CSpriteFactory.h"
 #include"TextureKey.h"
@@ -51,9 +46,7 @@
 #include"CScreen.h"
 #include"CFont.h"
 #include"CInputCommon.h"
-
 #include"CTextureFactory.h"
-
 #endif
 
 #ifdef _DEBUG
@@ -127,7 +120,7 @@ CTank::CTank(
 	_pTankTop			( NULL			),
 	_pTankBottom		( NULL			),
 	_pIntelligence		( NULL			),
-	_fRadius			( 1.0f			),
+	_fRadius			( 0.75f			),
 	_unThisType			( unThisType	),
 	_life				( Life			),
 	_Maxlife			( Life			),
@@ -215,10 +208,10 @@ CTank::CTank(const CTank& src)
 		_pIntelligence = new CTankIntPlayer(this);
 		break;
 	case TYPE_ENEMY01:
-//		_pIntelligence = new CTankIntDummy(this);	
-		_pIntelligence = new CTankIntStop(this);
+		_pIntelligence = new CTankIntDummy(this);	
 		break;
 	}
+
 	_pTankTop->setIntelligence(_pIntelligence);
 	_pTankBottom->setIntelligence(_pIntelligence);
 

@@ -190,7 +190,16 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM()),
 		0,
 		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1),
-		0.01f,
+		0.05f,
+		0.05f,
+		10
+		);
+	CTank* pObj3 = new CTank(
+		MESHFACTORY->create(MESHKEY::TANK02_TOP()),
+		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM()),
+		-1,
+		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1),
+		0.03f,
 		0.05f,
 		10
 		);
@@ -201,13 +210,14 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM()),
 		-1,
 		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::SHELL01()),1),
-		0.025f,
+		0.04f,
 		0.05f,
 		5);
 
 	OBJFACTORY->reserve(OBJKEY::SUM());
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANK01(),pObj);
 	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANKDUMMY(),pObj2);
+	OBJFACTORY->registPrototype<CTank>(OBJKEY::TANK02(),pObj3);
 	OBJFACTORY->registPrototype(OBJKEY::STAGE01(),pStage);
 	OBJFACTORY->registPrototype(OBJKEY::NUM(),			new CNum);
 	OBJFACTORY->registPrototype(OBJKEY::FOLLOWCAMERA(),	new CFollowCamera								);

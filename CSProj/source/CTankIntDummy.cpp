@@ -114,6 +114,7 @@ void CTankIntDummy::root(){
 /***********************************************************************/
 void CTankIntDummy::shot(){
 	static int aimNum;
+	return;
 	// ËŒ‚ˆ—
 	if(rand()%SHOT_PROB == 1){	// Œ‚‚ÂŠm—¦
 		

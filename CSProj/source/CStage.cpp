@@ -134,6 +134,7 @@ void CStage::disableTask()
 void CStage::draw()
 {
 	_Mesh->draw(&_WMat);
+
 	//sprite->draw(0,&SpriteMat,CCamera::getMatView());
 	_StageData->Draw();
 }

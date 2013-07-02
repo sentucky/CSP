@@ -33,6 +33,7 @@
 #include"const.h"
 #include"TextureKey.h"
 #include"CFont.h"
+#include"CEffectToon.h"
 
 /***********************************************************************/
 /*! @brief 
@@ -105,6 +106,7 @@ void CStageData::Draw()
 
 	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,FALSE);
 	D3DDEVICE->SetFVF(FVF_VERTEX_RECT);
+	
 	for (i = 0 ; i < MAX_DATA ; i++){
 		for (j = 0 ; j < MAX_DATA ; j++){
 
@@ -118,7 +120,6 @@ void CStageData::Draw()
 			}
 		}
 	}
-
 	//ƒ‰ƒCƒ“•`‰æ
 #ifdef _DEBUG
 	LINE line[512];

@@ -26,6 +26,8 @@
 
 #include"CSoundKey.h"
 
+#include<algorithm>
+
 //OBJ
 #include"CTank.h"
 #include"CStage.h"
@@ -142,9 +144,12 @@ void CSceneGame::init()
 	CTank*			pTank2 = NULL;
 	int n2 = 0;
 	CTankIntInter::setPlayerTank(pTank);
-	for(int n = 0; n < 99; n++)
-	{
+
+	for(int n = 0; n < 50; n++){
 		OBJMNG->push(OBJGROUPKEY::TANK(),pTank2 = (CTank*)OBJFACTORY->create(OBJKEY::TANKDUMMY()),NULL);
+	}
+	for(int n = 0; n < 49; n++){
+		OBJMNG->push(OBJGROUPKEY::TANK(),OBJFACTORY->create(OBJKEY::TANK02()),NULL);
 	}
 
 	//...追跡カメラ
@@ -166,6 +171,7 @@ void CSceneGame::init()
 	CCockpit* Cockpit;
 	OBJMNG->push(OBJGROUPKEY::COCKPIT(),Cockpit = OBJFACTORY->create<CCockpit>(OBJKEY::COCKPIT()),NULL);
 	Cockpit->setTank(pTank);
+
 
 
 
@@ -380,10 +386,27 @@ void CSceneGame::standby(CStage* pStage)
 	float setPointY;
 	
 	uint cnt = 0;
+	uint maxcnt = 0;
 	CTank* pTank = NULL;
 
 	CTank* Player;
 
+	CTank* tank[1024];
+
+	
+
+	while(pListTank !=  pEnd)
+	{	
+		tank[cnt] = static_cast<CTank*>(pListTank->getInst());
+		pListTank = pListTank->next();
+		cnt++;
+	}
+
+	maxcnt = cnt;
+
+	pListTank = pTankMng->begin();
+
+	cnt = 0;
 
 	while(pListTank !=  pEnd)
 	{
@@ -394,6 +417,9 @@ void CSceneGame::standby(CStage* pStage)
 		if(pTank->getThisType() == CTank::TYPE_PLAYER)
 		{
 			Player = pTank;
+		}
+		else
+		{
 		}
 
 		if(rotStartTile >= 1.5f * D3DX_PI)
@@ -425,6 +451,7 @@ void CSceneGame::standby(CStage* pStage)
 		pListTank = pListTank->next();
 		++cnt;
 	}
+
 
 	//	最後尾とプレイヤーの位置交換
 	pTank = static_cast<CTank*>(pEnd->prev()->getInst());

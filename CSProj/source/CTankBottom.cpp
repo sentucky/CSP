@@ -15,6 +15,9 @@
 
 #include"ObjKey.h"
 
+#include"CEffectBase.h"
+#include"CEffectToon.h"
+
 const	float	CTankBottom::_fDeceleration = 0.900f;
 
 /***********************************************************************/
@@ -37,7 +40,8 @@ CTankBottom::CTankBottom(
 	_MoveVec(0,0,0.0f),
 	_MoveDir(0,0,0),
 	_fSpeedMove(fSpeedMove),
-	_fSpeedTurn(fSpeedTurn)
+	_fSpeedTurn(fSpeedTurn),
+	_pEffect(NULL)
 {
 	D3DXMatrixIdentity(&_WMat);
 }
@@ -52,6 +56,7 @@ CTankBottom::CTankBottom(
 CTankBottom::~CTankBottom()
 {
 	SAFE_DELETE(_pMesh);
+	_pEffect = NULL;
 }
 
 /***********************************************************************/
@@ -68,9 +73,12 @@ CTankBottom::CTankBottom(const CTankBottom& src)
 	_MoveVec(0,0,0.0f),
 	_MoveDir(0,0,0),
 	_fSpeedMove(src._fSpeedMove),
-	_fSpeedTurn(src._fSpeedTurn)
+	_fSpeedTurn(src._fSpeedTurn),
+	_pEffect(NULL)
 {
 	D3DXMatrixIdentity(&_WMat);
+	_pEffect = CEffectToon::getInst();
+	_pMesh->setEffect(_pEffect);
 }
 
 /***********************************************************************/
@@ -116,7 +124,7 @@ void CTankBottom::clacMove(const uint rank)
 	if(abs(pMoveVec->x) + abs(pMoveVec->y) != 0)
 	{
 		D3DXVec3Normalize(&_Dir,&_Dir);
-		_MoveVec += _Dir *( _fSpeedMove  + _fSpeedMove * rankPar);
+		_MoveVec += _Dir *( _fSpeedMove/*  + _fSpeedMove * rankPar*/);
 	}
 }
 

@@ -51,8 +51,7 @@ template<typename T>
 /*! @brief 安全解放
  * 
  *  @param[in] pt 
- *  @retval template<typename T>
-inline const bool 
+ *  @retval const bool 
  */
 /***********************************************************************/
 inline const bool safeRelease(T* &pt)
@@ -72,8 +71,7 @@ template<typename T>
  * 
  *  @param[in] pt 
  *  @param[in] nSum 
- *  @retval template<typename T>
-inline const bool 
+ *  @retval const bool 
  */
 /***********************************************************************/
 inline const bool safeReleaseArray(T* &pt,int nSum)
@@ -103,8 +101,7 @@ template<typename T>
 /*! @brief 安全削除
  * 
  *  @param[in] pt 
- *  @retval template<typename T>
-inline const bool 
+ *  @retval const bool 
  */
 /***********************************************************************/
 inline const bool safeDelete(T* &pt)
@@ -119,17 +116,12 @@ inline const bool safeDelete(T* &pt)
 }
 
 
-//-------------------------------------
-//	概要	メモリの安全解放
-//		配列の変数削除
-//-------------------------------------
 template<typename T>
 /***********************************************************************/
 /*! @brief 
  * 
  *  @param[in] pt 
- *  @retval template<typename T>
-inline const bool 
+ *  @retval inline const bool 
  */
 /***********************************************************************/
 inline const bool safeDeleteArray(T* &pt)

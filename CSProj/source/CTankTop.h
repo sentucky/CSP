@@ -16,6 +16,7 @@ class CTankBottom;
 class CTankIntInter;
 class CShell;
 class CTank;
+class CEffectBase;
 
 class CTankTop
 {
@@ -48,6 +49,7 @@ private:
 	CTankBottom*	_Bottom;
 	CTankIntInter*	_pTankIntelligence;	///<	思考
 	CMesh*			_pMesh;				///<	メッシュ
+	CEffectBase*	_pEffect;
 	CShell*			_pProtoShell;		///<	砲弾の原型
 	D3DXVECTOR3		_TopDir;			///<	砲塔の向きベクトル
 	D3DXMATRIXA16	_WMat;				///<	ワールドマトリクス

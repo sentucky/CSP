@@ -18,16 +18,15 @@
 #endif
 
 /***********************************************************************/
-/*! @brief 
+/*! @brief コンストラクタ
 * 
-*  @param[in,out]  
-*  @retval  
+*  @retval  void
 */
 /***********************************************************************/
 CFollowCamera::CFollowCamera(
 	)
 	:CObjBase(OBJGROUPKEY::CAMERA()),
-	_fDistance(	20.0f),	
+	_fDistance(	200.0f),	
 	_NAtToEye	(	D3DXVECTOR3(0,1.0f,-1.0)),
 	_pTank	(	NULL),
 	_pUpdate	(	NULL)
@@ -57,10 +56,10 @@ CFollowCamera::~CFollowCamera()
 CFollowCamera::CFollowCamera(
 	const CFollowCamera& src
 	)
-	:CObjBase(src._GroupID),
-	_fDistance(	src._fDistance	),	
+	:CObjBase	(src._GroupID),
+	_fDistance	(	src._fDistance	),	
 	_NAtToEye	(	src._NAtToEye	),
-	_pTank	(	NULL			),
+	_pTank		(	NULL			),
 	_pUpdate	(	NULL			)
 {
 	D3DXVec3Normalize(&_NAtToEye,&_NAtToEye);
@@ -69,7 +68,7 @@ CFollowCamera::CFollowCamera(
 
 
 /***********************************************************************/
-/*! @brief 
+/*! @brief タスク有効化
 * 
 *  @retval void
 */
@@ -81,7 +80,7 @@ void CFollowCamera::enableTask()
 
 
 /***********************************************************************/
-/*! @brief 
+/*! @brief タスク無効化
 * 
 *  @retval void
 */
@@ -93,7 +92,7 @@ void CFollowCamera::disableTask()
 
 
 /***********************************************************************/
-/*! @brief 
+/*! @brief 更新処理
 * 
 *  @retval void
 */

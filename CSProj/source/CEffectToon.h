@@ -14,16 +14,17 @@
 //	インクルード
 /***********************************************************************/
 #include"CEffectBase.h"
+#include"CSingleton.h"
 
 /***********************************************************************/
 //	クラス定義
 /***********************************************************************/
-class CEffectToon:public CEffectBase
+class CEffectToon:public CEffectBase,public CSingleton<CEffectToon>
 {
-public:
+	friend class CSingleton<CEffectToon>;
+private:
 	CEffectToon();		///<	コンストラクタ
 	~CEffectToon();		///<	デストラクタ
-private:
 	CEffectToon(const CEffectToon& copy);	///<	コピー禁止
 	void create();							///<	エフェクト作成
 

@@ -16,6 +16,7 @@
 #include"TextureKey.h"
 #include"CAnimeParam.h"
 #include"AnimeKey.h"
+#include"CCamera.h"
 
 CCockpit::CCockpit()
 	:CObjBase	(OBJGROUPKEY::COCKPIT()	),
@@ -122,7 +123,6 @@ void CCockpit::disableTask()
 	CTaskMng::erase(&_TaskUpdate);
 }
 
-#include"CCamera.h"
 void CCockpit::draw()
 {
 	_Num->draw();

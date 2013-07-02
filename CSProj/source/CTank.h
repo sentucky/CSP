@@ -73,7 +73,6 @@ public:
 	void hitTestShell(CShell* pShell);	///<	弾とのあたり判定後処理
 	void hitTestWall();					///<	壁とのあたり判定の処理
 	void raceEnd();				///<	レース終了時処理
-
 private:
 	void turnTop();				///<	上部の回転
 	void drawDestroyed();		///<	非破壊時の描画処理
@@ -86,7 +85,10 @@ public:
 	void rotationY(const float fY);	
 
 
+
+
 	///	ゲッタ
+	CTankBottom*				getTankBottom()	{return _pTankBottom;}
 	const D3DXMATRIXA16*	getMatBottom();	///<	ボトムのマトリクス取得
 	const D3DXVECTOR3*		getMoveVec();	///<	移動ベクトル
 	const float				getRadius();	///<	半径の取得

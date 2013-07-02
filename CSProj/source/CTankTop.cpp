@@ -8,7 +8,8 @@
 /***********************************************************************/
 #include"CTankTop.h"
 
-
+#include"CEffectBase.h"
+#include"CEffectToon.h"
 
 
 #include"CMesh.h"
@@ -44,7 +45,9 @@ CTankTop::CTankTop(
 	_pTankIntelligence(_pTankIntelligence),
 	_pMesh(pMesh),
 	_pProtoShell(pProtoShell),
-	_TopDir(0,0,0)
+	_TopDir(0,0,0),
+	_pEffect(NULL)
+
 {
 	D3DXMatrixIdentity(&_WMat);
 }
@@ -58,6 +61,7 @@ CTankTop::CTankTop(
 CTankTop::~CTankTop()
 {
 	SAFE_DELETE(_pMesh);
+	_pEffect = NULL;
 	SAFE_DELETE(_pProtoShell);
 }
 
@@ -76,9 +80,13 @@ CTankTop::CTankTop(
 	_pTankIntelligence(_pTankIntelligence),
 	_pMesh(new CMesh( *src._pMesh)),
 	_pProtoShell(new CShell(*src._pProtoShell)),
-	_TopDir(0,0,1.0f)
+	_TopDir(0,0,1.0f),
+	_pEffect(NULL)
 {
 	D3DXMatrixIdentity(&_WMat);
+
+	_pEffect = CEffectToon::getInst();
+	_pMesh->setEffect(_pEffect);
 
 	//	’e‚Ì–³Œø‰»
 	_pProtoShell->disableTask();

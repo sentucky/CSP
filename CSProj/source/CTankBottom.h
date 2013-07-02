@@ -15,6 +15,7 @@ class CMesh;
 class CTankIntInter;
 template<class T>
 class CListMng;
+class CEffectBase;
 
 class CTankBottom
 {
@@ -39,17 +40,21 @@ public:
 
 	const D3DXVECTOR3  getPos();
 	const D3DXVECTOR3* getMoveVec();
+	const float			getSpeedMove(){return _fSpeedMove;}
 	void setIntelligence(CTankIntInter* pIntelligence);
 	void setMoveVec( D3DXVECTOR3& MoveVec );
 	void setMoveVec( const D3DXVECTOR3 *MoveVec );
 	void setPos(const float x,const float y);
+	void setSpeedMove(const float fSpeedMove){ _fSpeedMove = fSpeedMove;}
+	void setEffect(CEffectBase* pEffect){_pEffect = pEffect;}
 private:
 	CMesh*			_pMesh;
+	CEffectBase*	_pEffect;
 	CTankIntInter*	_pIntelligence;
 	D3DXVECTOR3		_MoveVec;			///<	移動ベクトル
 	D3DXVECTOR3		_MoveDir;			///<	移動方向
 	D3DXVECTOR3		_Dir;
-	D3DXMATRIXA16	_WMat;			///<	ボトムのマトリクス
+	D3DXMATRIXA16	_WMat;				///<	ボトムのマトリクス
 	float			_fSpeedMove;		///<	移動速度
 	float			_fSpeedTurn;		///<	旋回速度
 	static const	float	_fDeceleration;		///<	減速率

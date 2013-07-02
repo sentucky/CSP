@@ -1,3 +1,11 @@
+/***********************************************************************/
+/*! @file  CShadowMap.cpp
+ *  @brief
+ *  
+ *  @author 
+ *  @date 
+ */
+/***********************************************************************/
 #include"CShadowMap.h"
 
 #include"common.h"
@@ -15,6 +23,14 @@ static const D3DXMATRIXA16 TEX_MATRIX(
 					);
 
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] constcharpath[MAX_PATH] 
+ *  @param[in,out] constcharFXFilePath[MAX_PATH] 
+ *  @retval  
+ */
+/***********************************************************************/
 CShadowMap::CShadowMap(
 	const char path[MAX_PATH],
 	const char FXFilePath[MAX_PATH]
@@ -24,15 +40,34 @@ CShadowMap::CShadowMap(
 	create();
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval  
+ */
+/***********************************************************************/
 CShadowMap::~CShadowMap()
 {
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] src 
+ *  @retval  
+ */
+/***********************************************************************/
 CShadowMap::CShadowMap(const CShadowMap& src)
 	:CEffectBase(src._FXFilePath)
 {
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShadowMap::create()
 {
 
@@ -149,6 +184,14 @@ void CShadowMap::create()
 
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pMesh 
+ *  @param[in,out] matWorld 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShadowMap::draw(CMesh* pMesh, const D3DXMATRIXA16* matWorld)
 {
 	D3DXVECTOR3 eye    = D3DXVECTOR3(0, 600, 600);
@@ -200,6 +243,15 @@ void CShadowMap::draw(CMesh* pMesh, const D3DXMATRIXA16* matWorld)
 	//*/
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pMesh 
+ *  @param[in,out] matWorld 
+ *  @param[in,out] lightVpMatrix 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShadowMap::draw1(CMesh* pMesh,const D3DXMATRIXA16* matWorld, const D3DXMATRIXA16* lightVpMatrix)
 {
 	LPDIRECT3DSURFACE9 oldBackBuffer, oldZBuffer;
@@ -270,6 +322,15 @@ void CShadowMap::draw1(CMesh* pMesh,const D3DXMATRIXA16* matWorld, const D3DXMAT
 	}
 }
 
+/***********************************************************************/
+/*! @brief 
+ * 
+ *  @param[in,out] pMesh 
+ *  @param[in,out] matWorld 
+ *  @param[in,out] lightVpMatrix 
+ *  @retval void
+ */
+/***********************************************************************/
 void CShadowMap::draw2(CMesh* pMesh,const D3DXMATRIXA16* matWorld, const D3DXMATRIXA16* lightVpMatrix)
 {
 	D3DXMATRIXA16 wvpMatrix, wlpMatrix, wlpbMatrix, invMatrix;
