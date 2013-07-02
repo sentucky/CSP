@@ -111,10 +111,10 @@ void CSceneResult::update()
 		}
 		
 		size = pResultSprite[i]->getUV();
-		colpos.x = vecResultPos[i].x - size->right / 2;
-		colpos.y = vecResultPos[i].y - size->bottom / 2;
+		colpos.x = vecResultPos[i].x - static_cast<float>(size->right / 2);
+		colpos.y = vecResultPos[i].y - static_cast<float>(size->bottom / 2);
 
-		if(bindRect(&colpos, (RECT *) size, &D3DXVECTOR2(ResultClickpos.x, ResultClickpos.y)))
+		if(bindRect(&colpos, (RECT *) size, &D3DXVECTOR2(static_cast<float>(ResultClickpos.x), static_cast<float>(ResultClickpos.y))))
 		{
 			Resultchangebutton[i - 3] = true;
 			if(MOUSE.getTrgMouseButton(0))

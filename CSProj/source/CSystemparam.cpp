@@ -293,9 +293,9 @@ void CSystemparam::drawResult()
 
 	_spriteMatrix._41 = 400;
 	_spriteMatrix._42 = 370;
-	colpos.x = 400 - sizeretry->right / 2;
-	colpos.y = 370 - sizeretry->bottom / 2;
-	if(bindRect(&colpos, (RECT *) sizeretry, &D3DXVECTOR2(ResultClickpos.x, ResultClickpos.y)))
+	colpos.x = 400.0f - static_cast<float>(sizeretry->right / 2);
+	colpos.y = 370.0f - static_cast<float>(sizeretry->bottom / 2);
+	if(bindRect(&colpos, (RECT *) sizeretry, &D3DXVECTOR2(static_cast<float>(ResultClickpos.x), static_cast<float>(ResultClickpos.y))))
 	{
 		_retrySpriteB->draw(0,&_spriteMatrix);
 		if(MOUSE.getTrgMouseButton(0))
@@ -311,9 +311,9 @@ void CSystemparam::drawResult()
 
 	_spriteMatrix._41 = 400;
 	_spriteMatrix._42 = 515;
-	colpos.x = 400 - sizetitle->right / 2;
-	colpos.y = 515 - sizetitle->bottom / 2;
-	if(bindRect(&colpos, (RECT *) sizetitle, &D3DXVECTOR2(ResultClickpos.x, ResultClickpos.y)))
+	colpos.x = 400.0f - static_cast<float>(sizetitle->right / 2);
+	colpos.y = 515.0f - static_cast<float>(sizetitle->bottom / 2);
+	if(bindRect(&colpos, (RECT *) sizetitle, &D3DXVECTOR2(static_cast<float>(ResultClickpos.x), static_cast<float>(ResultClickpos.y))))
 	{
 		_titleSpriteB->draw(0,&_spriteMatrix);
 		if(MOUSE.getTrgMouseButton(0))
@@ -456,7 +456,6 @@ void CSystemparam::startcheck()
 
 			uint n = 0;
 
-			CTank* pTank;
 
 			while(run != end)
 			{

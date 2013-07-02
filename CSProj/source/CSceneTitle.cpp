@@ -122,10 +122,10 @@ void CSceneTitle::update()
 		}
 		
 		size = pTitleSprite[i]->getUV();
-		colpos.x = vecTitlePos[i].x - size->right / 2;
-		colpos.y = vecTitlePos[i].y - size->bottom / 2;
+		colpos.x = vecTitlePos[i].x - static_cast<float>(size->right / 2);
+		colpos.y = vecTitlePos[i].y - static_cast<float>(size->bottom / 2);
 
-		if(bindRect(&colpos, (RECT *) size, &D3DXVECTOR2(TitleClickpos.x, TitleClickpos.y)))
+		if(bindRect(&colpos, (RECT *) size, &D3DXVECTOR2(static_cast<float>(TitleClickpos.x), static_cast<float>(TitleClickpos.y))))
 		{
 			changebutton[i - 2] = true;
 			if(MOUSE.getTrgMouseButton(0))

@@ -151,7 +151,7 @@ void CSceneTestSpace::init()
 	Shadow->_pMeshLand=MESHFACTORY->create(MESHKEY::STAGE01());
 	D3DXMATRIXA16 mat;
 	D3DXMatrixIdentity(&mat);
-	D3DXMatrixScaling(&mat,0.1,0.1,0.1);
+	D3DXMatrixScaling(&mat,0.1f,0.1f,0.1f);
 	//*
 	mat._41 = -100;
 	mat._42 = 80;

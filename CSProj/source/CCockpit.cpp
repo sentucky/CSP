@@ -91,13 +91,13 @@ CCockpit::CCockpit(const CCockpit& src)
 
 	_spriteThMatrix._41 = 720;
 	_spriteThMatrix._42 = 400;
-	_spriteCircleMatrix._41 = 100;
-	_spriteCircleMatrix._42 = 510;
-	_spriteCircleMatrix._43 = 0.001;
-	_spriteStatusMatrix._41 = 355;
-	_spriteStatusMatrix._42 = 510;
-	_spriteMiniMapMatrix._41 = 126;
-	_spriteMiniMapMatrix._42 = 126;
+	_spriteCircleMatrix._41 = 100.0f;
+	_spriteCircleMatrix._42 = 510.0f;
+	_spriteCircleMatrix._43 = 0.001f;
+	_spriteStatusMatrix._41 = 355.0f;
+	_spriteStatusMatrix._42 = 510.0f;
+	_spriteMiniMapMatrix._41 = 126.0f;
+	_spriteMiniMapMatrix._42 = 126.0f;
 
 	enableTask();
 }
@@ -140,10 +140,10 @@ void CCockpit::update()
 	float rag;
 	float maxrag;
 
-	life = _Tank->getlife();
-	maxlife = _Tank->getmaxlife();
-	rag = _Tank->getradiate();
-	maxrag = _Tank->getMaxradiateTime();
+	life = static_cast<float>(_Tank->getlife());
+	maxlife = static_cast<float>(_Tank->getmaxlife());
+	rag = static_cast<float>(_Tank->getradiate());
+	maxrag = static_cast<float>(_Tank->getMaxradiateTime());
 	
 	if(rag > 0.0f)
 	{

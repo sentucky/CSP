@@ -113,10 +113,10 @@ void CSceneStageSelect::update()
 		}
 		
 		size = pSprite[i]->getUV();
-		colpos.x = vecPos[i].x - size->right / 2;
-		colpos.y = vecPos[i].y - size->bottom / 2;
+		colpos.x = vecPos[i].x - static_cast<float>(size->right / 2);
+		colpos.y = vecPos[i].y - static_cast<float>(size->bottom / 2);
 
-		if(bindRect(&colpos, (RECT *) size, &D3DXVECTOR2(StageSelectClickpos.x, StageSelectClickpos.y)))
+		if(bindRect(&colpos, (RECT *) size, &D3DXVECTOR2(static_cast<float>(StageSelectClickpos.x), static_cast<float>(StageSelectClickpos.y))))
 		{
 			
 			if(MOUSE.getTrgMouseButton(0))
