@@ -42,13 +42,14 @@ class CTank:public CObjBase
 {
 public:
 	CTank(
-		CMesh* pMeshTop,		///<	トップメッシュ
-		CMesh* pMeshBottom,		///<	ボトムメッシュ
-		uint   unThisType,		///<	インテリジェンス
-		CShell* pShellProto,
-		const float fMoveSpeed,	///<	速度
-		const float fTurnSpeed,	///<	旋回速度
-		const int	Life		///<
+		CMesh* pMeshTop,		///< トップメッシュ
+		CMesh* pMeshBottom,		///< ボトムメッシュ
+		CMesh* pMeshBottom2,	///< ボトムメッシュ２
+		uint   unThisType,		///< インテリジェンス
+		CShell* pShellProto,	///< 
+		const float fMoveSpeed,	///< 速度
+		const float fTurnSpeed,	///< 旋回速度
+		const int	Life		///< 
 		);
 	~CTank();					///<	デストラクタ
 	CTank(const CTank& src);	///<	コピーコンストラクタ

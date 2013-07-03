@@ -107,9 +107,9 @@ CSystemparam::CSystemparam(const CSystemparam& src)
 	enableTask();
 	_Sprite = SPRITEFACTORY->create(TEXKEY::READY());
 
-#ifndef _DEBUG
+//#ifndef _DEBUG
 	CSOUND->GetSound(SOUNDKEY::FANFARE())->Play(0,0,0);
-#endif
+//#endif
 	_retrySpriteA = SPRITEFACTORY->create(TEXKEY::RETRY_BUTTON01());
 	_retrySpriteB = SPRITEFACTORY->create(TEXKEY::RETRY_BUTTON02());
 	_titleSpriteA = SPRITEFACTORY->create(TEXKEY::TITLE_BUTTON01());
@@ -229,9 +229,9 @@ void CSystemparam::endcheck()
 	else
 	{
 		_Sprite = SPRITEFACTORY->create(TEXKEY::LOSE());
-#ifndef _DEBUG
+//#ifndef _DEBUG
 		CSOUND->GetSound(SOUNDKEY::LOSEBGM())->Play(0,0,1);
-#endif
+//#endif
 	}
 }
 
@@ -442,9 +442,9 @@ void CSystemparam::startcheck()
 {
 	if(_CamStart == NULL)
 	{
-#ifndef _DEBUG
+//#ifndef _DEBUG
 		CSOUND->GetSound(SOUNDKEY::GAMEBGM())->Play(0,0,1);	
-#endif
+//#endif
 		--_startCount;
 		if(_startCount <= 0)
 		{

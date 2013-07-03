@@ -102,7 +102,7 @@ CMesh::~CMesh()
 HRESULT CMesh::loadMesh(LPCSTR szMeshName)
 {
 	//	ïœêîêÈåæ
-	HRESULT					hr;
+	HRESULT					hr = 0;
 	LPD3DXBUFFER			pD3DXMatlBuffer;
 
 
@@ -247,7 +247,9 @@ void CMesh::loadVertex()
 void CMesh::draw(const D3DXMATRIXA16* matWorld)
 {
 	for(uint unSun = 0; unSun < _pd3dMesh->GetNumVertices()/2; unSun++)
+	{
 		(_pvec3Vertex+unSun)->y  += 0.1f;
+	}
 
 	if(_pEffect == NULL)
 	{

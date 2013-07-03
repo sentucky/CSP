@@ -188,6 +188,7 @@ void gameInit()
 	CTank* pObj = new CTank(
 		MESHFACTORY->create(MESHKEY::TANK01_TOP()),
 		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM()),
+		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM()),
 		0,
 		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1),
 		0.05f,
@@ -196,6 +197,7 @@ void gameInit()
 		);
 	CTank* pObj3 = new CTank(
 		MESHFACTORY->create(MESHKEY::TANK02_TOP()),
+		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM()),
 		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM()),
 		-1,
 		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1),
@@ -207,6 +209,7 @@ void gameInit()
 
 	CTank* pObj2 = new CTank(
 		MESHFACTORY->create(MESHKEY::TANK02_TOP()),
+		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM()),
 		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM()),
 		-1,
 		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::SHELL01()),1),

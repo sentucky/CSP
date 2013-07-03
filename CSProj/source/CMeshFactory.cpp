@@ -51,7 +51,8 @@ CMesh* CMeshFactory::create(const uint unMeshKeyName)
 	}
 
 #endif
-	return new CMesh(*_vectorMesh[unMeshKeyName]);
+	CMesh *pMesh = new CMesh(*_vectorMesh[unMeshKeyName]);
+	return pMesh;
 }
 
 

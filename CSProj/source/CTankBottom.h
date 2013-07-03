@@ -22,6 +22,7 @@ class CTankBottom
 public:
 	CTankBottom(
 	CMesh* pMesh,
+	CMesh* pMesh2,
 	const float fSpeedMove,
 	const float fSpeedTurn
 	);
@@ -49,6 +50,7 @@ public:
 	void setEffect(CEffectBase* pEffect){_pEffect = pEffect;}
 private:
 	CMesh*			_pMesh;
+	CMesh*			_pMesh2;
 	CEffectBase*	_pEffect;
 	CTankIntInter*	_pIntelligence;
 	D3DXVECTOR3		_MoveVec;			///<	ˆÚ“®ƒxƒNƒgƒ‹

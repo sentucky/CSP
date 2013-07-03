@@ -195,7 +195,7 @@ void CSceneGame::init()
 	standby(pStage);
 	_DrawFlg = TRUE;
 
-#ifdef _DEBUG
+#ifdef _0
 	pSTCam->count(0,30);
 	pSTCam->count(1,30);
 #else

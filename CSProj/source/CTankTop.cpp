@@ -76,16 +76,16 @@ CTankTop::~CTankTop()
 CTankTop::CTankTop(
 	const CTankTop& src
 	)
-	:_Owner(src._Owner),
-	_pTankIntelligence(_pTankIntelligence),
-	_pMesh(new CMesh( *src._pMesh)),
-	_pProtoShell(new CShell(*src._pProtoShell)),
-	_TopDir(0,0,1.0f),
-	_pEffect(NULL)
+	:_Owner				(src._Owner),
+	_pTankIntelligence	(_pTankIntelligence),
+	_pMesh				(new CMesh( *src._pMesh)),
+	_pProtoShell		(new CShell(*src._pProtoShell)),
+	_TopDir				(0,0,1.0f),
+	_pEffect			(NULL)
 {
 	D3DXMatrixIdentity(&_WMat);
 
-	_pEffect = CEffectToon::getInst();
+//	_pEffect = CEffectToon::getInst();
 	_pMesh->setEffect(_pEffect);
 
 	//	’e‚Ì–³Œø‰»
