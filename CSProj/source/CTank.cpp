@@ -31,9 +31,12 @@
 
 #include"StageData.h"
 #include"Rect.h"
+
 #include"CFollowCamera.h"
+
 #include"CSound.h"
 #include"CSoundKey.h"
+
 #include"CTankIntDummy.h"
 #include"CSprite.h"
 #include"CSpriteFactory.h"
@@ -100,6 +103,7 @@ void billboard(D3DXMATRIXA16* Out,const D3DXMATRIXA16* In)
 CTank::CTank(
 	CMesh* pMeshTop,
 	CMesh* pMeshBottom,
+	CMesh* pMeshBottom2,
 	uint   unThisType,
 	CShell* pShellProto,
 	const float fMoveSpeed,
@@ -138,7 +142,7 @@ CTank::CTank(
 	_effectMatrix		(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)
 {
 	_pTankTop = new CTankTop(this,pMeshTop,NULL,pShellProto);
-	_pTankBottom = new CTankBottom(pMeshBottom,fMoveSpeed,fTurnSpeed);
+	_pTankBottom = new CTankBottom(pMeshBottom,pMeshBottom2,fMoveSpeed,fTurnSpeed);
 #ifdef _DEBUG
 	debugMesh = NULL;
 #endif
@@ -335,13 +339,16 @@ void CTank::draw()
 	{
 		drawDestroyed();
 	}
-
 #ifdef _DEBUG
+
 	if(_unThisType == 0)
 	{
 		FONT->DrawFloat("lapval,",this->_lapVal,RECTEX(400,0,0,0));
 		FONT->DrawInt("lap,",this->_lap,RECTEX(400,16,0,0));
 	}
+
+
+	//煙のエフェクト
 
 	/*
 	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
@@ -522,6 +529,8 @@ void CTank::pRap()				///<	自機ラップ
 	{
 		_FlgGoal = TRUE;
 	}
+
+	//	ここに逆走判定
 }
 
 
@@ -709,7 +718,13 @@ void CTank::raceEnd()
 void CTank::drawDestroyed()
 {
 		//爆発演出
-		/*
+		const D3DXVECTOR3 pos = _pTankBottom->getPos();
+		D3DXMATRIX mat;
+
+		D3DXMatrixTranslation(&mat, pos.x, pos.y, pos.z);
+		
+		MakeBillboardMat(&_effectMatrix, &mat);
+		
 		D3DDEVICE->SetTransform(D3DTS_WORLD, &_effectMatrix);
 		D3DDEVICE->SetRenderState(D3DRS_ZENABLE,FALSE);	
 		D3DDEVICE->SetRenderState(D3DRS_LIGHTING,FALSE);	
@@ -718,33 +733,15 @@ void CTank::drawDestroyed()
 		rect.SetSize(4.0f, 4.0f);
 
 		rect.SetTexture( (TEXTUREFACTORY->getTexture(TEXKEY::TANK_EXPLOAD()))->getTexture());
-		rect.SetUV(0,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / 384.0f , _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
-		rect.SetUV(1,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / 384.0f, _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
-		rect.SetUV(2,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / 384.0f , _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
-		rect.SetUV(3,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / 384.0f, _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
+		rect.SetUV(3,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / 384.0f , _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
+		rect.SetUV(1,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / 384.0f , _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
+		rect.SetUV(2,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / 384.0f, _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
+		rect.SetUV(0,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / 384.0f, _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
 
 		rect.Draw();
-		*/
 
-		D3DXMATRIXA16 scale;
-		D3DXMATRIXA16 mat2;
-		D3DXMatrixIdentity(&scale);
-		D3DXMatrixScaling(&scale,1.0f / 16.0f,1.0f / 16.0f,1.0f / 16.0f);
-		D3DXMatrixIdentity(&mat2);
-
-		billboard(&mat2,_pTankBottom->getWMat());
-
-		D3DXMATRIXA16 rot;
-		D3DXMatrixIdentity(&rot);
-		D3DXMatrixRotationZ(&rot,D3DXToRadian(180.0f));
-
-		D3DXMATRIXA16 trance = mat2;
-		mat2._41 = mat2._42 = mat2._43 = 0;
-		mat2 *= scale;
-		mat2._41 = trance._41;
-		mat2._42 = trance._42 + 1.0f;
-		mat2._43 = trance._43;
-		_SpriteExpload->draw(D3DXSPRITE_ALPHABLEND,&mat2,CCamera::getMatView());
+		D3DDEVICE->SetRenderState(D3DRS_ZENABLE,TRUE);	
+		D3DDEVICE->SetRenderState(D3DRS_LIGHTING,TRUE);	
 }
 
 /***********************************************************************/

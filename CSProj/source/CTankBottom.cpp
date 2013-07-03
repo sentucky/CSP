@@ -31,10 +31,12 @@ const	float	CTankBottom::_fDeceleration = 0.900f;
 /***********************************************************************/
 CTankBottom::CTankBottom(
 	CMesh* pMesh,
+	CMesh* pMesh2,
 	const float fSpeedMove,
 	const float fSpeedTurn
 	)
 	:_pMesh(pMesh),
+	_pMesh2(pMesh2),
 	_pIntelligence(NULL),
 	_Dir(0,0.0f,1.0f),
 	_MoveVec(0,0,0.0f),
@@ -68,6 +70,7 @@ CTankBottom::~CTankBottom()
 /***********************************************************************/
 CTankBottom::CTankBottom(const CTankBottom& src)
 	:_pMesh(new CMesh(*src._pMesh)),
+	_pMesh2(new CMesh(*src._pMesh2)),
 	_pIntelligence(NULL),
 	_Dir(0,0.0f,1.0f),
 	_MoveVec(0,0,0.0f),
@@ -77,7 +80,7 @@ CTankBottom::CTankBottom(const CTankBottom& src)
 	_pEffect(NULL)
 {
 	D3DXMatrixIdentity(&_WMat);
-	_pEffect = CEffectToon::getInst();
+//	_pEffect = CEffectToon::getInst();
 	_pMesh->setEffect(_pEffect);
 }
 

@@ -42,7 +42,7 @@ public:
 	LPD3DXEFFECT				 getEffect();				///<	エフェクト取得
 	LPDIRECT3DVERTEXDECLARATION9 getDecl();					///<
 	void setTechniqueHandle( const D3DXHANDLE TechHandle);	///<	technicハンドル取得
-
+	void commitChanges(){if(_Effect != NULL)_Effect->CommitChanges();}
 
 protected:
 	char						 _FXFilePath[MAX_PATH];	//!<	fxファイルパス
