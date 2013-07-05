@@ -27,26 +27,26 @@ class CMesh;
 class CEffectBase
 {
 public:
-	CEffectBase(const char FXFilePath[MAX_PATH]);	///<	コンストラクタ
+	CEffectBase(char FXFilePath[MAX_PATH]);	///<	コンストラクタ
 	virtual ~CEffectBase();							///<	デストラクタ
+	CEffectBase(const CEffectBase& src);
 private:
-	CEffectBase(const CEffectBase&);				///<	コピー禁止
-	virtual void create() = 0;						///<	エフェクト作成
-
-protected:
-	void createVtxDecl(D3DVERTEXELEMENT9*);
-
 public:
-	virtual void draw(CMesh* pMesh, const D3DXMATRIXA16* matWorld) = 0;
+	void release();
+	virtual BOOL create()		= 0;	//	初期化処理
+	virtual BOOL cloneCreate()	= 0;	//	被コピー時の初期化
 
-	LPD3DXEFFECT				 getEffect();				///<	エフェクト取得
-	LPDIRECT3DVERTEXDECLARATION9 getDecl();					///<
-	void setTechniqueHandle( const D3DXHANDLE TechHandle);	///<	technicハンドル取得
-	void commitChanges(){if(_Effect != NULL)_Effect->CommitChanges();}
+
+	uint begin(uint Technique);
+	void end();					//	描画後処理
+	BOOL beginPass(uint Pass);	//
+	void endPass();				//
+	void commitChanges();
+
+	virtual void setHandles(uint HandleID,D3DXHANDLE) = 0;
 
 protected:
-	char						 _FXFilePath[MAX_PATH];	//!<	fxファイルパス
-	LPD3DXEFFECT				 _Effect;				//!<	エフェクト
-	LPDIRECT3DVERTEXDECLARATION9 _Decl;					//!<	
+	char*						 _FxPath;	//!<	fxファイルパス
+	LPD3DXEFFECT				 _Effect;	//!<	エフェクト
 };
 #endif

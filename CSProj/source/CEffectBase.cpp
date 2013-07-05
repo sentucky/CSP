@@ -12,83 +12,71 @@
 #include"CEffectBase.h"
 #include"CDevice.h"
 
-
-
-/***********************************************************************/
-/*! @brief コンストラクタ
- * 
- *  @param[in] FXFilePath 
- */
-/***********************************************************************/
-CEffectBase::CEffectBase(const char* FXFilePath)
-	:_Effect(0),
-	_Decl(0)
+CEffectBase::CEffectBase(
+	char FXFilePath[MAX_PATH]
+):	_FxPath	(FXFilePath),
+	_Effect	(NULL)
 {
-	strcpy(_FXFilePath,FXFilePath);
 }
 
-/***********************************************************************/
-/*! @brief デストラクタ
- */
-/***********************************************************************/
 CEffectBase::~CEffectBase()
 {
+}
+
+CEffectBase::CEffectBase(
+	const CEffectBase& src
+	)
+	:_FxPath	(src._FxPath),
+	_Effect		(NULL		)
+{
+	src._Effect->CloneEffect(D3DDEVICE,&_Effect);
+}
+
+void CEffectBase::release()
+{
+	_FxPath = NULL;
 	SAFE_RELEASE(_Effect);
-	SAFE_RELEASE(_Decl);
 }
 
-/***********************************************************************/
-/*! @brief コピーコンストラクタ\nコピー禁止
- * 
- *  @param[in] copy 
- */
-/***********************************************************************/
-CEffectBase::CEffectBase(const CEffectBase& copy)
+uint CEffectBase::begin(uint Technique)
 {
-}
-
-/***********************************************************************/
-/*! @brief 
- * 
- *  @param[in] DECL 
- *  @retval void
- */
-/***********************************************************************/
-void CEffectBase::createVtxDecl(D3DVERTEXELEMENT9* DECL)
-{
-	HRESULT hr;
-
-	// 頂点宣言作成
-	if(FAILED(hr = D3DDEVICE->CreateVertexDeclaration(
-									DECL, 
-									&_Decl
-									)))
+	if(_Effect == NULL)
 	{
-		MessageAlert("頂点宣言間違い！","error from CEffectBase::createVtxDecl");
+		return 0;
 	}
+
+	uint MaxPath = 0;
+	D3DXHANDLE TechHandle = _Effect->GetTechnique(Technique);
+	_Effect->SetTechnique(TechHandle);
+	if (FAILED(_Effect->Begin(&MaxPath, 0))) {
+		MaxPath = 0;
+	}
+	return MaxPath;
 }
 
-/***********************************************************************/
-/*! @brief 
-* 
-*  @retval LPDIRECT3DVERTEXDECLARATION9 
-*/
-/***********************************************************************/
-LPDIRECT3DVERTEXDECLARATION9 CEffectBase::getDecl()
+void CEffectBase::end()
 {
-	return _Decl;
+	_Effect->End();
 }
 
-
-/***********************************************************************/
-/*! @brief エフェクト情報取得
- * 
- *  @retval LPD3DXEFFECT 
- */
-/***********************************************************************/
-LPD3DXEFFECT	CEffectBase::getEffect()
+BOOL CEffectBase::beginPass(uint Pass)
 {
-	return _Effect;
+	if(_Effect == NULL)
+		return FALSE;
+
+	return SUCCEEDED(_Effect->BeginPass(Pass));
+}
+
+void CEffectBase::endPass()
+{
+	if(_Effect == NULL)
+		return;
+
+	_Effect->EndPass();
 }
 
 
+void CEffectBase::commitChanges()
+{
+	if(_Effect != NULL)_Effect->CommitChanges();
+}

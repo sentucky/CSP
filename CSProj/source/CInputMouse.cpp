@@ -195,7 +195,7 @@ void CInputMouse::calcMouseRay()
 	D3DXMATRIX mat;
 	D3DXMatrixIdentity(&mat);
 
-	const D3DXMATRIXA16 *matProj = CSCREEN->getProjPtr();
+	const D3DXMATRIXA16 *matProj = CSCREEN->getMatProj();
 	const D3DXMATRIXA16 *matView = CCamera::getMatView();
 
 	D3DXVec3Unproject(&_P03D, &p0, &vp, matProj, matView, &mat);

@@ -234,7 +234,7 @@ void CSprite::draw(DWORD SpriteType,const D3DXMATRIXA16* pmatWorld, const D3DXMA
 	////////////////////////////
 	//	座標変換
 	//*
-	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
+	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getMatProj());	//ビュー座標変換
 	
 	if(pmatView != NULL)
 	{
@@ -277,7 +277,7 @@ void CSprite::draw(DWORD SpriteType,const D3DXMATRIXA16* pmatWorld)
 	////////////////////////////
 	//	座標変換
 	/*
-	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
+	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getMatProj());	//ビュー座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD, pmatWorld);					//ワールド座標変換
 	*/
 	//calcCenter();

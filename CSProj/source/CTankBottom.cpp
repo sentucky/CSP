@@ -16,7 +16,6 @@
 #include"ObjKey.h"
 
 #include"CEffectBase.h"
-#include"CEffectToon.h"
 
 const	float	CTankBottom::_fDeceleration = 0.900f;
 
@@ -37,12 +36,14 @@ CTankBottom::CTankBottom(
 	)
 	:_pMesh(pMesh),
 	_pMesh2(pMesh2),
+	_pDrawMesh(NULL),
 	_pIntelligence(NULL),
 	_Dir(0,0.0f,1.0f),
 	_MoveVec(0,0,0.0f),
 	_MoveDir(0,0,0),
 	_fSpeedMove(fSpeedMove),
 	_fSpeedTurn(fSpeedTurn),
+	_CaterpillarRoll(FALSE),
 	_pEffect(NULL)
 {
 	D3DXMatrixIdentity(&_WMat);
@@ -58,6 +59,7 @@ CTankBottom::CTankBottom(
 CTankBottom::~CTankBottom()
 {
 	SAFE_DELETE(_pMesh);
+	SAFE_DELETE(_pMesh2);
 	_pEffect = NULL;
 }
 
@@ -71,12 +73,14 @@ CTankBottom::~CTankBottom()
 CTankBottom::CTankBottom(const CTankBottom& src)
 	:_pMesh(new CMesh(*src._pMesh)),
 	_pMesh2(new CMesh(*src._pMesh2)),
+	_pDrawMesh(_pMesh),
 	_pIntelligence(NULL),
 	_Dir(0,0.0f,1.0f),
 	_MoveVec(0,0,0.0f),
 	_MoveDir(0,0,0),
 	_fSpeedMove(src._fSpeedMove),
 	_fSpeedTurn(src._fSpeedTurn),
+	_CaterpillarRoll(FALSE),
 	_pEffect(NULL)
 {
 	D3DXMatrixIdentity(&_WMat);
@@ -92,7 +96,7 @@ CTankBottom::CTankBottom(const CTankBottom& src)
 /***********************************************************************/
 void CTankBottom::draw()
 {
-	_pMesh->draw(&_WMat);
+	_pDrawMesh->draw(&_WMat);
 }
 
 /***********************************************************************/
@@ -124,10 +128,16 @@ void CTankBottom::clacMove(const uint rank)
 	const float rankPar = static_cast<float>(rank) / static_cast<float>(size) - 0.5f;
 
 	const D3DXVECTOR2* pMoveVec = _pIntelligence->getModeDir();
-	if(abs(pMoveVec->x) + abs(pMoveVec->y) != 0)
+	if(abs(pMoveVec->x) + abs(pMoveVec->y) > 0)
 	{
 		D3DXVec3Normalize(&_Dir,&_Dir);
 		_MoveVec += _Dir *( _fSpeedMove/*  + _fSpeedMove * rankPar*/);
+		_CaterpillarRoll++;
+		if(_CaterpillarRoll > 5)
+		{
+			_pDrawMesh = _pDrawMesh != _pMesh ? _pMesh : _pMesh2;
+			_CaterpillarRoll = 0;
+		}
 	}
 }
 

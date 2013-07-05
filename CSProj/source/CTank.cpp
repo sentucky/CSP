@@ -351,7 +351,7 @@ void CTank::draw()
 	//煙のエフェクト
 
 	/*
-	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
+	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getMatProj());	//ビュー座標変換
 	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatViewOUSO());		//カメラ座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());	//ワールド座標変換
 //	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
@@ -732,11 +732,13 @@ void CTank::drawDestroyed()
 		CRect rect;
 		rect.SetSize(4.0f, 4.0f);
 
+		const float rest = 320.0f;
+
 		rect.SetTexture( (TEXTUREFACTORY->getTexture(TEXKEY::TANK_EXPLOAD()))->getTexture());
-		rect.SetUV(3,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / 384.0f , _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
-		rect.SetUV(1,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / 384.0f , _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
-		rect.SetUV(2,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / 384.0f, _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
-		rect.SetUV(0,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / 384.0f, _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
+		rect.SetUV(3,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / rest , _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
+		rect.SetUV(1,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / rest , _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
+		rect.SetUV(2,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right /rest, _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
+		rect.SetUV(0,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / rest, _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
 
 		rect.Draw();
 

@@ -3,6 +3,7 @@
 
 #include"CEffectBase.h"
 #include"CDevice.h"
+#include"d3dx9effect.h"
 
 class CBumpMap:public CEffectBase
 {
@@ -24,21 +25,34 @@ public:
 		SUM_HANDLES,
 	};
 public:
-	CBumpMap();
+	CBumpMap(char FXFilePath[MAX_PATH]);
 	~CBumpMap();
 	
-	void create();
+
 	void release();
 
-	void setMaterial();
+	BOOL create();
+	BOOL cloneCreate();
 
-	void setHandle(uint HandleID, D3DXHANDLE Handle){*(_Handles + HandleID) = Handle;};
-	void setTexture(LPDIRECT3DTEXTURE9 Tex, LPDIRECT3DTEXTURE9 NormalTex);
-	void begin();
-	void end();
+
+	void setMaterial(D3DMATERIAL9* pMaterial);
+	void setTexture(LPDIRECT3DTEXTURE9 pTexture);
+
+	void setWorldMatrix( D3DXMATRIXA16* pMatrix);
+
+	void setCameraPos(LPD3DXVECTOR3 pCameraPos);
+
+	void setHandle(uint HandleID, D3DXHANDLE Handle){*(_Handles + HandleID) =  Handle;};
+	void setBumpTex(LPDIRECT3DTEXTURE9 Tex, LPDIRECT3DTEXTURE9 NormalTex);
 private:
 	D3DXHANDLE		_Handles[SUM_HANDLES];
-	D3DXEFFECT_DECL _Decl;
+	D3DXHANDLE		_HandleNormalMap;
+	D3DXHANDLE		_HandleTex;
+
+	D3DXEFFECT_DESC _Desc;
+
+
+	static const char* _params[SUM_HANDLES];
 };
 
 

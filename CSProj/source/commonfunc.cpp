@@ -275,8 +275,8 @@ void commonfunc::repulsion(
 		MessageAlert("e2‚É•s³‚È’l‚ª“ü—Í‚³‚ê‚Ä‚¢‚Ü‚·","error from repulsion");
 	}
 #endif
-	float RefRate = 1 + e1 * e2;
-	*pv1Out = (m1 - (e1 * e2) * m2) * v1  / (m1 + m2) + (1 + e1 * e2) * m2 * v2 / (m1 + m2);
+	float RefRate = e1 * e2;
+	*pv1Out = (m1 - (e1 * e2) * m2) * v1  / (m1 + m2) + (e1 * e2) * m2 * v2 / (m1 + m2);
 }
 
 

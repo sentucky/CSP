@@ -43,6 +43,7 @@ CTexture::CTexture(const char* pszFilePath)
 /***********************************************************************/
 CTexture::~CTexture()
 {
+
 	SAFE_RELEASE(_texture);
 }
 

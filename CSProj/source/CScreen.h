@@ -51,7 +51,7 @@ private:
 public:
 	void init();		///<‰Šú‰»ŠÖ
 	void update();		///<XV
-	D3DXMATRIXA16 *getProjPtr(); 
+	D3DXMATRIXA16 *getMatProj(); 
 
 	//===========================================
 	//	ƒƒ“ƒo•Ï”		

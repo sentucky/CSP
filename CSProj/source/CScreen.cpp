@@ -87,7 +87,7 @@ void CScreen::update()
  *  @retval D3DXMATRIXA16* 
  */
 /***********************************************************************/
-D3DXMATRIXA16* CScreen::getProjPtr()
+D3DXMATRIXA16* CScreen::getMatProj()
 {
 	return &_matProj;
 }

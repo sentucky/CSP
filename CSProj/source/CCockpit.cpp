@@ -74,7 +74,7 @@ CCockpit::CCockpit(const CCockpit& src)
 
 	_Num = OBJFACTORY->create<CNum>(OBJKEY::NUM());
 	_Num->setDrawMode(POINT_RIGHT);
-	_Num->setPos(D3DXVECTOR3(720,400,0));
+	_Num->setPos(D3DXVECTOR3(720,500,0));
 	_SpriteTh = SPRITEFACTORY->create(TEXKEY::NUM_TH());
 	_SpriteTh->setCenter(0,0,0);
 	
@@ -91,7 +91,7 @@ CCockpit::CCockpit(const CCockpit& src)
 	_spriteDot	   = SPRITEFACTORY->create(TEXKEY::MINIDOT());
 
 	_spriteThMatrix._41 = 720;
-	_spriteThMatrix._42 = 400;
+	_spriteThMatrix._42 = 500;
 	_spriteCircleMatrix._41 = 100.0f;
 	_spriteCircleMatrix._42 = 510.0f;
 	_spriteCircleMatrix._43 = 0.001f;

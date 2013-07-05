@@ -33,7 +33,6 @@
 #include"const.h"
 #include"TextureKey.h"
 #include"CFont.h"
-#include"CEffectToon.h"
 
 /***********************************************************************/
 /*! @brief 

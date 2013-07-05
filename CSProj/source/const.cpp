@@ -22,11 +22,13 @@ const char* MESHPATH::YUKA(){			return "data/model/nanase_pose.x";		}
 const char* MESHPATH::STAGE01(){		return "data/model/land2.x";		}
 const char* MESHPATH::TANK01_TOP(){		return "data/model/ziki_Lv1_up.x";		}
 const char* MESHPATH::TANK02_TOP(){		return "data/model/tekki_lv1_up.x";		}
-const char* MESHPATH::TANK03_TOP(){		return "data/model/tank03_top.x";		}
+const char* MESHPATH::TANK03_TOP(){		return "data/model/ziki_lv3_up.x";		}
 const char* MESHPATH::TANK04_TOP(){		return "data/model/tank04_top.x";		}
-const char* MESHPATH::TANK01_BOTTOM(){	return "data/model/ziki_Lv1_down.x";	}
-const char* MESHPATH::TANK02_BOTTOM(){	return "data/model/tekki_lv1_down.x";	}
-const char* MESHPATH::TANK03_BOTTOM(){	return "data/model/tank03_bottom.x";	}
+const char* MESHPATH::TANK01_BOTTOM_1(){	return "data/model/ziki_Lv1_down_1.x";	}
+const char* MESHPATH::TANK02_BOTTOM_1(){	return "data/model/tekki_lv1_down_1.x";	}
+const char* MESHPATH::TANK01_BOTTOM_2(){	return "data/model/ziki_Lv1_down_2.x";	}
+const char* MESHPATH::TANK02_BOTTOM_2(){	return "data/model/tekki_lv1_down_2.x";	}
+const char* MESHPATH::TANK03_BOTTOM(){	return "data/model/ziki_lv3_down.x";	}
 const char* MESHPATH::TANK04_BOTTOM(){	return "data/model/tank04_bottom.x";	}
 
 
@@ -48,8 +50,10 @@ enum eMESHKEY
 	MESH_TANK02_TOP,	//
 	MESH_TANK03_TOP,	//
 	MESH_TANK04_TOP,	//
-	MESH_TANK01_BOTTOM,	//
-	MESH_TANK02_BOTTOM,	//
+	MESH_TANK01_BOTTOM_1,	//
+	MESH_TANK02_BOTTOM_1,	//
+	MESH_TANK01_BOTTOM_2,	//
+	MESH_TANK02_BOTTOM_2,	//
 	MESH_TANK03_BOTTOM,	//
 	MESH_TANK04_BOTTOM,	//
 	MESH_SUM,			//
@@ -67,8 +71,10 @@ const uint MESHKEY::TANK01_TOP()	{	return MESH_TANK01_TOP;		}
 const uint MESHKEY::TANK02_TOP()	{	return MESH_TANK02_TOP;		}
 const uint MESHKEY::TANK03_TOP()	{	return MESH_TANK03_TOP;		}
 const uint MESHKEY::TANK04_TOP()	{	return MESH_TANK04_TOP;		}
-const uint MESHKEY::TANK01_BOTTOM()	{	return MESH_TANK01_BOTTOM;	}
-const uint MESHKEY::TANK02_BOTTOM()	{	return MESH_TANK02_BOTTOM;	}
+const uint MESHKEY::TANK01_BOTTOM_1()	{	return MESH_TANK01_BOTTOM_1;	}
+const uint MESHKEY::TANK02_BOTTOM_1()	{	return MESH_TANK02_BOTTOM_1;	}
+const uint MESHKEY::TANK01_BOTTOM_2()	{	return MESH_TANK01_BOTTOM_2;	}
+const uint MESHKEY::TANK02_BOTTOM_2()	{	return MESH_TANK02_BOTTOM_2;	}
 const uint MESHKEY::TANK03_BOTTOM()	{	return MESH_TANK03_BOTTOM;	}
 const uint MESHKEY::TANK04_BOTTOM()	{	return MESH_TANK04_BOTTOM;	}
 const uint MESHKEY::SUM()			{	return MESH_SUM;			}

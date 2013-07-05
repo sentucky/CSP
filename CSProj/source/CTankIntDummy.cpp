@@ -101,6 +101,7 @@ void CTankIntDummy::root(){
 		}else{
 			_point++;	// 次のポイントへ
 			}
+		_pointError = (rand()%POINT_ERROR_NUM) - POINT_ERROR_NUM / 2;
 	}
 	_MoveDir = D3DXVECTOR2(TtoNUnitVec.x,TtoNUnitVec.y);	// ナビポイントへ移動
 	

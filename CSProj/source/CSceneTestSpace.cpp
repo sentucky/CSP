@@ -6,7 +6,7 @@
  *  @date 
  */
 /***********************************************************************/
-#ifdef _DEBUG
+#ifdef _HOGEHOGE
 #include"CSceneTestSpace.h"
 #include"const.h"
 #include"CSpriteFactory.h"
@@ -15,8 +15,6 @@
 #include"CCamera.h"
 #include"CLight.h"
 #include"CScreen.h"
-#include"CEffect.h"
-#include"CEffectToon.h"
 #include"CFactory.h"
 #include"CFont.h"
 
@@ -76,7 +74,6 @@ CSprite *pSprite = NULL;
 CNum* pNum;
 CNum* pNum2;
 
-#include"CShadowMap.h"
 #include"CMeshFactory.h"
 
 float dis;

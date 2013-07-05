@@ -257,7 +257,7 @@ void CMesh::draw(const D3DXMATRIXA16* matWorld)
 		return;
 	}
 
-	_pEffect->draw(this, matWorld);
+	//_pEffect->draw(this, matWorld);
 }
 
 
@@ -274,7 +274,7 @@ void CMesh::drawEffectOff(const D3DXMATRIXA16* matWorld)
 	/////////////////////////
 	//	マトリクス変換
 	D3DDEVICE->SetFVF(FVF_VERTEX_3D);	// 頂点フォーマットの設定
-	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getProjPtr());	//ビュー座標変換
+	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getMatProj());	//ビュー座標変換
 	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatView());			//カメラ座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD,matWorld);						//ワールド座標変換
 

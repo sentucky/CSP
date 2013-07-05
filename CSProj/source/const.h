@@ -34,8 +34,10 @@ public:
 	static const char* TANK02_TOP();
 	static const char* TANK03_TOP();
 	static const char* TANK04_TOP();
-	static const char* TANK01_BOTTOM();
-	static const char* TANK02_BOTTOM();
+	static const char* TANK01_BOTTOM_1();
+	static const char* TANK02_BOTTOM_1();
+	static const char* TANK01_BOTTOM_2();
+	static const char* TANK02_BOTTOM_2();
 	static const char* TANK03_BOTTOM();
 	static const char* TANK04_BOTTOM();
 };
@@ -53,8 +55,10 @@ public:
 	static const uint TANK02_TOP();
 	static const uint TANK03_TOP();
 	static const uint TANK04_TOP();
-	static const uint TANK01_BOTTOM();
-	static const uint TANK02_BOTTOM();
+	static const uint TANK01_BOTTOM_1();
+	static const uint TANK02_BOTTOM_1();
+	static const uint TANK01_BOTTOM_2();
+	static const uint TANK02_BOTTOM_2();
 	static const uint TANK03_BOTTOM();
 	static const uint TANK04_BOTTOM();
 	static const uint PIN();

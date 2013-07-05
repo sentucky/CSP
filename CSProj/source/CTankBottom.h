@@ -51,6 +51,7 @@ public:
 private:
 	CMesh*			_pMesh;
 	CMesh*			_pMesh2;
+	CMesh*			_pDrawMesh;
 	CEffectBase*	_pEffect;
 	CTankIntInter*	_pIntelligence;
 	D3DXVECTOR3		_MoveVec;			///<	移動ベクトル
@@ -59,6 +60,7 @@ private:
 	D3DXMATRIXA16	_WMat;				///<	ボトムのマトリクス
 	float			_fSpeedMove;		///<	移動速度
 	float			_fSpeedTurn;		///<	旋回速度
+	uint			_CaterpillarRoll;	///<	Caterpillar回転s
 	static const	float	_fDeceleration;		///<	減速率
 };
 
