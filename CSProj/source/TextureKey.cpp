@@ -3,10 +3,18 @@
 enum eTEXKEY{
 	TEX_SIGHT,
 	TEX_TANK_EXPLOAD,
+
+
+	TEX_LAP,
+	TEX_LAPDIV,
 	TEX_MINIDOT,
 	TEX_MINIMAP,
+
+
 	TEX_GAME_BG,
+
 	TEX_CIRCLE,
+
 	TEX_TANK,
 	TEX_STAGESELECT,
 	TEX_START,
@@ -36,12 +44,14 @@ enum eTEXKEY{
 	TEX_RESULT_BG,
 	TEX_RESULT_RANK,
 	TEX_RESULT_LOSE,
-	TEX_TILE01,
-	TEX_TILE02,
-	TEX_TILE03,
-	TEX_TILE04,
+	TEX_TILEBG,
+	TEX_TILESTRAIGHT,
+	TEX_TILECURVE,
+	TEX_TILESTART,
 	TEX_TILE05,
 	TEX_TILE06,
+	TEX_TILESTRAIGHT_BUMP,
+	TEX_TILECURVE_BUMP,
 	TEX_NUM_B0,
 	TEX_NUM_B1,
 	TEX_NUM_B2,
@@ -69,9 +79,14 @@ enum eTEXKEY{
 
 const uint TEXKEY::SIGHT()	{	return TEX_SIGHT;	}
 const uint TEXKEY::TANK_EXPLOAD()	{	return TEX_TANK_EXPLOAD;	}
+
+const uint TEXKEY::LAP()			{	return TEX_LAP;			}
+const uint TEXKEY::LAPDIV()			{	return TEX_LAPDIV;			}
 const uint TEXKEY::MINIDOT()		{	return TEX_MINIDOT;			}
 const uint TEXKEY::MINIMAP()		{	return TEX_MINIMAP;			}
+
 const uint TEXKEY::GAME_BG()		{	return TEX_GAME_BG;			}
+
 const uint TEXKEY::CIRCLE()			{	return TEX_CIRCLE;			}
 const uint TEXKEY::TANK()			{	return TEX_TANK;			}
 const uint TEXKEY::STAGESELECT()	{	return TEX_STAGESELECT;		}
@@ -101,10 +116,12 @@ const uint TEXKEY::SELECT_COURSE3()	{	return TEX_SELECT_COURSE3;	}
 const uint TEXKEY::RESULT_BG()		{	return TEX_RESULT_BG;		}
 const uint TEXKEY::RESULT_RANK()	{	return TEX_RESULT_RANK;		}
 const uint TEXKEY::RESULT_LOSE()	{	return TEX_RESULT_LOSE;		}
-const uint TEXKEY::TILE01()			{	return TEX_TILE01;			}
-const uint TEXKEY::TILE02()			{	return TEX_TILE02;			}
-const uint TEXKEY::TILE03()			{	return TEX_TILE03;			}
-const uint TEXKEY::TILE04()			{	return TEX_TILE04;			}
+const uint TEXKEY::TILEBG()			{	return TEX_TILEBG;			}
+const uint TEXKEY::TILESTRAIGHT()	{	return TEX_TILESTRAIGHT;	}
+const uint TEXKEY::TILECURVE()		{	return TEX_TILECURVE;		}
+const uint TEXKEY::TILESTART()		{	return TEX_TILESTART;		}
+const uint TEXKEY::TILESTRAIGHT_BUMP(){	return TEX_TILESTRAIGHT_BUMP;}
+const uint TEXKEY::TILECURVE_BUMP()	{	return TEX_TILECURVE_BUMP;	}
 const uint TEXKEY::NUM_B0()			{	return TEX_NUM_B0;			}
 const uint TEXKEY::NUM_B1()			{	return TEX_NUM_B1;			}
 const uint TEXKEY::NUM_B2()			{	return TEX_NUM_B2;			}
@@ -130,25 +147,32 @@ const uint TEXKEY::ANIMETEST()		{	return TEX_ANIMETEST;		}
 const uint TEXKEY::SUM()			{	return TEX_SUM;				}
 
 
-const char* TEXPATH::SIGHT()		{ return "data/texture/sight.png";}
-const char* TEXPATH::MINIDOT()		{ return "data/texture/minidot.png";}
-const char* TEXPATH::MINIMAP()		{ return "data/texture/minimap.png";}
+const char* TEXPATH::SIGHT()			{ return "data/texture/sight.png";}
+
+const char* TEXPATH::LAP()				{ return "data/texture/sz/lap.png";}
+const char* TEXPATH::LAPDIV()			{ return "data/texture/sz/div.png";}
+const char* TEXPATH::MINIDOT()			{ return "data/texture/minidot.png";}
+const char* TEXPATH::MINIMAP()			{ return "data/texture/minimap.png";}
 const char* TEXPATH::TANK_EXPLOAD()		{ return "data/texture/burn.png";}
-const char* TEXPATH::CIRCLE()		{ return "data/texture/ziki_zyoutai_circle.png";}
-const char* TEXPATH::TANK()			{ return "data/texture/ziki_zyoutai.png";		}
+const char* TEXPATH::CIRCLE()			{ return "data/texture/ziki_zyoutai_circle.png";}
+const char* TEXPATH::TANK()				{ return "data/texture/ziki_zyoutai.png";		}
 const char* TEXPATH::GAME_BG()			{ return "data/model/course_BG.tga";	}
+
 const char* TEXPATH::STAGESELECT()		{ return "data/texture/sz/STAGE_SELECT.png";}
 const char* TEXPATH::START()			{ return "data/texture/sz/start.png";		}
 const char* TEXPATH::READY()			{ return "data/texture/sz/reAdy.png";		}
 const char* TEXPATH::GO()				{ return "data/texture/sz/go!!.png";		}
 const char* TEXPATH::EXIT()				{ return "data/texture/sz/exit.png";		}
-const char* TEXPATH::LOSE()				{ return "data/texture/sz/lose.png";			}
+const char* TEXPATH::LOSE()				{ return "data/texture/sz/lose.png";		}
+
 const char* TEXPATH::FADEMASK()			{ return "data/texture/fademask.jpg";		}
 const char* TEXPATH::BACK_BUTTON()		{ return "data/texture/back_button.png";	}
+
 const char* TEXPATH::TITLE_BG()			{ return "data/texture/title_bg.jpg";		}
 const char* TEXPATH::TITLE_STR()		{ return "data/texture/title_str.png";		}
 const char* TEXPATH::TITLE_BUTTON01()	{ return "data/texture/title_button01.png";	}
 const char* TEXPATH::TITLE_BUTTON02()	{ return "data/texture/title_button02.png";	}
+
 const char* TEXPATH::SELECT_BUTTON01()	{ return "data/texture/select_button01.png";}
 const char* TEXPATH::SELECT_BUTTON02()	{ return "data/texture/select_button02.png";}
 const char* TEXPATH::END_BUTTON01()		{ return "data/texture/exit_button01.png";	}
@@ -164,10 +188,14 @@ const char* TEXPATH::SELECT_COURSE3()	{ return "data/texture/select_course3.jpg"
 const char* TEXPATH::RESULT_BG()		{ return "data/texture/result_bg.jpg";		}
 const char* TEXPATH::RESULT_RANK()		{ return "data/texture/result_rank.png";	}
 const char* TEXPATH::RESULT_LOSE()		{ return "data/texture/result_lose.png";	}
-const char* TEXPATH::TILE01()			{ return "data/model/course_bg.tga";				}
-const char* TEXPATH::TILE02()			{ return "data/Stage/04.png";				}
-const char* TEXPATH::TILE03()			{ return "data/Stage/05.png";				}
-const char* TEXPATH::TILE04()			{ return "data/Stage/06.png";				}
+const char* TEXPATH::TILEBG()			{ return "data/model/course_bg.tga";		}
+//const char* TEXPATH::TILESTRAIGHT()		{ return "data/Stage/earth.bmp";	}
+const char* TEXPATH::TILESTRAIGHT()		{ return "data/Stage/tile_Straight.png";	}
+const char* TEXPATH::TILECURVE()		{ return "data/Stage/tile_curve.png";		}
+const char* TEXPATH::TILESTART()		{ return "data/Stage/06.png";				}
+const char* TEXPATH::TILESTRAIGHT_BUMP(){ return "data/Stage/earthnormal.bmp";	}
+//const char* TEXPATH::TILESTRAIGHT_BUMP(){ return "data/Stage/tile_Straight_b.tga";	}
+const char* TEXPATH::TILECURVE_BUMP()	{ return "data/Stage/tile_curve_b.tga";		}
 const char* TEXPATH::NUM_B0()			{ return "data/texture/num/b_0.png";		}
 const char* TEXPATH::NUM_B1()			{ return "data/texture/num/b_1.png";		}
 const char* TEXPATH::NUM_B2()			{ return "data/texture/num/b_2.png";		}

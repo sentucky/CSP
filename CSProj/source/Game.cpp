@@ -89,16 +89,18 @@ void gameInit()
 	INPUTCOMMON->createKeyboard();
 	INPUTCOMMON->createMouse();
 	CSceneBase* ps;
-	ps = new CSceneGame;
+//	ps = new CSceneGame;
 //	ps = new CSceneTitle;
-//	ps = new CSceneTestSpace;
+	ps = new CSceneTestSpace;
 	pScene = ps;
 
 	D3DXMatrixIdentity(&matSight);
 
 	TEXTUREFACTORY->reserve(TEXKEY::SUM());
 	SPRITEFACTORY->registTexture(TEXKEY::SIGHT(),			TEXPATH::SIGHT()			);
-	SPRITEFACTORY->registTexture(TEXKEY::MINIMAP(),			TEXPATH::MINIMAP());
+	SPRITEFACTORY->registTexture(TEXKEY::LAP(),				TEXPATH::LAP()				);
+	SPRITEFACTORY->registTexture(TEXKEY::LAPDIV(),			TEXPATH::LAPDIV()			);
+	SPRITEFACTORY->registTexture(TEXKEY::MINIMAP(),			TEXPATH::MINIMAP()			);
 	SPRITEFACTORY->registTexture(TEXKEY::MINIDOT(),			TEXPATH::MINIDOT()			);
 	SPRITEFACTORY->registTexture(TEXKEY::TANK_EXPLOAD(),	TEXPATH::TANK_EXPLOAD()		);
 	SPRITEFACTORY->registTexture(TEXKEY::GAME_BG(),			TEXPATH::GAME_BG()			);
@@ -126,10 +128,12 @@ void gameInit()
 	SPRITEFACTORY->registTexture(TEXKEY::RESULT_BG(),		TEXPATH::RESULT_BG()		);
 	SPRITEFACTORY->registTexture(TEXKEY::RESULT_RANK(),		TEXPATH::RESULT_RANK()		);
 	SPRITEFACTORY->registTexture(TEXKEY::RESULT_LOSE(),		TEXPATH::RESULT_LOSE()		);
-	SPRITEFACTORY->registTexture(TEXKEY::TILE01(),			TEXPATH::TILE01()			);
-	SPRITEFACTORY->registTexture(TEXKEY::TILE02(),			TEXPATH::TILE02()			);
-	SPRITEFACTORY->registTexture(TEXKEY::TILE03(),			TEXPATH::TILE03()			);
-	SPRITEFACTORY->registTexture(TEXKEY::TILE04(),			TEXPATH::TILE04()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TILEBG(),			TEXPATH::TILEBG()			);
+	SPRITEFACTORY->registTexture(TEXKEY::TILESTRAIGHT(),	TEXPATH::TILESTRAIGHT()		);
+	SPRITEFACTORY->registTexture(TEXKEY::TILECURVE(),		TEXPATH::TILECURVE()		);
+	SPRITEFACTORY->registTexture(TEXKEY::TILESTART(),		TEXPATH::TILESTART()		);
+	SPRITEFACTORY->registTexture(TEXKEY::TILESTRAIGHT_BUMP(),	TEXPATH::TILESTRAIGHT_BUMP());
+	SPRITEFACTORY->registTexture(TEXKEY::TILECURVE_BUMP(),	TEXPATH::TILECURVE_BUMP()	);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_B0(),			TEXPATH::NUM_B0()			);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_B1(),			TEXPATH::NUM_B1()			);
 	SPRITEFACTORY->registTexture(TEXKEY::NUM_B2(),			TEXPATH::NUM_B2()			);
@@ -192,8 +196,8 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM_1()),
 		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM_2()),
 		0,
-		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1),
-		0.05f,
+		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1,0.3f),
+		0.1f,
 		0.05f,
 		10
 		);
@@ -202,7 +206,7 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM_1()),
 		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM_2()),
 		-1,
-		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1),
+		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1,0.3f),
 		0.03f,
 		0.05f,
 		10
@@ -214,7 +218,7 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM_1()),
 		MESHFACTORY->create(MESHKEY::TANK02_BOTTOM_2()),
 		-1,
-		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::SHELL01()),1),
+		new CShell(60,0.5,MESHFACTORY->create(MESHKEY::SHELL01()),1,0.3f),
 		0.04f,
 		0.05f,
 		5);
@@ -325,7 +329,7 @@ bool gameLoop()
 	if(drawBegin())
 	{
 		pLastScene->draw();
-//		FADEINOUT->draw();
+		FADEINOUT->draw();
 		spriteSight->draw(0,&matSight);
 		drawEnd();
 		D3DDEVICE->Present(0,0,0,0);

@@ -193,6 +193,16 @@ void CSceneGame::init()
 
 	//	スタート位置に配置
 	standby(pStage);
+	CListMng<CObjBase*>* pTankList = OBJMNG->getList(OBJGROUPKEY::TANK());
+	CListItem<CObjBase*>* pRun = pTankList->begin();
+	CListItem<CObjBase*>* pEnd = pTankList->end();
+	while(pRun != pEnd)
+	{
+		static_cast<CTank*>(pRun->getInst())->pLap();
+		pRun = pRun->next();
+	}
+	SysParam->Ranking();
+	Cockpit->update();
 	_DrawFlg = TRUE;
 
 #ifdef _0

@@ -24,6 +24,7 @@ const char* MESHPATH::TANK01_TOP(){		return "data/model/ziki_Lv1_up.x";		}
 const char* MESHPATH::TANK02_TOP(){		return "data/model/tekki_lv1_up.x";		}
 const char* MESHPATH::TANK03_TOP(){		return "data/model/ziki_lv3_up.x";		}
 const char* MESHPATH::TANK04_TOP(){		return "data/model/tank04_top.x";		}
+//const char* MESHPATH::TANK01_BOTTOM_1(){	return "data/model/sphere1.x";	}
 const char* MESHPATH::TANK01_BOTTOM_1(){	return "data/model/ziki_Lv1_down_1.x";	}
 const char* MESHPATH::TANK02_BOTTOM_1(){	return "data/model/tekki_lv1_down_1.x";	}
 const char* MESHPATH::TANK01_BOTTOM_2(){	return "data/model/ziki_Lv1_down_2.x";	}

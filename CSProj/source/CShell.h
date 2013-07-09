@@ -28,7 +28,8 @@ public:
 		const	int		MaxLife,
 				float	MoveSpeed,
 				CMesh*	Mesh,
-				const int power
+				const int power,
+				const float Recoil
 		);
 	//	デストラクタ
 	~CShell();
@@ -51,29 +52,12 @@ public:
 
 	//	ゲッタ
 	D3DXVECTOR3& getTrajectory();
-	D3DXVECTOR3& getMoveVector();
-	/***********************************************************************/
-	/*! @brief 
-	 * 
-	 *  @retval const D3DXMATRIXA16* 
-	 */
-	/***********************************************************************/
+	D3DXVECTOR3& getMoveVector(){return _MoveVector;}
 	const D3DXMATRIXA16* getMatW(){return &_WMat;}
-	/***********************************************************************/
-	/*! @brief 
-	 * 
-	 *  @retval const CTank* 
-	 */
-	/***********************************************************************/
 	const CTank* getOwner(){
 		return _Owner;
 	}
-	/***********************************************************************/
-	/*! @brief 
-	 * 
-	 *  @retval const int 
-	 */
-	/***********************************************************************/
+	const float getRecoil(){return _Recoil;}
 	const int	getPower(){return _Power;}
 
 	void moveVector(const D3DXVECTOR3* MoveVec);
@@ -81,6 +65,7 @@ public:
 	//	セッタ
 	void setPos(const D3DXMATRIXA16*	pos);
 	void setPos(const D3DXVECTOR3*		pos);
+	void setMat(const D3DXMATRIXA16*	mat){_WMat = *mat;}
 	/***********************************************************************/
 	/*! @brief 
 	 * 
@@ -92,6 +77,8 @@ public:
 		_Owner = pTank;
 	}
 
+
+
 private:
 	D3DXMATRIXA16	_WMat;			///<	ワールドマトリクス
 	D3DXVECTOR3		_OldPos;		///<	旧座標
@@ -101,8 +88,9 @@ private:
 	float			_MoveSpeed;		///<	移動速度
 	int				_Power;			///<	威力
 	const int		_nMaxLife;		///<	ライフ
-	int				_nLife;			////<
+	int				_nLife;			///<
 	CTank*			_Owner;			///<	発射した戦車
+	float			_Recoil;		///<	反動
 
 	//	タスク
 	CTaskList*		_TaskListDraw;			///<	描画タスク

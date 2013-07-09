@@ -28,8 +28,8 @@ MOUSE.getPointWindow();		//	ウィンドウ上の2Ｄ座標取得
 //	01スプライトポインタ用意
 CSprite* pTitleSprite
 
-//	02TEXKEY::TILE01のスプライトを作成
-pTitleSprite = 	SPRITEFACTORY->create(TEXKEY::TILE01());
+//	02TEXKEY::TILEBGのスプライトを作成
+pTitleSprite = 	SPRITEFACTORY->create(TEXKEY::TILEBG());
 
 draw()の内でpTitleSprite->draw(....)を実行
 表示は画像の中心が原点

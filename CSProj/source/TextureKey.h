@@ -24,8 +24,12 @@ public:
 	static const char* EXIT();
 	
 	static const char* SIGHT();
+
+	static const char* LAP();
+	static const char* LAPDIV();
 	static const char* MINIDOT();
 	static const char* MINIMAP();
+
 	static const char* GAME_BG();
 	static const char* LOSE();
 	static const char* FADEMASK();
@@ -49,10 +53,12 @@ public:
 	static const char* RESULT_BG();
 	static const char* RESULT_RANK();
 	static const char* RESULT_LOSE();
-	static const char* TILE01();
-	static const char* TILE02();
-	static const char* TILE03();
-	static const char* TILE04();
+	static const char* TILEBG();
+	static const char* TILESTRAIGHT();
+	static const char* TILECURVE();
+	static const char* TILESTART();
+	static const char* TILESTRAIGHT_BUMP();
+	static const char* TILECURVE_BUMP();
 	static const char* NUM_B0();
 	static const char* NUM_B1();
 	static const char* NUM_B2();
@@ -90,8 +96,12 @@ public:
 	static const uint EXIT();
 
 	static const uint SIGHT();
+
+	static const uint LAP();
+	static const uint LAPDIV();
 	static const uint MINIDOT();
 	static const uint MINIMAP();
+
 	static const uint GAME_BG();
 	static const uint LOSE();
 	static const uint FADEMASK();
@@ -115,10 +125,12 @@ public:
 	static const uint RESULT_BG();
 	static const uint RESULT_RANK();
 	static const uint RESULT_LOSE();
-	static const uint TILE01();
-	static const uint TILE02();
-	static const uint TILE03();
-	static const uint TILE04();
+	static const uint TILEBG();
+	static const uint TILESTRAIGHT();
+	static const uint TILECURVE();
+	static const uint TILESTART();
+	static const uint TILESTRAIGHT_BUMP();
+	static const uint TILECURVE_BUMP();
 	static const uint NUM_B0();
 	static const uint NUM_B1();
 	static const uint NUM_B2();

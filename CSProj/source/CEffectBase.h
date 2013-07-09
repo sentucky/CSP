@@ -29,7 +29,7 @@ class CEffectBase
 public:
 	CEffectBase(char FXFilePath[MAX_PATH]);	///<	コンストラクタ
 	virtual ~CEffectBase();							///<	デストラクタ
-	CEffectBase(const CEffectBase& src);
+//	CEffectBase(const CEffectBase& src);
 private:
 public:
 	void release();
@@ -43,7 +43,6 @@ public:
 	void endPass();				//
 	void commitChanges();
 
-	virtual void setHandles(uint HandleID,D3DXHANDLE) = 0;
 
 protected:
 	char*						 _FxPath;	//!<	fxファイルパス

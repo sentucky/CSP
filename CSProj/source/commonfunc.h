@@ -203,4 +203,13 @@ bool LineToCircle(
 	float centerY,	//	円の中心点ｙ
 	float radius	//	円の半径
 );//線と円
+
+
+BOOL LineToCircle(
+	const D3DXVECTOR2*const pVSt,	//	始点
+	const D3DXVECTOR2*const pVEd,	//	端点
+	const D3DXVECTOR2*const pCircle,
+	const float fCRadius
+);
+
 //EOF

@@ -26,7 +26,7 @@ private:
 	void shot();
 
 private:
-	static const int SHOT_PROB = ( 1024 * 100 );
+	static const int SHOT_PROB = ( 1024  );
 	static const int POINT_ERROR_NUM = ( 20 );
 
 	int _point;		///< 現在目的としてるナビポイント

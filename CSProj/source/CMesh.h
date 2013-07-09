@@ -98,7 +98,7 @@ private:
 	HRESULT loadMaterial(LPD3DXBUFFER pD3DXMatlBuffer);	///<	マテリアル関連情報読み込み
 	void	loadVertex();								///<	頂点情報取得
 	void	clone();									///<	クローン作成
-
+	void	addNormal();								///<	法線追加
 protected:
 	LPDIRECT3DTEXTURE9*	_pd3dMeshTexture;	///<	テクスチャポインタ
 	LPD3DXMESH			_pd3dMesh;			///<	メッシュポインタ

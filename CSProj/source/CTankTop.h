@@ -44,6 +44,8 @@ public:
 	void setOwner(CTank* pTank){_Owner = pTank;}
 	void setPos(const float x, const float y,const float z);
 	void setIntelligence(CTankIntInter* pIntelligence);
+	const D3DXVECTOR3* getTopDir(){return &_TopDir;}
+	CShell* getShell(){return _pProtoShell;}
 private:
 	CTank*			_Owner;			
 	CTankBottom*	_Bottom;

@@ -23,6 +23,8 @@
 
 #include"CObjBase.h"
 #include"CPin.h"
+#include"CSound.h"
+#include"CSoundKey.h"
 
 /***********************************************************************/
 /*! @brief コンストラクタ
@@ -74,6 +76,23 @@ void CTankIntPlayer::update()
 	else
 	{
 		_MoveDir.x = 0;
+	}
+	
+	if( _MoveDir.x != 0 || _MoveDir.y != 0)
+	{
+		CSOUND->GetSound(SOUNDKEY::MOVE())->Play(0,1,0);
+		DWORD a;
+		DWORD b;
+		CSOUND->GetSound(SOUNDKEY::MOVE())->GetCurrentPosition(&a,&b);
+
+		if(a > 3000)
+		{
+			CSOUND->GetSound(SOUNDKEY::MOVE())->SetCurrentPosition(0);
+		}
+	}
+	else
+	{
+		CSOUND->GetSound(SOUNDKEY::MOVE())->Stop();
 	}
 
 	D3DXVec2Normalize(&_MoveDir,&_MoveDir);

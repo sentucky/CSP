@@ -133,6 +133,9 @@ HRESULT CMesh::loadMesh(LPCSTR szMeshName)
 
 	loadVertex();
 
+
+//	addNormal();
+
 	return hr;
 }
 
@@ -233,6 +236,40 @@ void CMesh::loadVertex()
 	//---バッファの解放
 	_pd3dMesh->UnlockVertexBuffer();
 	_pd3dMesh->UnlockIndexBuffer();
+}
+
+void CMesh::addNormal()
+{
+	// 法線が無い場合は強制的に追加
+	if ((_pd3dMesh->GetFVF() & D3DFVF_NORMAL) == 0) 
+	{
+		LPD3DXMESH pMeshTmp = _pd3dMesh;
+		pMeshTmp->CloneMeshFVF(pMeshTmp->GetOptions(), pMeshTmp->GetFVF() | D3DFVF_NORMAL,
+			D3DDEVICE, &_pd3dMesh);
+		SAFE_RELEASE(pMeshTmp);
+		D3DXComputeNormals(_pd3dMesh, NULL);
+	}
+	//法線の強制追加
+	D3DVERTEXELEMENT9 m_vtxElem[] =
+    {
+        {0,  0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+        {0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT,  0},
+        {0, 24, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0},
+        {0, 36, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
+        D3DDECL_END()
+    };
+
+	
+    LPDIRECT3DVERTEXDECLARATION9 m_pVtxDecl;
+	D3DDEVICE->CreateVertexDeclaration(m_vtxElem, &m_pVtxDecl);
+
+	LPD3DXMESH pCloneMesh;
+	if (SUCCEEDED(_pd3dMesh->CloneMesh(D3DXMESH_MANAGED,m_vtxElem, D3DDEVICE, &pCloneMesh)) )
+	{
+		_pd3dMesh->Release();
+		_pd3dMesh = pCloneMesh;
+		D3DXComputeTangent(_pd3dMesh, 0, 0, D3DX_DEFAULT, FALSE, NULL);
+	}     
 }
 
 

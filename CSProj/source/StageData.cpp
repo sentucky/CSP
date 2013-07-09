@@ -72,9 +72,9 @@ void CStageData::Init()
 	draw.SetTexture(NULL);
 
 	_pTex[0] = NULL;
-	_pTex[1] = (TEXTUREFACTORY->getTexture(TEXKEY::TILE02()))->getTexture();
-	_pTex[2] = (TEXTUREFACTORY->getTexture(TEXKEY::TILE03()))->getTexture();
-	_pTex[3] = (TEXTUREFACTORY->getTexture(TEXKEY::TILE04()))->getTexture();
+	_pTex[1] = (TEXTUREFACTORY->getTexture(TEXKEY::TILESTRAIGHT()))->getTexture();
+	_pTex[2] = (TEXTUREFACTORY->getTexture(TEXKEY::TILECURVE()))->getTexture();
+	_pTex[3] = (TEXTUREFACTORY->getTexture(TEXKEY::TILESTART()))->getTexture();
 
 	Load("data/stage/stageData00.dat");	//b’è
 }

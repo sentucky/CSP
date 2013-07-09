@@ -31,7 +31,9 @@ private:
 	void endCount();
 	void endcheck();
 	void startcheck();
+public:
 	void Ranking();
+private:
 	
 
 	BOOL endcheckGoal(CTank** GoalTank,CListItem<CObjBase*>* begin,const CListItem<CObjBase*>* end);
@@ -54,6 +56,7 @@ public:
 	const uint getFlgResult(){return _flgRaceResult;}
 	const BOOL getFlgEnd(){return _flgEnd;}
 	const int getgotoscene(){return _gotoscene;}
+	static const int getMaxLap(){return _MaxLap;}
 private:
 	CTaskList* _TaskList;
 	CTaskList* _TaskEndCount;
@@ -74,6 +77,7 @@ private:
 
 	int _startCount;
 	static const int MaxStartCount = 60;
+	static const int _MaxLap = 3;
 
 	int _goalCount;
 	static int _MaxGoalCount;

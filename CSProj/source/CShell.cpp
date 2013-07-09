@@ -33,7 +33,8 @@ CShell::CShell(
 	const	int		nMaxLife,
 			float	MoveSpeed,
 			CMesh*	pMesh,
-			const int power
+			const int power,
+			const float Recoil
 	)
 	:CObjBase(OBJGROUPKEY::SHELL()),
 	_OldPos(0,0,0),
@@ -48,6 +49,7 @@ CShell::CShell(
 	_nMaxLife(nMaxLife),
 	_nLife(-1),
 	_Owner(NULL),
+	_Recoil(Recoil),
 	_Power(power),
 	_fRad(1.0f)
 {
@@ -90,6 +92,7 @@ CShell::CShell(
 	_nMaxLife(src._nMaxLife),
 	_nLife(src._nMaxLife),
 	_Power(src._Power),
+	_Recoil(src._Recoil),
 	_fRad(src._fRad)
 
 {
@@ -234,22 +237,6 @@ D3DXVECTOR3& CShell::getTrajectory()
 void CShell::moveVector(const D3DXVECTOR3* MoveVec)
 {
 	D3DXVec3Normalize(&_MoveVector,&_MoveVector);
-	D3DXMATRIXA16 matbak = _WMat;
-
-	D3DXMATRIXA16 rotmat;
-	D3DXMatrixIdentity(&rotmat);
-
-	float rotY = -atan2f(MoveVec->z,MoveVec->x) + 0.5f * D3DX_PI;
-
-	D3DXMatrixRotationY(&rotmat,rotY);
-
-	_WMat._41 = _WMat._42 = _WMat._43 = 0;
-
-	_WMat *= rotmat;
-
-	_WMat._41 = matbak._41;
-	_WMat._42 = matbak._42;
-	_WMat._43 = matbak._43;
 
 	_MoveVector *= _MoveSpeed;
 	_MoveVector += *MoveVec;

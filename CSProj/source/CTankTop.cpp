@@ -107,7 +107,7 @@ void CTankTop::fire()
 	D3DXVec3Normalize(&ShellVec,&_TopDir);
 	ShellVec += *_Bottom->getMoveVec();
 	pShell->moveVector(&ShellVec);
-	pShell->setPos(&_WMat);
+	pShell->setMat(&_WMat);
 	pShell->setOwner(_Owner);
 }
 

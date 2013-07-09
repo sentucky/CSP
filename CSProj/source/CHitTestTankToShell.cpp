@@ -104,6 +104,11 @@ void CHitTestTankToShell::hitTest()
 	CShell* pShell;
 	CTank* pTank;
 
+	D3DXVECTOR2 spos;
+	D3DXVECTOR2 sVec;
+	D3DXVECTOR2 tPos;
+
+
 	while(pRunTank != pEndTank)
 	{
 		pTank = static_cast<CTank*>(pRunTank->getInst());
@@ -123,9 +128,24 @@ void CHitTestTankToShell::hitTest()
 				shellRad = pShell->getRad();
 				const D3DXMATRIXA16* shellmatW = pShell->getMatW();
 				const D3DXMATRIXA16* Bottom = pTank->getMatBottom();
-				if(bindCircle(
+
+				spos.x = shellmatW->_41;
+				spos.y = shellmatW->_43;
+				sVec.x = pShell->getMoveVector().x;
+				sVec.y = pShell->getMoveVector().z;
+				tPos.x = Bottom->_41;
+				tPos.y = Bottom->_43;
+				if(
+					/*bindCircle(
 					&D3DXVECTOR2(shellmatW->_41,shellmatW->_43),shellRad,
 					&D3DXVECTOR2(Bottom->_41,Bottom->_43),pTank->getRadius())
+					*/
+					LineToCircle(
+						&spos,
+						&(spos+sVec),
+						&tPos,
+						pTank->getRadius()
+					)
 					)
 				{
 					pTank->hitTestShell(pShell);

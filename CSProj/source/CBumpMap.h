@@ -9,6 +9,7 @@ class CBumpMap:public CEffectBase
 {
 public:
 	enum eBUMP_HANDLE{
+		H_LIGHTDIR,
 		H_CAMERA,
 		H_WORLD,
 		H_VIEW,
@@ -22,6 +23,9 @@ public:
 		H_POW,
 		H_TEX,
 		H_BTEX,	//	バンプテクスチャ
+
+		H_BUMPTEX,
+
 		SUM_HANDLES,
 	};
 public:
@@ -36,13 +40,14 @@ public:
 
 
 	void setMaterial(D3DMATERIAL9* pMaterial);
-	void setTexture(LPDIRECT3DTEXTURE9 pTexture);
 
 	void setWorldMatrix( D3DXMATRIXA16* pMatrix);
 
+	void setLightDir(const D3DXVECTOR3*const LightDir);
 	void setCameraPos(LPD3DXVECTOR3 pCameraPos);
 
 	void setHandle(uint HandleID, D3DXHANDLE Handle){*(_Handles + HandleID) =  Handle;};
+	void setTex(LPDIRECT3DTEXTURE9 tex);
 	void setBumpTex(LPDIRECT3DTEXTURE9 Tex, LPDIRECT3DTEXTURE9 NormalTex);
 private:
 	D3DXHANDLE		_Handles[SUM_HANDLES];

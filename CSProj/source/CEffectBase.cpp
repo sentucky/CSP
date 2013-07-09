@@ -22,7 +22,7 @@ CEffectBase::CEffectBase(
 CEffectBase::~CEffectBase()
 {
 }
-
+/*
 CEffectBase::CEffectBase(
 	const CEffectBase& src
 	)
@@ -31,10 +31,10 @@ CEffectBase::CEffectBase(
 {
 	src._Effect->CloneEffect(D3DDEVICE,&_Effect);
 }
-
+*/
 void CEffectBase::release()
 {
-	_FxPath = NULL;
+	//_FxPath = NULL;
 	SAFE_RELEASE(_Effect);
 }
 

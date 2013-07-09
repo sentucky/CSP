@@ -65,7 +65,7 @@ public:
 	void move();				///<	移動処理
 	void fire();				///<	発砲
 	void calcMove();			///<	移動量計算
-	void pRap();				///<	自機ラップ
+	void pLap();				///<	自機ラップ
 	void destroyed();			///<	非破壊
 	void stepReset();			///<	足下情報更新
 
@@ -84,9 +84,6 @@ public:
 
 	static const bool lower(const CTank* A,const CTank* B);
 	void rotationY(const float fY);	
-
-
-
 
 	///	ゲッタ
 	CTankBottom*				getTankBottom()	{return _pTankBottom;}
@@ -137,6 +134,7 @@ private:
 	uint			_unThisType;		///<	タイプ
 	float			_lapVal;			//	進行状態
 	int				_lap;				//	ラップ数	
+	int				_reverse;
 	int				_radiate;			///<	放熱状況
 	int				_MaxRadiateTime;	///<	放熱時間の最大値
 	int				_life;				///<	耐久力

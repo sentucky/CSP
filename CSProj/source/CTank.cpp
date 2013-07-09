@@ -44,6 +44,8 @@
 #include"CAnimeParam.h"
 #include"AnimeKey.h"
 
+#include"CSystemparam.h"
+
 #ifdef _DEBUG
 #include"CCamera.h"
 #include"CScreen.h"
@@ -212,7 +214,8 @@ CTank::CTank(const CTank& src)
 		_pIntelligence = new CTankIntPlayer(this);
 		break;
 	case TYPE_ENEMY01:
-		_pIntelligence = new CTankIntDummy(this);	
+		_pIntelligence = new CTankIntStop(this);	
+//		_pIntelligence = new CTankIntDummy(this);	
 		break;
 	}
 
@@ -271,7 +274,7 @@ void CTank::enableTask()
 	CTaskMng::push<CTank>(TASKKEY::INTELLIGENCE(),	this,&CTank::intelligence,	&_pTaskIntelligence	);
 	CTaskMng::push<CTank>(TASKKEY::FIRE(),			this,&CTank::fire,			&_pTaskFire);
 	CTaskMng::push<CTank>(TASKKEY::CALCACTIVEMOVE(),this,&CTank::calcMove,		&_pTaskCalcAM);
-	CTaskMng::push<CTank>(TASKKEY::RAP(),			this,&CTank::pRap,			&_pTaskRap);
+	CTaskMng::push<CTank>(TASKKEY::RAP(),			this,&CTank::pLap,			&_pTaskRap);
 	CTaskMng::push<CTank>(TASKKEY::TANKSETPSET(),	this,&CTank::stepReset,		&_pTaskStepReset	);
 }
 
@@ -350,13 +353,13 @@ void CTank::draw()
 
 	//煙のエフェクト
 
-	/*
+	//*
 	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getMatProj());	//ビュー座標変換
-	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatViewOUSO());		//カメラ座標変換
+	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatView());		//カメラ座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());	//ワールド座標変換
 //	D3DDEVICE->SetRenderState(D3DRS_FILLMODE ,2);
 	debugMesh->DrawSubset(0);
-	*/
+	//*/
 
 	static BOOL flg = TRUE;
 
@@ -403,8 +406,6 @@ void CTank::pause()
 void CTank::move()
 {
 	const D3DXVECTOR3* movevec = _pTankBottom->getMoveVec();
-	if( movevec->x + movevec->z > 10)
-		CSOUND->GetSound(SOUNDKEY::MOVE())->Play(0,0,0);
 
 	_pTankBottom->move();
 
@@ -438,6 +439,16 @@ void CTank::fire()
 	{
 		_pTankTop->fire();
 		_radiate = _MaxRadiateTime;
+		
+		D3DXVECTOR3 TopDir(*_pTankTop->getTopDir());
+		D3DXVec3Normalize(&TopDir,&TopDir);
+
+		D3DXVECTOR3 NewMVec(*_pTankBottom->getMoveVec());
+
+		NewMVec -= TopDir * _pTankTop->getShell()->getRecoil(); 
+		_pTankBottom->setMoveVec(&NewMVec);
+
+		_SoundFire->SetCurrentPosition(0);
 		_SoundFire->Play(0,0,0);
 	}
 }
@@ -460,7 +471,7 @@ void CTank::calcMove()
  *  @retval  
  */
 /***********************************************************************/
-void CTank::pRap()				///<	自機ラップ
+void CTank::pLap()				///<	自機ラップ
 {
 	const OUTPUT* StData = _StageData->getStartTile();
 	const OUTPUT* ScData = _StageData->getSecondTile();
@@ -525,12 +536,22 @@ void CTank::pRap()				///<	自機ラップ
 	if (p->root == rootNum - 1 && _Panel->no == 3)
 		_lapVal -= rootNum;
 
-	if(_lap > 3)
+	if(_lap >= CSystemparam::getMaxLap())
 	{
 		_FlgGoal = TRUE;
 	}
 
 	//	ここに逆走判定
+	D3DXVECTOR3 moveVec = *_pTankBottom->getMoveVec();
+	D3DXVECTOR3 lapVec = D3DXVECTOR3(s->posX,0.0f,s->posY) - D3DXVECTOR3(p->posX,0.0f,p->posY);
+	float r = D3DXVec3Dot(&moveVec,&lapVec);
+
+	if (r > 0.0f){
+		_reverse = 0;
+	}
+	else {
+		if (_reverse < 65535) _reverse++;
+	}
 }
 
 
@@ -547,7 +568,7 @@ void CTank::destroyed()
 	float count;
 	count = _deldelayCount;
 
-	_SpriteExpload->setCatAnime(6 - int(6 * (_deldelayCount / 60.0f)));
+	_SpriteExpload->setCatAnime(4 - int(4 * (_deldelayCount / 60.0f)));
 	_SpriteExpload->updateAnime();
 
 	--_deldelayCount;
@@ -595,23 +616,6 @@ void CTank::hitTestTank( CTank* pTank)
 	const D3DXMATRIXA16* pmatW1 = _pTankBottom->getWMat();
 	const D3DXMATRIXA16* pmatW2 = pTank->getMatBottom();
 
-	/*
-	D3DXVECTOR3 pos1(pmatW1->_41,pmatW1->_42,pmatW1->_43);
-	D3DXVECTOR3 pos2(pmatW2->_41,pmatW2->_42,pmatW2->_43);
-
-//	D3DXVec3Normalize(&v3,&v3);
-
-	/*
-
-	float f = sqrt(v1->x * v1->x + v1->z * v1->z + v2->x * v2->x + v2->z * v2->z) *0.5f;
-
-	v1ref[0] =  v3 * f;
-	v1ref[1] = -v3 * f;
-
-	_pTankBottom->setMoveVec(v1ref[0]);
-	pTank->setMoveVec(v1ref[1]);
-
-	*/
 	D3DXVECTOR3 vIn;
 
 	//	表面まで押し戻す
@@ -731,14 +735,20 @@ void CTank::drawDestroyed()
 		
 		CRect rect;
 		rect.SetSize(4.0f, 4.0f);
+		CTexture *tex;
+		UINT width, height;
+		RECTEX texuv;
 
-		const float rest = 320.0f;
+		tex = TEXTUREFACTORY->getTexture(TEXKEY::TANK_EXPLOAD());
+		texuv = _SpriteExpload->getAnimeParam()->getUV();
+		width = tex->getSrcInfoRef().Width;
+		height = tex->getSrcInfoRef().Height;	
 
-		rect.SetTexture( (TEXTUREFACTORY->getTexture(TEXKEY::TANK_EXPLOAD()))->getTexture());
-		rect.SetUV(3,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / rest , _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
-		rect.SetUV(1,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().left / rest , _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
-		rect.SetUV(2,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right /rest, _SpriteExpload->getAnimeParam()->getUV().top / 64.0f  ));
-		rect.SetUV(0,D3DXVECTOR2(_SpriteExpload->getAnimeParam()->getUV().right / rest, _SpriteExpload->getAnimeParam()->getUV().bottom/ 64.0f));
+		rect.SetTexture(tex->getTexture());
+		rect.SetUV(3,D3DXVECTOR2(float(texuv.left)  / float(width), float(texuv.top   ) / float(height)));
+		rect.SetUV(1,D3DXVECTOR2(float(texuv.left)  / float(width), float(texuv.bottom) / float(height)));
+		rect.SetUV(2,D3DXVECTOR2(float(texuv.right) / float(width), float(texuv.top   ) / float(height)));
+		rect.SetUV(0,D3DXVECTOR2(float(texuv.right) / float(width), float(texuv.bottom) / float(height)));
 
 		rect.Draw();
 

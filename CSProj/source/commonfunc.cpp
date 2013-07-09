@@ -462,3 +462,68 @@ bool LineToLine(
 	
 	return false;
 }
+
+
+
+
+BOOL LineToCircle(
+	const D3DXVECTOR2*const pVSt,	//	始点
+	const D3DXVECTOR2*const pVEd,	//	端点
+	const D3DXVECTOR2*const pCircle,
+	const float fCRadius
+)
+{
+	//	始点、端点、円の中心間のベクトル
+	D3DXVECTOR2 vCS = *pCircle - *pVSt;
+	D3DXVECTOR2 vSE = *pVEd - *pVSt;	
+
+	//	単位ベクトル
+	D3DXVECTOR2 nvCS(0,0);
+	D3DXVECTOR2 nvSE(0,0);
+	D3DXVec2Normalize(&nvCS,&vCS);
+	D3DXVec2Normalize(&nvSE,&vSE);
+
+
+
+	const float dot = D3DXVec2Dot(&nvSE,&nvCS);
+	//	始点鈍角の時
+	if(dot <= 0)
+	{
+		if(sqrtf(vCS.x * vCS.x + vCS.y * vCS.y) < (fCRadius)){
+			return TRUE;
+		}
+	}
+	//	終点鈍角の時
+	else
+	{
+		D3DXVECTOR2 vCE = *pCircle - *pVEd;
+		D3DXVECTOR2 nvCE(0,0);
+		D3DXVec2Normalize(&nvCE,&vCE);
+
+		if(D3DXVec2Dot(&(-nvSE),&nvCE) <= 0)
+		{
+			if(sqrtf(vCE.x * vCE.x + vCE.y * vCE.y) < (fCRadius)){
+				return TRUE;
+			}
+		}
+		//	両端点上にある時
+		else
+		{
+			const float cross = D3DXVec2CCW(&nvSE,&nvCS);
+
+			D3DXVECTOR2 segPoint(
+				pVSt->x + dot * vSE.x,
+				pVSt->y + cross * vSE.y
+				);
+
+			const float disX = (segPoint.x - pCircle->x) * (segPoint.x - pCircle->x);
+			const float disY = (segPoint.y - pCircle->y) * (segPoint.y - pCircle->y);
+
+			if(sqrt(disX + disY) < fCRadius)
+			{
+				return TRUE;
+			}
+		}
+	}
+	return FALSE;
+}
