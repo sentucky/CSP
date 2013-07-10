@@ -115,9 +115,9 @@ void CTankIntDummy::root(){
 /***********************************************************************/
 void CTankIntDummy::shot(){
 	static int aimNum;
-	return;
+//	return;
 	// 射撃処理
-	if(rand()%SHOT_PROB == 1){	// 撃つ確率
+	if(getRand(SHOT_PROB) == 1){	// 撃つ確率
 		
 		// 狙う敵のナンバー設定
 		if(rand()%2){aimNum = 1;}else{aimNum = -1;}	

@@ -75,15 +75,6 @@ void CRect::Draw()
 	//更新
 	if (mIsUpdate)
 		this->Update();
-	/*
-	D3DMATERIAL9 materials2;
-	materials2.Specular.a = 1.0f;
-	materials2.Ambient .a = 1.0f;
-	materials2.Diffuse.b = 	materials2.Diffuse.g = 	materials2.Diffuse.r = 	materials2.Diffuse.a = 1.0f;
-	materials2.Power = 1.0f;
-	materials2.Emissive.b = materials2.Emissive.g = materials2.Emissive.r = 0.25f;
-	materials2.Emissive.a = 1.0f;
-	*/
 
 	//FVFの設定
 	mDevice_pr->SetFVF(FVF_VERTEX_RECT);
@@ -95,39 +86,69 @@ void CRect::Draw()
 	mDevice_pr->DrawPrimitiveUP(D3DPT_TRIANGLESTRIP,2,mVtx,sizeof(VERTEX_RECT));
 }
 
+IDirect3DVertexDeclaration9 *decl = 0;		//頂点デコレーション（FVF）
+IDirect3DVertexBuffer9 		*pTopVerTex;	//頂点バッファ
+struct STop{ 
+	D3DXVECTOR3 pos;
+	D3DXVECTOR3 Tangent;
+	D3DXVECTOR3 NormalVec;
+	D3DXVECTOR2 UV;
+ };
+
+
+void initBump()
+{
+	//頂点情報構造体
+	//頂点情報
+	STop sTop[]={
+		{D3DXVECTOR3(-1, 1,0),D3DXVECTOR3(0,1,0),D3DXVECTOR3(-1, 1,-1),D3DXVECTOR2(0,0)},
+		{D3DXVECTOR3(-1,-1,0),D3DXVECTOR3(0,1,0),D3DXVECTOR3(-1,-1,-1),D3DXVECTOR2(0,1)},
+		{D3DXVECTOR3( 1, 1,0),D3DXVECTOR3(0,1,0),D3DXVECTOR3( 1, 1,-1),D3DXVECTOR2(1,0)},
+		{D3DXVECTOR3( 1,-1,0),D3DXVECTOR3(0,1,0),D3DXVECTOR3( 1,-1,-1),D3DXVECTOR2(1,1)},
+	};
+
+	//頂点登録(pTopVerTexの作成)
+	D3DDEVICE->CreateVertexBuffer(
+		sizeof( STop ) * 4,	//頂点数 * サイズ
+		0,
+		D3DFVF_XYZ,
+		D3DPOOL_MANAGED,
+		&pTopVerTex,
+		0 );
+
+	//頂点のメモリを直でコピーする
+	STop *vTop;
+	pTopVerTex->Lock( 0,0, (void**)&vTop, 0);
+	memcpy( vTop, sTop, sizeof( sTop ) ); 
+	pTopVerTex->Unlock();
+
+	//頂点宣言(FVFみたいなもの)
+	D3DVERTEXELEMENT9 declAry[] = {
+        {0,  0, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_POSITION, 0},
+        {0, 12, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TANGENT,  0},
+        {0, 24, D3DDECLTYPE_FLOAT3, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_NORMAL,   0},
+        {0, 36, D3DDECLTYPE_FLOAT2, D3DDECLMETHOD_DEFAULT, D3DDECLUSAGE_TEXCOORD, 0},
+        D3DDECL_END()
+	};
+	//FVF作成
+	D3DDEVICE->CreateVertexDeclaration( declAry, &decl );
+	//使用ストリーム指定と頂点バッファ設定
+	D3DDEVICE->SetStreamSource( 0, pTopVerTex, 0, sizeof( STop ) );
+}
 void CRect::DrawBump()
 {
-	/*
-	mVtx[0].vtx = D3DXVECTOR3(-(mSize.x) / 2.0f,-(mSize.y) / 2.0f,0.0f);
-	mVtx[1].vtx = D3DXVECTOR3(+(mSize.x) / 2.0f,-(mSize.y) / 2.0f,0.0f);
-	mVtx[2].vtx = D3DXVECTOR3(-(mSize.x) / 2.0f,+(mSize.y) / 2.0f,0.0f);
-	mVtx[3].vtx = D3DXVECTOR3(+(mSize.x) / 2.0f,+(mSize.y) / 2.0f,0.0f);
-
-	LPDIRECT3DVERTEXBUFFER9 vb = NULL;
-	mDevice_pr->SetFVF(FVF_VERTEX_RECT);
-	mDevice_pr->CreateVertexBuffer(
-		sizeof(VERTEX_RECT)*4,
-		D3DUSAGE_DYNAMIC,
-		0,
-		D3DPOOL_MANAGED,
-		&vb,
-		NULL);
-
-	
-	mDevice_pr->SetSamplerState(0,D3DTSS_MINFILTER,D3DTEXF_LINER);
-	mDevice_pr->SetStreamSource(0,vb,0,sizeof(VERTEX_RECT));
-	mDevice_pr->SetIndices(
+	static int a = 0;
+	if(a == 0)
+	{
+		initBump();
+		a = 1;
+	}
 
 
-
-	VERTEX_RECT* v = NULL;
-	vb->Lock(0,0,(void**)&v,0);
-	memcpy(v,mVtx,sizeof(VERTEX_RECT)*4);
-	vb->Unlock();
-	mDevice_pr->SetStreamSource(0,vb,0,sizeof(VERTEX_RECT));
-	mDevice_pr->DrawIndexedPrimitive(D3DPT_TRIANGLELIST,0,0,4,0,4);
-	vb->Release();
-	*/d
+	//FVF設定
+	D3DDEVICE->SetVertexDeclaration( decl );
+	//描画(面二つと０から始まる頂点と指定)
+	D3DDEVICE->DrawPrimitive( D3DPT_TRIANGLESTRIP, 0, 2 );
 }
 
 //更新

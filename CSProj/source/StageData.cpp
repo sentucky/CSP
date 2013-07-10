@@ -119,6 +119,7 @@ void CStageData::Draw()
 			}
 		}
 	}
+	/*
 	//ƒ‰ƒCƒ“•`‰æ
 #ifdef _DEBUG
 	LINE line[512];
@@ -139,6 +140,7 @@ void CStageData::Draw()
 	D3DDEVICE->DrawPrimitiveUP(D3DPT_LINESTRIP,rootNum - 1,&line[0],sizeof(LINE));
 	D3DDEVICE->DrawPrimitiveUP(D3DPT_POINTLIST,rootNum,&line[0],sizeof(LINE));
 #endif
+	*/
 	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,TRUE);
 
 }

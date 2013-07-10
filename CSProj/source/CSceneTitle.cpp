@@ -92,6 +92,7 @@ void CSceneTitle::init()
 		changebutton[i] = false;
 	}
 //#ifndef _DEBUG
+	CSOUND->GetSound(SOUNDKEY::TITLEBGM())->SetCurrentPosition(0);
 	CSOUND->GetSound(SOUNDKEY::TITLEBGM())->Play(0,0,1);
 //#endif
 }

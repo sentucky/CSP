@@ -59,6 +59,7 @@
 #include"CObjBase.h"
 #include "CTankIntDummy.h"
 #include"CSound.h"
+#include"CSceneStageSelect.h"
 
 CLight* GLight;
 
@@ -332,8 +333,7 @@ CSceneBase * CSceneGame::nextScene()
 	{
 	case 1:
 //		return new CSceneGame;
-		delete this;
-		return new CSceneGame;
+		return new CSceneStageSelect;
 		break;
 	case 2:
 		return new CSceneTitle;

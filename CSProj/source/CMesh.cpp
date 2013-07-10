@@ -126,7 +126,7 @@ HRESULT CMesh::loadMesh(LPCSTR szMeshName)
 		&_dwNumMaterials,
 		&_pd3dMesh
 		);
-
+	
 	loadMaterial(pD3DXMatlBuffer);
 
 	SAFE_RELEASE(pD3DXMatlBuffer);
@@ -149,6 +149,11 @@ HRESULT CMesh::loadMesh(LPCSTR szMeshName)
 HRESULT CMesh::loadMaterial(LPD3DXBUFFER pD3DXMatlBuffer)
 {
 	HRESULT					hr;
+
+	if(_dwNumMaterials == 0)
+	{
+		return hr;
+	}
 	
 	//---マテリアル保存用配列の確保
 	_pd3dMeshColor		= new D3DCOLORVALUE[_dwNumMaterials];

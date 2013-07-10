@@ -214,8 +214,8 @@ CTank::CTank(const CTank& src)
 		_pIntelligence = new CTankIntPlayer(this);
 		break;
 	case TYPE_ENEMY01:
-		_pIntelligence = new CTankIntStop(this);	
-//		_pIntelligence = new CTankIntDummy(this);	
+//		_pIntelligence = new CTankIntStop(this);	
+		_pIntelligence = new CTankIntDummy(this);	
 		break;
 	}
 
@@ -353,7 +353,7 @@ void CTank::draw()
 
 	//煙のエフェクト
 
-	//*
+	/*
 	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getMatProj());	//ビュー座標変換
 	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatView());		//カメラ座標変換
 	D3DDEVICE->SetTransform(D3DTS_WORLD,this->_pTankBottom->getWMat());	//ワールド座標変換

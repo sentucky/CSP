@@ -171,7 +171,7 @@ void CSystemparam::disableTask()
 /***********************************************************************/
 void CSystemparam::endCount()
 {
-	--_goalCount;
+//	--_goalCount;
 
 	_flgEnd = _goalCount <= 0 ? TRUE : FALSE;
 }
@@ -230,6 +230,7 @@ void CSystemparam::endcheck()
 	{
 		_Sprite = SPRITEFACTORY->create(TEXKEY::LOSE());
 //#ifndef _DEBUG
+		CSOUND->GetSound(SOUNDKEY::LOSEBGM())->SetCurrentPosition(0);
 		CSOUND->GetSound(SOUNDKEY::LOSEBGM())->Play(0,0,1);
 //#endif
 	}
@@ -443,6 +444,7 @@ void CSystemparam::startcheck()
 	if(_CamStart == NULL)
 	{
 //#ifndef _DEBUG
+		CSOUND->GetSound(SOUNDKEY::GAMEBGM())->SetCurrentPosition(0);	
 		CSOUND->GetSound(SOUNDKEY::GAMEBGM())->Play(0,0,1);	
 //#endif
 		--_startCount;

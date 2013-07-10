@@ -32,6 +32,8 @@
 
 #include"CMesh.h"
 
+#include"CPolygon.h"
+
 CMesh *TestMesh[2] = {NULL,};
 CLight* pLight;
 CCamera* pCamera;
@@ -91,6 +93,8 @@ CBumpMap* pmap;
 CRect* rect;
 CTexture* tex;
 CTexture* btex;
+
+CPolygon* poly;
 /***********************************************************************/
 /*! @brief 
  * 
@@ -101,6 +105,7 @@ void CSceneTestSpace::init()
 {
 
 	release();
+	CPolygon::setDevice(D3DDEVICE);
 	/*
 	pSprite = SPRITEFACTORY->create(TEXKEY::ANIMETEST());
 	pSprite->createAnimeParam(ANIMEPATH::TEST());
@@ -175,7 +180,16 @@ void CSceneTestSpace::init()
 //	light->lightON();
 */
 	CCamera::setEye(D3DXVECTOR3(0,0,-7.5f));
-
+	poly = new CPolygon;
+	poly->setVtxBufType(CPolygon::VBT_POS_TAN_NOR_UV,4);
+	CPolygon::VB_PTNU temp[] = 
+	{
+		{D3DXVECTOR3(-1, 1, 0),D3DXVECTOR3(0,1,0),D3DXVECTOR3(-1, 1,-1),D3DXVECTOR2( 0, 0)},
+		{D3DXVECTOR3(-1,-1, 0),D3DXVECTOR3(0,1,0),D3DXVECTOR3(-1,-1,-1),D3DXVECTOR2( 0, 1)},
+		{D3DXVECTOR3( 1, 1, 0),D3DXVECTOR3(0,1,0),D3DXVECTOR3( 1, 1,-1),D3DXVECTOR2( 1, 0)},
+		{D3DXVECTOR3( 1,-1, 0),D3DXVECTOR3(0,1,0),D3DXVECTOR3( 1,-1,-1),D3DXVECTOR2( 1, 1)},
+	};
+	poly->setVtxBuf(temp,CPolygon::VBT_POS_TAN_NOR_UV,4);
 	pmap = new CBumpMap("data/fx/bump.fx");
 	pmap->create();
 	rect = new CRect;
@@ -234,7 +248,7 @@ void CSceneTestSpace::update()
 */
 
 
-		D3DXVECTOR3 Eye = pCamera->getEye();
+	D3DXVECTOR3 Eye = pCamera->getEye();
 
 	if(GetAsyncKeyState('S'))
 	{
@@ -360,6 +374,7 @@ void CSceneTestSpace::draw()
 
 
 	D3DMATERIAL9 mate;
+
 	{
 		mate.Ambient.a = mate.Ambient.r = mate.Ambient.g = mate.Ambient.b = 1.0f;
 		mate.Diffuse = mate.Ambient;
@@ -370,17 +385,9 @@ void CSceneTestSpace::draw()
 	}
 	pmap->setMaterial(&mate);
 
-	rect->SetSize(4.0f,4.0f);
-	rect->SetTexture(tex->getTexture());
-	rect->SetUV(0,D3DXVECTOR2(0,0));
-	rect->SetUV(1,D3DXVECTOR2(0,1));
-	rect->SetUV(2,D3DXVECTOR2(1,0));
-	rect->SetUV(3,D3DXVECTOR2(1,1));
-
-
 	CMesh* pmesh = MESHFACTORY->create(MESHKEY::TANK01_BOTTOM_1());
 
-	static float rot = 90.0;
+	static float rot = 90.0f;
 	static float rot2 = 0.0;
 	static float rot3 = 0.0;
 	if(GetAsyncKeyState('T'))
@@ -409,35 +416,16 @@ void CSceneTestSpace::draw()
 	}
 	D3DXMATRIXA16 mat2;
 	D3DXMatrixIdentity(&mat2);
-	D3DXMatrixRotationYawPitchRoll(&mat2,rot,rot2,rot3);
+	D3DXMatrixRotationYawPitchRoll(&mat2,rot2,rot,rot3);
 
 	pmap->setWorldMatrix(&mat2);
 
 	D3DDEVICE->SetFVF(FVF_VERTEX_3D);	// 頂点フォーマットの設定
-	D3DDEVICE->SetTransform(D3DTS_PROJECTION,CSCREEN->getMatProj());	//ビュー座標変換
-	D3DDEVICE->SetTransform(D3DTS_VIEW, CCamera::getMatView());			//カメラ座標変換
-	D3DDEVICE->SetTransform(D3DTS_WORLD,&mat2);							//ワールド座標変換
 
 	CCamera::setAt(D3DXVECTOR3(0,0,0));
 	CCamera::setUp(D3DXVECTOR3(0,1,0));
 
 
-	D3DDEVICE->SetRenderState(D3DRS_ZENABLE,FALSE);
-	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,FALSE);
-	D3DDEVICE->SetTexture(0,tex->getTexture());
-
-	ID3DXMesh* mesh = NULL;
-	D3DXCreatePolygon(D3DDEVICE,4.0f,4,&mesh,NULL);
-
-		// 法線が無い場合は強制的に追加
-	if ((mesh->GetFVF() & D3DFVF_NORMAL) == 0) 
-	{
-		LPD3DXMESH pMeshTmp = mesh;
-		pMeshTmp->CloneMeshFVF(pMeshTmp->GetOptions(), pMeshTmp->GetFVF() | D3DFVF_NORMAL,
-			D3DDEVICE, &mesh);
-		SAFE_RELEASE(pMeshTmp);
-		D3DXComputeNormals(mesh, NULL);
-	}
 	//法線の強制追加
 	D3DVERTEXELEMENT9 m_vtxElem[] =
     {
@@ -451,25 +439,6 @@ void CSceneTestSpace::draw()
 	
     LPDIRECT3DVERTEXDECLARATION9 m_pVtxDecl;
 	D3DDEVICE->CreateVertexDeclaration(m_vtxElem, &m_pVtxDecl);
-
-	LPD3DXMESH pCloneMesh;
-	if (SUCCEEDED(mesh->CloneMesh(D3DXMESH_MANAGED,m_vtxElem, D3DDEVICE, &pCloneMesh)) )
-	{
-		mesh->Release();
-		mesh = pCloneMesh;
-		D3DXComputeTangent(mesh, 0, 0, D3DX_DEFAULT, FALSE, NULL);
-	}     
-
-	LPDIRECT3DTEXTURE9 tex2;
-	D3DXCreateTexture(
-		D3DDEVICE,
-		256,
-		256,
-		D3DX_DEFAULT ,
-		D3DUSAGE_RENDERTARGET,
-		D3DFMT_A8R8G8B8,
-		_D3DPOOL::D3DPOOL_DEFAULT,
-		&tex2);
 	
 
 
@@ -477,7 +446,7 @@ void CSceneTestSpace::draw()
 	pmap->setCameraPos(&pos);
 	pmap->setBumpTex(tex->getTexture(),btex->getTexture());
 	
-	static D3DXVECTOR3 lv = D3DXVECTOR3(1,1,1);
+	static D3DXVECTOR3 lv = D3DXVECTOR3(0,-1,1);
 
 	D3DXVec3Normalize(&lv,&lv);
 	pmap->setLightDir(&lv);
@@ -491,12 +460,13 @@ void CSceneTestSpace::draw()
 		for(int i = 0; i < teq; i++)
 		{
 			pmap->beginPass(i);
-//			for(DWORD j = 0; j < 4; j++)
+		//	for(DWORD j = 0; j < 4; j++)
 			{
 				pmap->setMaterial(&mate);
 				pmap->commitChanges();
+				poly->draw();
 //				mesh->DrawSubset(0);
-				rect->DrawBump();
+//				rect->DrawBump();
 //				pmesh->getMesh()->DrawSubset(j);				
 			}
 
@@ -504,7 +474,6 @@ void CSceneTestSpace::draw()
 		}
 		pmap->end();
 	}
-	mesh->Release();
 	D3DDEVICE->SetRenderState(D3DRS_ZENABLE,TRUE);		
 	D3DDEVICE->SetRenderState(D3DRS_LIGHTING,TRUE);	
 	delete pmesh;
@@ -519,6 +488,9 @@ void CSceneTestSpace::draw()
 void CSceneTestSpace::release()
 {
 	delete pSprite;
+	delete poly;
+	SAFE_DELETE(rect);
+	SAFE_DELETE(pmap);
 	/*
 	SAFE_DELETE(stest::aparam);
 	SAFE_DELETE(stest::pSprite);

@@ -19,6 +19,8 @@
 #include"CCamera.h"
 
 #include"CSystemparam.h"
+#include"CInputCommon.h"
+
 
 CCockpit::CCockpit()
 	:CObjBase	(OBJGROUPKEY::COCKPIT()	),
@@ -126,7 +128,7 @@ CCockpit::CCockpit(const CCockpit& src)
 		_NumPos[n] = D3DXVECTOR3(0,0,0);
 	}
 
-	_NumPos[N_RANK] = D3DXVECTOR3(_spriteMat[S_TH]._41,_spriteMat[S_TH]._42,0);
+	_NumPos[N_RANK] = D3DXVECTOR3(_spriteMat[S_TH]._41 - 64.0f,_spriteMat[S_TH]._42,0);
 
 	_Num[N_LAP]->setDrawMode(POINT_LEFT);
 	_NumPos[N_LAP] = D3DXVECTOR3(_spriteMat[S_LAP]._41+128.0f,_spriteMat[S_LAP]._42,0);
@@ -223,7 +225,6 @@ void CCockpit::update()
 	updateLap();
 }
 
-#include"CInputCommon.h"
 
 void CCockpit::updateMiniMap()
 {
@@ -249,7 +250,7 @@ void CCockpit::updateLap()
 	int PlayerTankLap = _Tank->getlap();
 
 	PlayerTankLap = PlayerTankLap <= 0 ? 0 : PlayerTankLap;
-	PlayerTankLap = PlayerTankLap >=  CSystemparam::getMaxLap() ?  CSystemparam::getMaxLap() :  PlayerTankLap;
+	PlayerTankLap = PlayerTankLap + 1 >  CSystemparam::getMaxLap() - 1 ?  CSystemparam::getMaxLap() :  PlayerTankLap;
 	
 	_Num[N_LAP]->setNum(PlayerTankLap + 1);
 	_Num[N_LAPMAX]->setNum(CSystemparam::getMaxLap());

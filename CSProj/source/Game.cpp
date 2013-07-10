@@ -197,7 +197,7 @@ void gameInit()
 		MESHFACTORY->create(MESHKEY::TANK01_BOTTOM_2()),
 		0,
 		new CShell(60,0.5f,MESHFACTORY->create(MESHKEY::SHELL01()),1,0.3f),
-		0.1f,
+		0.04f,
 		0.05f,
 		10
 		);

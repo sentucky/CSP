@@ -29,6 +29,15 @@ typedef unsigned int	uint;
 typedef unsigned short	ushort;
 typedef unsigned long	ulong;
 
+typedef const float		kfloat;
+typedef const int		kint;
+typedef const long		klong;
+typedef const short		kshort;
+typedef const uint		kuint;
+typedef const ulong		kulong;
+typedef const ushort	kushort;
+
+
 typedef char*	FILEPATH;
 
 typedef std::vector<sint> vector_sint;

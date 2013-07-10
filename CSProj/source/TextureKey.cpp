@@ -193,8 +193,8 @@ const char* TEXPATH::TILEBG()			{ return "data/model/course_bg.tga";		}
 const char* TEXPATH::TILESTRAIGHT()		{ return "data/Stage/tile_Straight.png";	}
 const char* TEXPATH::TILECURVE()		{ return "data/Stage/tile_curve.png";		}
 const char* TEXPATH::TILESTART()		{ return "data/Stage/06.png";				}
-const char* TEXPATH::TILESTRAIGHT_BUMP(){ return "data/Stage/earthnormal.bmp";	}
-//const char* TEXPATH::TILESTRAIGHT_BUMP(){ return "data/Stage/tile_Straight_b.tga";	}
+//const char* TEXPATH::TILESTRAIGHT_BUMP(){ return "data/Stage/earthnormal.bmp";	}
+const char* TEXPATH::TILESTRAIGHT_BUMP(){ return "data/Stage/tile_Straight_b.tga";	}
 const char* TEXPATH::TILECURVE_BUMP()	{ return "data/Stage/tile_curve_b.tga";		}
 const char* TEXPATH::NUM_B0()			{ return "data/texture/num/b_0.png";		}
 const char* TEXPATH::NUM_B1()			{ return "data/texture/num/b_1.png";		}
